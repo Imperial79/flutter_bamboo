@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,9 +21,9 @@ class MyApp extends ConsumerWidget {
     final routerConfig = ref.watch(goRouterProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Postr',
+      title: 'Bamboo Inc.',
       theme: kTheme(context),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       routerConfig: routerConfig,
     );
   }
