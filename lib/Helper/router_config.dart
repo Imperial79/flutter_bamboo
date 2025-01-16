@@ -3,6 +3,31 @@ import 'package:flutter_bamboo/Pages/Splash_UI.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+final List<String> authRoutes = [
+  "/login",
+  "/register",
+];
+
+final List<String> unProtectedRoutes = [
+  ...authRoutes,
+  "/splash",
+  "/",
+  "/product/:id",
+  "/cart"
+];
+
+final List<String> protectedRoutes = [
+  "/splash",
+  "/",
+  "/product/:id",
+  "/cart",
+  "/checkout",
+  "/confirmation",
+  "/offers",
+  "/affiliate",
+  "/membership",
+];
+
 final goRouterProvider = Provider<GoRouter>(
   (ref) {
     // final authState = ref.watch(authFuture);
@@ -12,8 +37,8 @@ final goRouterProvider = Provider<GoRouter>(
       initialLocation: '/',
       redirect: (context, state) {
         if (isLoading) return '/splash';
-        // if (user == null && state.fullPath != '/login') return '/login';
-        // if (user != null && state.fullPath == '/login') return '/';
+        // if (user == null && protectedRoutes.contains(state.fullPath)) return '/login';
+        // if (user != null && authRoutes.contains(state.fullPath)) return '/';
         return null;
       },
       routes: [
