@@ -75,8 +75,8 @@ class KTextfield {
     this.prefixText,
     this.prefix,
     this.suffix,
-    this.fieldColor = DColor.scaffold,
-    this.cursorColor = DColor.primary,
+    this.fieldColor = LColor.scaffold,
+    this.cursorColor = LColor.primary,
     this.borderColor,
     this.textColor,
     this.hintTextColor,
@@ -107,19 +107,19 @@ class KTextfield {
     fontWeight: FontWeight.w400,
     fontSize: kFontSize,
     height: kTextHeight,
-    color: DColor.fadeText,
+    color: LColor.fadeText,
   );
 
   Widget get kLabel => Label(
         label!,
-        fontWeight: 400,
+        weight: 400,
         fontSize: 15,
       ).regular;
 
   InputBorder borderStyle(Color? customBorder) => OutlineInputBorder(
         borderRadius: kRadius(10),
         borderSide:
-            BorderSide(color: borderColor ?? customBorder ?? DColor.border),
+            BorderSide(color: borderColor ?? customBorder ?? LColor.border),
       );
 
   Widget get regular => Column(
@@ -156,9 +156,9 @@ class KTextfield {
               if (prefixText != null)
                 KCard(
                   padding: const EdgeInsets.all(12),
-                  color: DColor.scaffold,
+                  color: LColor.scaffold,
                   radius: 10,
-                  borderColor: DColor.border,
+                  borderColor: LColor.border,
                   borderWidth: 1,
                   child: Label(prefixText ?? "",
                           height: kTextHeight, fontSize: fontSize)
@@ -205,7 +205,7 @@ class KTextfield {
                     isDense: true,
                     border: borderStyle(null),
                     errorBorder: borderStyle(StatusText.danger),
-                    focusedBorder: borderStyle(DColor.border),
+                    focusedBorder: borderStyle(LColor.border),
                     enabledBorder: borderStyle(null),
                     errorStyle: const TextStyle(color: StatusText.danger),
                     hintText: hintText,
@@ -249,7 +249,7 @@ class KTextfield {
                   margin: const EdgeInsets.only(right: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: DColor.primary,
+                    color: LColor.primary,
                     borderRadius: kRadius(10),
                   ),
                   child: Text(
@@ -267,7 +267,7 @@ class KTextfield {
                   padding: const EdgeInsets.all(12),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: DColor.primary,
+                    color: LColor.primary,
                     borderRadius: kRadius(10),
                   ),
                   child: prefix!,
@@ -288,12 +288,12 @@ class KTextfield {
                   inputFormatters: inputFormatters,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: DColor.card,
+                    fillColor: LColor.card,
                     counterText: '',
                     isDense: true,
                     border: borderStyle(null),
                     errorBorder: borderStyle(StatusText.danger),
-                    focusedBorder: borderStyle(DColor.border),
+                    focusedBorder: borderStyle(LColor.border),
                     enabledBorder: borderStyle(null),
                     hintText: hintText,
                     hintStyle: kHintTextstyle.copyWith(
@@ -354,13 +354,13 @@ class KTextfield {
           onSelected: onSelected,
           expandedInsets: EdgeInsets.zero,
           menuStyle: const MenuStyle(
-              backgroundColor: WidgetStatePropertyAll(DColor.card)),
+              backgroundColor: WidgetStatePropertyAll(LColor.card)),
           inputDecorationTheme: InputDecorationTheme(
             errorStyle: const TextStyle(color: StatusText.danger),
-            activeIndicatorBorder: const BorderSide(color: DColor.border),
+            activeIndicatorBorder: const BorderSide(color: LColor.border),
             border: borderStyle(null),
             errorBorder: borderStyle(StatusText.danger),
-            focusedBorder: borderStyle(DColor.border),
+            focusedBorder: borderStyle(LColor.border),
             enabledBorder: borderStyle(null),
             filled: true,
             fillColor: fieldColor,

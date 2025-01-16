@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 
-const String kFont = "Kumbh";
+const String kFont = "Urbanist";
 
 ColorScheme get kScheme => ColorScheme.fromSeed(
-      seedColor: DColor.primary,
+      seedColor: LColor.primary,
       brightness: Brightness.light,
-      surface: DColor.scaffold,
+      surface: LColor.scaffold,
       onSurface: Colors.white,
     );
 
-ThemeData kTheme(context) => ThemeData(useMaterial3: true).copyWith(
-      scaffoldBackgroundColor: DColor.scaffold,
+ThemeData kTheme(context) => ThemeData(
+      useMaterial3: true,
+      scaffoldBackgroundColor: LColor.scaffold,
       splashFactory: InkSplash.splashFactory,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: DColor.primary,
-      ).copyWith(
+        seedColor: LColor.primary,
         brightness: Brightness.light,
-        onSurface: Colors.white,
-        surface: DColor.card,
       ),
-      textTheme: Typography().white.apply(fontFamily: kFont),
+      fontFamily: kFont,
       textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(foregroundColor: DColor.primary)),
+          style: TextButton.styleFrom(foregroundColor: LColor.primary)),
       appBarTheme: const AppBarTheme(
-        backgroundColor: DColor.scaffold,
+        backgroundColor: LColor.scaffold,
         elevation: 0,
       ),
       chipTheme: ChipThemeData(
@@ -34,14 +32,14 @@ ThemeData kTheme(context) => ThemeData(useMaterial3: true).copyWith(
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        selectionHandleColor: DColor.primary,
-        cursorColor: DColor.primary,
+        selectionHandleColor: LColor.primary,
+        cursorColor: LColor.primary,
         selectionColor: kColor(context).tertiary,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: DColor.secondary,
-        linearTrackColor: DColor.card,
-        circularTrackColor: DColor.card,
-        refreshBackgroundColor: DColor.card,
+        color: LColor.secondary,
+        linearTrackColor: LColor.card,
+        circularTrackColor: LColor.card,
+        refreshBackgroundColor: LColor.card,
       ),
     );

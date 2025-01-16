@@ -8,9 +8,9 @@ Widget KHeading({required String title, required String subtitle}) {
     child: Center(
       child: Column(
         children: [
-          Label(title, fontSize: 25, fontWeight: 800).title,
+          Label(title, fontSize: 25, weight: 800).title,
           Label(subtitle,
-                  fontSize: 20, fontWeight: 200, textAlign: TextAlign.center)
+                  fontSize: 20, weight: 200, textAlign: TextAlign.center)
               .title,
         ],
       ),

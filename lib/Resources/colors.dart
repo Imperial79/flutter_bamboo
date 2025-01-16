@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class DColor {
+class LColor {
   static const Color scaffold = Colors.white;
   static const Color primary = Color(0xff4bb298);
   static const Color secondary = Color(0xff2b2c43);
   static const Color card = Color(0XFFf6f6f6);
-  static const Color border = Color(0xFFd6d8d7);
-  static const Color fadeText = Color(0xFFd7d7d7);
+  static const Color border = Color(0xFFBDBDBD);
+  static const Color fadeText = Color.fromARGB(255, 177, 177, 177);
 }
 
 class StatusText {

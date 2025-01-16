@@ -23,7 +23,7 @@ class KCard extends StatelessWidget {
     this.margin,
     this.width,
     this.height,
-    this.color = DColor.card,
+    this.color = LColor.card,
     this.borderColor,
     this.borderWidth = 0,
   });

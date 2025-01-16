@@ -1,4 +1,10 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Login_UI.dart';
+import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';
+import 'package:flutter_bamboo/Pages/Root_UI.dart';
 import 'package:flutter_bamboo/Pages/Splash_UI.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,15 +38,22 @@ final goRouterProvider = Provider<GoRouter>(
   (ref) {
     // final authState = ref.watch(authFuture);
     // final user = ref.watch(userProvider);
-    bool isLoading = false;
+    // bool isLoading = false;
     return GoRouter(
       initialLocation: '/',
       redirect: (context, state) {
-        if (isLoading) return '/splash';
-        // if (user == null && protectedRoutes.contains(state.fullPath)) return '/login';
-        // if (user != null && authRoutes.contains(state.fullPath)) return '/';
+        log(state.fullPath ?? "");
+
         return null;
       },
+      // redirect: (context, state) {
+      //   if (isLoading) return '/splash';
+      //   // if (user == null && protectedRoutes.contains(state.fullPath)) return '/login';
+      //   // if (user != null && authRoutes.contains(state.fullPath)) return '/';
+      //   return null;
+      // },
+
+      errorBuilder: (context, state) => Error_UI(),
       routes: [
         GoRoute(
           path: '/splash',
@@ -50,10 +63,18 @@ final goRouterProvider = Provider<GoRouter>(
           path: '/login',
           builder: (context, state) => const Login_UI(),
         ),
-        // GoRoute(
-        //   path: '/',
-        //   builder: (context, state) => const RootUI(),
-        // ),
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const Root_UI(),
+        ),
+        GoRoute(
+          path: '/product/:id',
+          builder: (context, state) {
+            final id = state.pathParameters["id"];
+            return Product_Detail_UI(id: id ?? "");
+          },
+        ),
+
         // GoRoute(
         //   path: '/courier',
         //   builder: (context, state) => const Courier_UI(),

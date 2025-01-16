@@ -13,7 +13,7 @@ class Pill {
   Pill({
     this.child,
     this.label = "text",
-    this.backgroundColor = DColor.primary,
+    this.backgroundColor = LColor.primary,
     this.textColor = Colors.white,
   });
 

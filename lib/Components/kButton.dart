@@ -57,7 +57,7 @@ class KButton extends StatelessWidget {
           elevation: 0,
           shadowColor: Colors.transparent,
           alignment: Alignment.center,
-          disabledBackgroundColor: DColor.card,
+          disabledBackgroundColor: LColor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
             letterSpacing: .7,
@@ -89,7 +89,7 @@ class KButton extends StatelessWidget {
           elevation: 0,
           shadowColor: Colors.transparent,
           alignment: Alignment.center,
-          disabledBackgroundColor: DColor.card,
+          disabledBackgroundColor: LColor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
             letterSpacing: .7,
@@ -109,7 +109,7 @@ class KButton extends StatelessWidget {
           visualDensity: visualDensity,
           elevation: 0,
           shadowColor: Colors.transparent,
-          disabledBackgroundColor: DColor.card,
+          disabledBackgroundColor: LColor.card,
           alignment: Alignment.center,
           textStyle: TextStyle(
             fontSize: fontSize,
@@ -131,7 +131,7 @@ class KButton extends StatelessWidget {
           elevation: 0,
           shadowColor: Colors.transparent,
           alignment: Alignment.center,
-          disabledBackgroundColor: DColor.card,
+          disabledBackgroundColor: LColor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
             letterSpacing: .7,
@@ -205,7 +205,7 @@ class KButton extends StatelessWidget {
             height: 15,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: DColor.primary,
+              color: LColor.primary,
               backgroundColor: Colors.transparent,
             ),
           ),

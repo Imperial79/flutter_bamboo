@@ -14,7 +14,7 @@ SizedBox kHeight(double height) => SizedBox(height: height);
 SizedBox kWidth(double width) => SizedBox(width: width);
 
 Widget get div => const Divider(
-      color: DColor.border,
+      color: LColor.border,
       thickness: .5,
     );
 
