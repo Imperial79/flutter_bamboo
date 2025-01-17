@@ -50,7 +50,8 @@ Future<T?> navPopUntilPush<T extends Object?>(
   return navPush(context, screen);
 }
 
-KSnackbar(context, {required String message, bool error = false}) {
+KSnackbar(context,
+    {required String message, bool error = false, SnackBarAction? action}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: error
@@ -61,6 +62,7 @@ KSnackbar(context, {required String message, bool error = false}) {
                   ? kColor(context).onErrorContainer
                   : kColor(context).onPrimaryContainer)
           .regular,
+      action: action,
       behavior: SnackBarBehavior.floating,
       dismissDirection: DismissDirection.horizontal,
     ),

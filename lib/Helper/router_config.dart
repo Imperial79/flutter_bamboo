@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Login_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';

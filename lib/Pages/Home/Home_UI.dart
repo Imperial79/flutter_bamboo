@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
+import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -190,7 +191,9 @@ class _Home_UIState extends State<Home_UI> {
                             itemCount: 5,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return buildProductPreview();
+                              return ProductPreviewCard(
+                                cardWidth: double.infinity,
+                              );
                             },
                           ),
                         ],
@@ -200,78 +203,6 @@ class _Home_UIState extends State<Home_UI> {
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildProductPreview() {
-    return InkWell(
-      onTap: () => context.push("/product/100"),
-      child: Ink(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              alignment: Alignment.topRight,
-              children: [
-                Container(
-                  height: 150,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: LColor.scaffold,
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        "https://images.squarespace-cdn.com/content/v1/5e5cd082c50ea102c52e5bb0/1597664315847-43NTZ4032GM9Y6003ZJZ/reusable-bamboo-dinnerware.jpg",
-                      ),
-                    ),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.favorite,
-                    size: 20,
-                    color: Colors.pink,
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Label("Shirt", weight: 600).subtitle,
-                  Label(
-                    "Item Title with color details and some more data",
-                    fontSize: 16,
-                    maxLines: 2,
-                    weight: 700,
-                  ).regular,
-                  height20,
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        size: 20,
-                        color: Colors.amber.shade700,
-                      ),
-                      Label("4.8 | 2336", color: LColor.fadeText, weight: 900)
-                          .regular,
-                      Expanded(
-                        child: Label("₹ 2000",
-                                color: LColor.primary,
-                                weight: 900,
-                                textAlign: TextAlign.end)
-                            .title,
-                      )
-                    ],
-                  )
-                ],
-              ),
-            )
           ],
         ),
       ),
