@@ -1,4 +1,4 @@
-package com.example.flutter_bamboo
+package com.ngforganic.shopping
 
 import io.flutter.embedding.android.FlutterActivity
 

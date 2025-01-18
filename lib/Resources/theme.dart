@@ -6,8 +6,6 @@ const String kFont = "Urbanist";
 ColorScheme get kScheme => ColorScheme.fromSeed(
       seedColor: LColor.primary,
       brightness: Brightness.light,
-      surface: LColor.scaffold,
-      onSurface: Colors.white,
     );
 
 ThemeData kTheme(context) => ThemeData(
@@ -22,6 +20,10 @@ ThemeData kTheme(context) => ThemeData(
       textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(foregroundColor: LColor.primary)),
       appBarTheme: const AppBarTheme(
+        actionsIconTheme: IconThemeData(
+          color: LColor.fadeText,
+        ),
+        surfaceTintColor: LColor.primary,
         backgroundColor: LColor.scaffold,
         elevation: 0,
       ),
@@ -31,10 +33,13 @@ ThemeData kTheme(context) => ThemeData(
           color: Colors.black,
         ),
       ),
+      badgeTheme: BadgeThemeData(
+        backgroundColor: kScheme.primary,
+      ),
       textSelectionTheme: TextSelectionThemeData(
         selectionHandleColor: LColor.primary,
-        cursorColor: LColor.primary,
-        selectionColor: kColor(context).tertiary,
+        cursorColor: kScheme.primary,
+        selectionColor: kScheme.secondaryContainer,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: LColor.secondary,

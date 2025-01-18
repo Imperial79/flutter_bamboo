@@ -1,5 +1,6 @@
+import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
-import 'package:flutter_bamboo/Pages/Login_UI.dart';
+import 'package:flutter_bamboo/Pages/Auth/Login_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Search_Products_UI.dart';
 import 'package:flutter_bamboo/Pages/Root_UI.dart';
@@ -9,6 +10,7 @@ import 'package:go_router/go_router.dart';
 
 final List<String> authRoutes = [
   "/login",
+  "/otp",
   "/register",
 ];
 
@@ -56,6 +58,17 @@ final goRouterProvider = Provider<GoRouter>(
         GoRoute(
           path: '/login',
           builder: (context, state) => const Login_UI(),
+          routes: [
+            GoRoute(
+              path: 'otp',
+              builder: (context, state) {
+                final extra = state.extra;
+                final phone =
+                    (extra is Map<String, dynamic>) ? extra["phone"] : null;
+                return OTP_UI(phone: phone);
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: '/',
