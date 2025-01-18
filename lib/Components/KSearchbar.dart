@@ -8,7 +8,6 @@ import '../Resources/constants.dart';
 class KSearchbar extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
-  final TextInputType keyboardType;
   final TextCapitalization textCapitalization;
   final void Function(String)? onFieldSubmitted;
   final void Function(String)? onSpeechResult;
@@ -22,7 +21,6 @@ class KSearchbar extends StatefulWidget {
     this.onFieldSubmitted,
     this.onClear,
     this.onSpeechResult,
-    this.keyboardType = TextInputType.text,
     this.textCapitalization = TextCapitalization.none,
     this.isSearching = false,
   });
@@ -37,12 +35,14 @@ class _KSearchbarState extends State<KSearchbar> {
     return TextField(
       controller: widget.controller,
       cursorColor: LColor.primary,
-      style: const TextStyle(),
-      keyboardType: widget.keyboardType,
+      style: const TextStyle(
+        fontVariations: [FontVariation.weight(700)],
+        fontSize: 17,
+      ),
       textCapitalization: widget.textCapitalization,
       decoration: InputDecoration(
         filled: true,
-        fillColor: LColor.scaffold,
+        fillColor: LColor.card,
         focusedBorder: kBorder(),
         border: kBorder(),
         enabledBorder: kBorder(),
@@ -51,7 +51,7 @@ class _KSearchbarState extends State<KSearchbar> {
           child: !widget.isSearching
               ? SvgPicture.asset(
                   "$kIconPath/search.svg",
-                  colorFilter: kSvgColor(LColor.border),
+                  colorFilter: kSvgColor(LColor.fadeText),
                   height: 20,
                 )
               : SizedBox(
@@ -77,9 +77,6 @@ class _KSearchbarState extends State<KSearchbar> {
 
   kBorder() => OutlineInputBorder(
         borderRadius: kRadius(10),
-        borderSide: BorderSide(
-          width: 2,
-          color: LColor.border,
-        ),
+        borderSide: BorderSide.none,
       );
 }

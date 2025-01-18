@@ -10,12 +10,15 @@ import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Product_Detail_UI extends ConsumerStatefulWidget {
   final String id;
+  final String? referCode;
   const Product_Detail_UI({
     super.key,
     required this.id,
+    this.referCode,
   });
 
   @override
@@ -28,7 +31,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   Widget build(BuildContext context) {
     return KScaffold(
       appBar: AppBar(
-        // title: Label(widget.id).regular,
+        // title: Label(widget.referCode ?? "nothing").regular,
         actions: [
           // IconButton(
           //   onPressed: () {},
@@ -40,7 +43,12 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           // ),
           // width10,
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Share.share(
+                "Checkout this product ${createProductPath(productId: 200, referCode: "ABC12817")}",
+                subject: "ABCD",
+              );
+            },
             icon: SvgPicture.asset(
               "$kIconPath/share.svg",
               height: 22,

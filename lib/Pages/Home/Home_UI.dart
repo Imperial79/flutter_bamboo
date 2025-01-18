@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
-import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../Components/KSearchbar.dart';
 import '../../Components/kCard.dart';
 import '../../Components/kCarousel.dart';
 import '../../Resources/colors.dart';
@@ -20,14 +18,6 @@ class Home_UI extends StatefulWidget {
 }
 
 class _Home_UIState extends State<Home_UI> {
-  final searchKey = TextEditingController();
-
-  @override
-  void dispose() {
-    searchKey.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return KScaffold(
@@ -40,12 +30,28 @@ class _Home_UIState extends State<Home_UI> {
               child: Row(
                 spacing: 10,
                 children: [
-                  Flexible(
-                    child: KSearchbar(
-                      controller: searchKey,
-                      hintText: "Search products",
+                  Expanded(
+                      child: KCard(
+                    onTap: () => context.push("/search-products"),
+                    radius: 10,
+                    child: Row(
+                      spacing: 10,
+                      children: [
+                        SvgPicture.asset(
+                          "$kIconPath/search.svg",
+                          height: 20,
+                          colorFilter: kSvgColor(LColor.fadeText),
+                        ),
+                        Flexible(
+                          child: Label(
+                            "Search products",
+                            fontSize: 17,
+                            color: LColor.fadeText,
+                          ).title,
+                        ),
+                      ],
                     ),
-                  ),
+                  )),
                   IconButton(
                     onPressed: () {},
                     icon: Icon(

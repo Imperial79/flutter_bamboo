@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../Components/Label.dart';
 import '../../Resources/colors.dart';
 import '../../Resources/commons.dart';
@@ -12,7 +11,7 @@ class ProductPreviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => context.push("/product/100"),
+      onTap: () => context.push("/product/200"),
       child: Ink(
         child: SizedBox(
           width: cardWidth,

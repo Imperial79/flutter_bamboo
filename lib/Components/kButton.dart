@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Resources/theme.dart';
 import '../Resources/colors.dart';
 import '../Resources/commons.dart';
@@ -187,10 +188,12 @@ class KButton extends StatelessWidget {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            Label(
               label,
+              weight: 700,
+              fontSize: fontSize,
               textAlign: TextAlign.center,
-            ),
+            ).regular,
             if (icon != null) ...[const Spacer(), icon!],
           ],
         );

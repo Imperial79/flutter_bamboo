@@ -1,7 +1,7 @@
-import 'dart:developer';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Login_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';
+import 'package:flutter_bamboo/Pages/Product/Search_Products_UI.dart';
 import 'package:flutter_bamboo/Pages/Root_UI.dart';
 import 'package:flutter_bamboo/Pages/Splash_UI.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,12 +38,8 @@ final goRouterProvider = Provider<GoRouter>(
     // final user = ref.watch(userProvider);
     // bool isLoading = false;
     return GoRouter(
-      initialLocation: '/',
-      redirect: (context, state) {
-        log(state.fullPath ?? "");
+      initialLocation: '/login',
 
-        return null;
-      },
       // redirect: (context, state) {
       //   if (isLoading) return '/splash';
       //   // if (user == null && protectedRoutes.contains(state.fullPath)) return '/login';
@@ -69,7 +65,17 @@ final goRouterProvider = Provider<GoRouter>(
           path: '/product/:id',
           builder: (context, state) {
             final id = state.pathParameters["id"];
-            return Product_Detail_UI(id: id ?? "");
+            final referCode = state.uri.queryParameters["referCode"];
+            return Product_Detail_UI(
+              id: id ?? "",
+              referCode: referCode,
+            );
+          },
+        ),
+        GoRoute(
+          path: '/search-products',
+          builder: (context, state) {
+            return const Search_Products_UI();
           },
         ),
 
