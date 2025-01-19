@@ -179,12 +179,12 @@ class _Home_UIState extends State<Home_UI> {
                                 ).title,
                               ),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () =>
+                                    context.push("/search-products"),
                                 child: Label(
                                   "See More",
                                   fontSize: 16,
-                                  color: LColor.primary,
-                                  fontWeight: FontWeight.w700,
+                                  weight: 700,
                                 ).regular,
                               ),
                             ],

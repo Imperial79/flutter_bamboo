@@ -18,7 +18,7 @@ ThemeData kTheme(context) => ThemeData(
       ),
       fontFamily: kFont,
       textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(foregroundColor: LColor.primary)),
+          style: TextButton.styleFrom(foregroundColor: kScheme.tertiary)),
       appBarTheme: const AppBarTheme(
         actionsIconTheme: IconThemeData(
           color: LColor.fadeText,

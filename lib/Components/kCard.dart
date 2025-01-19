@@ -40,8 +40,11 @@ class KCard extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: kRadius(radius),
             color: color,
-            border: borderColor != null
-                ? Border.all(color: borderColor!, width: borderWidth)
+            border: borderWidth > 0
+                ? Border.all(
+                    color: borderColor ?? LColor.border,
+                    width: borderWidth,
+                  )
                 : null),
         child: child,
       ),

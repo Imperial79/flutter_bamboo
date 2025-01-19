@@ -27,17 +27,17 @@ class KNavigationBar extends StatelessWidget {
             btn(
               iconPath: "profile",
               index: 1,
-              label: "Home",
+              label: "----",
             ),
             btn(
               iconPath: "profile",
               index: 2,
-              label: "Home",
+              label: "----",
             ),
             btn(
               iconPath: "profile",
               index: 3,
-              label: "Home",
+              label: "Profile",
             ),
           ],
         ),

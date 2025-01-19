@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KNavigationBar.dart';
 import 'package:flutter_bamboo/Pages/Home/Home_UI.dart';
+import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:animations/animations.dart';
@@ -17,7 +18,7 @@ class _Root_UIState extends State<Root_UI> {
     const Home_UI(),
     const Home_UI(),
     const Home_UI(),
-    const Home_UI(),
+    const Profile_UI(),
   ];
   @override
   Widget build(BuildContext context) {

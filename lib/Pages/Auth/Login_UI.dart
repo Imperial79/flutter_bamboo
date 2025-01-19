@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -29,6 +31,21 @@ class _Login_UIState extends State<Login_UI> {
   @override
   Widget build(BuildContext context) {
     return KScaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Label("Welcome", fontSize: 20).regular,
+        actions: [
+          TextButton(
+            onPressed: () => context.go("/"),
+            child: Label(
+              "Skip",
+              weight: 600,
+              fontSize: 17,
+              color: LColor.fadeText,
+            ).regular,
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(kPadding),
@@ -40,8 +57,6 @@ class _Login_UIState extends State<Login_UI> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Center(child: Label("Welcome", fontSize: 20).regular),
-                      height20,
                       Label("Sign in or Create\nan account",
                               weight: 600, fontSize: 40)
                           .title,

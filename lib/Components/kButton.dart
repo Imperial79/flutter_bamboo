@@ -11,6 +11,7 @@ class KButton extends StatelessWidget {
   final Color? foregroundColor;
   final double fontSize;
   final Widget? icon;
+  final double? radius;
   final EdgeInsetsGeometry? padding;
   final ButtonStyle? customStyle;
   final bool isLoading;
@@ -25,6 +26,7 @@ class KButton extends StatelessWidget {
     this.foregroundColor = Colors.white,
     this.fontSize = 15,
     this.icon,
+    this.radius = 15,
     this.padding,
     this.customStyle,
     this.isLoading = false,
@@ -52,7 +54,7 @@ class KButton extends StatelessWidget {
           iconColor: foregroundColor,
           padding: padding ?? const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
-            borderRadius: kRadius(15),
+            borderRadius: kRadius(radius ?? 15),
           ),
           visualDensity: visualDensity,
           elevation: 0,
@@ -69,7 +71,7 @@ class KButton extends StatelessWidget {
       case KButtonStyle.pill:
         return TextButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: kRadius(15),
+            borderRadius: kRadius(radius ?? 15),
           ),
           backgroundColor: backgroundColor ?? kColor(context).primary,
           foregroundColor: foregroundColor ?? kColor(context).onPrimary,
@@ -84,7 +86,7 @@ class KButton extends StatelessWidget {
           padding: padding ??
               const EdgeInsets.symmetric(horizontal: 20, vertical: 17),
           shape: RoundedRectangleBorder(
-            borderRadius: kRadius(15),
+            borderRadius: kRadius(radius ?? 15),
           ),
           visualDensity: visualDensity,
           elevation: 0,
@@ -105,7 +107,7 @@ class KButton extends StatelessWidget {
           iconColor: foregroundColor,
           padding: padding ?? const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
-            borderRadius: kRadius(15),
+            borderRadius: kRadius(radius ?? 15),
           ),
           visualDensity: visualDensity,
           elevation: 0,
@@ -126,7 +128,7 @@ class KButton extends StatelessWidget {
           iconColor: foregroundColor,
           padding: padding ?? const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
-            borderRadius: kRadius(15),
+            borderRadius: kRadius(radius ?? 15),
           ),
           visualDensity: visualDensity,
           elevation: 0,
