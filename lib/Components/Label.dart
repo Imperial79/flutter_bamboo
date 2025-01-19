@@ -13,6 +13,7 @@ class Label {
   final FontStyle? fontStyle;
   final double? height;
   final TextAlign? textAlign;
+  final TextDecoration? decoration;
 
   Label(
     this.text, {
@@ -24,6 +25,7 @@ class Label {
     this.fontStyle,
     this.height,
     this.textAlign,
+    this.decoration,
   });
 
   Widget get title => Text(
@@ -31,8 +33,8 @@ class Label {
         style: TextStyle(
           fontSize: fontSize ?? 20,
           color: color,
-          fontVariations: [FontVariation.weight(weight ?? 500)],
-          fontWeight: fontWeight ?? FontWeight.w500,
+          fontVariations: [FontVariation.weight(weight ?? 700)],
+          fontWeight: fontWeight ?? FontWeight.w700,
           fontStyle: fontStyle,
           height: height,
         ),
@@ -81,6 +83,7 @@ class Label {
           fontSize: fontSize,
           fontStyle: fontStyle,
           height: height,
+          decoration: decoration,
         ),
         maxLines: maxLines,
         overflow:

@@ -53,7 +53,7 @@ class _Home_UIState extends State<Home_UI> {
                     ),
                   )),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () => context.push("/cart"),
                     icon: Icon(
                       Icons.shopping_bag_outlined,
                       size: 30,

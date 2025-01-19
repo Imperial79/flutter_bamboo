@@ -10,6 +10,7 @@ import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 class Product_Detail_UI extends ConsumerStatefulWidget {
@@ -27,21 +28,12 @@ class Product_Detail_UI extends ConsumerStatefulWidget {
 
 class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   String selectedDescriptionType = "About Item";
+  String selectedVariant = "Blue";
   @override
   Widget build(BuildContext context) {
     return KScaffold(
       appBar: AppBar(
-        // title: Label(widget.referCode ?? "nothing").regular,
         actions: [
-          // IconButton(
-          //   onPressed: () {},
-          //   icon: SvgPicture.asset(
-          //     "$kIconPath/like.svg",
-          //     height: 22,
-          //     colorFilter: kSvgColor(LColor.fadeText),
-          //   ),
-          // ),
-          // width10,
           IconButton(
             onPressed: () {
               Share.share(
@@ -60,7 +52,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
             backgroundColor: Colors.pink,
             label: Label("1").regular,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () => context.push("/cart"),
               icon: SvgPicture.asset(
                 "$kIconPath/shopping-bag.svg",
                 height: 22,
@@ -143,6 +135,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   ).title,
                 ],
               ),
+              Label(
+                "MRP 1200.00",
+                decoration: TextDecoration.lineThrough,
+              ).regular,
               height10,
               Row(
                 spacing: 8,
@@ -159,41 +155,32 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   spacing: 8,
-                  children: [
-                    KCard(
-                      width: 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Label("Blue", fontSize: 20, weight: 800).regular,
-                          Label("₹900.00", fontSize: 20, weight: 800).regular,
-                          Label("MRP 1000.00").regular,
-                        ],
-                      ),
-                    ),
-                    KCard(
-                      width: 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Label("Blue", fontSize: 20, weight: 800).regular,
-                          Label("₹900.00", fontSize: 20, weight: 800).regular,
-                          Label("MRP 1000.00").regular,
-                        ],
-                      ),
-                    ),
-                    KCard(
-                      width: 200,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Label("Blue", fontSize: 20, weight: 800).regular,
-                          Label("₹900.00", fontSize: 20, weight: 800).regular,
-                          Label("MRP 1000.00").regular,
-                        ],
-                      ),
-                    )
-                  ],
+                  children: ["Red", "Blue", "Pink"]
+                      .map(
+                        (e) => KCard(
+                          onTap: () => setState(() {
+                            selectedVariant = e;
+                          }),
+                          borderColor: selectedVariant == e
+                              ? kColor(context).primary
+                              : LColor.card,
+                          color: selectedVariant == e
+                              ? kColor(context).primaryContainer
+                              : LColor.card,
+                          borderWidth: 2,
+                          width: 200,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Label(e, fontSize: 20, weight: 800).regular,
+                              Label("₹900.00", fontSize: 20, weight: 800)
+                                  .regular,
+                              Label("MRP 1000.00").regular,
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
               ),
               height10,
@@ -246,7 +233,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           color: LColor.scaffold,
           boxShadow: [
             BoxShadow(
-              color: LColor.card,
+              color: kOpacity(LColor.secondary, .1),
               blurRadius: 20,
               spreadRadius: 20,
               offset: Offset(0, 10),
@@ -262,9 +249,12 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Label("Total Price").regular,
-                    Label("INR 190",
-                            weight: 800, fontSize: 25, color: LColor.primary)
-                        .title,
+                    Label(
+                      "INR 190",
+                      weight: 800,
+                      fontSize: 25,
+                      color: LColor.primary,
+                    ).title,
                   ],
                 ),
               ),
@@ -295,8 +285,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         height: 20,
                         colorFilter: kSvgColor(Colors.white),
                       ),
-                      Label("1", fontSize: 25, weight: 700, color: Colors.white)
-                          .regular,
+                      Label(
+                        "1",
+                        fontSize: 20,
+                        weight: 700,
+                        height: 1,
+                        color: Colors.white,
+                      ).regular,
                     ],
                   ),
                 ),
@@ -313,7 +308,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 ),
                 child: FittedBox(
                   child: Label("Buy Now",
-                          fontSize: 15, weight: 700, color: Colors.white)
+                          fontSize: 20, weight: 700, color: Colors.white)
                       .regular,
                 ),
               )

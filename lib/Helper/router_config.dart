@@ -1,4 +1,5 @@
 import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
+import 'package:flutter_bamboo/Pages/Cart/Cart_UI.dart';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/Login_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';
@@ -89,6 +90,12 @@ final goRouterProvider = Provider<GoRouter>(
           path: '/search-products',
           builder: (context, state) {
             return const Search_Products_UI();
+          },
+        ),
+        GoRoute(
+          path: '/cart',
+          builder: (context, state) {
+            return const Cart_UI();
           },
         ),
 

@@ -68,7 +68,6 @@ class KScaffold extends StatelessWidget {
               child: Center(
                 child: KCard(
                   padding: const EdgeInsets.all(30),
-                  radius: 20,
                   child: Column(
                     spacing: 30,
                     mainAxisSize: MainAxisSize.min,

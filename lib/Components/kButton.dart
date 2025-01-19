@@ -170,13 +170,10 @@ class KButton extends StatelessWidget {
       case KButtonStyle.pill:
       case KButtonStyle.thickPill:
         return Row(
+          spacing: 10,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (icon != null)
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: icon,
-              ),
+            if (icon != null) icon!,
             Text(
               label,
               style: TextStyle(fontSize: fontSize),
