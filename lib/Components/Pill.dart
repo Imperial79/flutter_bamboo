@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bamboo/Components/Label.dart';
 
 import 'package:flutter_bamboo/Components/kCard.dart';
 
@@ -23,13 +24,8 @@ class Pill {
 
   Widget get text => KCard(
         radius: 100,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
         color: backgroundColor,
-        child: Text(
-          label,
-          style: TextStyle(
-              color: textColor,
-              fontVariations: const [FontVariation.weight(500)]),
-        ),
+        child: Label(label, weight: 800, color: textColor).regular,
       );
 }

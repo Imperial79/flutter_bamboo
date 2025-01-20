@@ -8,8 +8,6 @@ import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../Components/kWidgets.dart';
-
 class Profile_UI extends StatefulWidget {
   const Profile_UI({super.key});
 
@@ -66,19 +64,25 @@ class _Profile_UIState extends State<Profile_UI> {
                     _profileBtn(
                       icon: Icons.location_on_outlined,
                       label: "Saved Address",
-                      path: "/saved-address",
+                      path: "/profile/saved-address",
                     ),
                     div,
                     _profileBtn(
                       icon: Icons.inventory_2_outlined,
                       label: "Orders",
-                      path: "/orders",
+                      path: "/profile/orders",
+                    ),
+                    div,
+                    _profileBtn(
+                      icon: Icons.receipt_long,
+                      label: "Transactions",
+                      path: "/profile/transactions",
                     ),
                     div,
                     _profileBtn(
                       icon: Icons.help,
                       label: "Help",
-                      path: "/help",
+                      path: "/profile/help",
                     ),
                   ],
                 ),

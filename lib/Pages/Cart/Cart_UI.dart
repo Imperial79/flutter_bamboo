@@ -103,10 +103,10 @@ class _Cart_UIState extends State<Cart_UI> {
                 child: Column(
                   children: [
                     _row("Price (2 Items)", "₹ 200"),
-                    _row("Discount", "-₹ 20"),
-                    _row("Delivery Charges", "₹ 50"),
+                    _row("Discount", "-₹ 20", isDiscount: true),
+                    _row("Coupon Discount", "-₹ 20", isDiscount: true),
                     div,
-                    _row("Total", "₹ 230"),
+                    _row("Sub-Total", "₹ 230"),
                   ],
                 ),
               )
@@ -127,7 +127,8 @@ class _Cart_UIState extends State<Cart_UI> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Label("Total").regular,
+                    Label("Sub-Total").regular,
+                    height5,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -148,7 +149,8 @@ class _Cart_UIState extends State<Cart_UI> {
               KButton(
                 onPressed: () {},
                 label: "Proceed",
-              )
+                radius: 10,
+              ),
             ],
           ),
         ),
@@ -194,12 +196,11 @@ class _Cart_UIState extends State<Cart_UI> {
     );
   }
 
-  Widget _row(String text1, String text2) => Row(
+  Widget _row(String text1, String text2, {bool isDiscount = false}) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Label(text1).regular,
-          Label(text2, color: text1 == "Discount" ? StatusText.success : null)
-              .regular,
+          Label(text2, color: isDiscount ? StatusText.success : null).regular,
         ],
       );
 

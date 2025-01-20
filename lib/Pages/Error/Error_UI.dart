@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kButton.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
+import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class Error_UI extends StatelessWidget {
@@ -16,22 +17,18 @@ class Error_UI extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.link_off,
-                size: 100,
-                color: StatusText.danger,
+              SvgPicture.asset(
+                "$kIconPath/error-404.svg",
+                height: 200,
               ),
-              Label(
-                "404 Not Found",
-                fontSize: 40,
-                fontWeight: FontWeight.w800,
-              ).title,
+              height20,
+              Label("Page Not Found!", fontSize: 30, weight: 700).title,
               Label(
                 "Sorry we cannot find the requested page!",
-                fontSize: 22,
-                fontWeight: FontWeight.w400,
+                fontSize: 20,
+                weight: 500,
                 textAlign: TextAlign.center,
-              ).title,
+              ).subtitle,
             ],
           ),
         ),

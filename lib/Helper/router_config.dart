@@ -4,6 +4,8 @@ import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/Login_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Search_Products_UI.dart';
+import 'package:flutter_bamboo/Pages/Profile/Orders_UI.dart';
+import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Saved_Address_UI.dart';
 import 'package:flutter_bamboo/Pages/Root_UI.dart';
 import 'package:flutter_bamboo/Pages/Splash_UI.dart';
@@ -100,10 +102,24 @@ final goRouterProvider = Provider<GoRouter>(
           },
         ),
         GoRoute(
-          path: '/saved-address',
+          path: '/profile',
           builder: (context, state) {
-            return const Saved_Address_UI();
+            return const Profile_UI();
           },
+          routes: [
+            GoRoute(
+              path: 'saved-address',
+              builder: (context, state) {
+                return const Saved_Address_UI();
+              },
+            ),
+            GoRoute(
+              path: 'orders',
+              builder: (context, state) {
+                return const Orders_UI();
+              },
+            ),
+          ],
         ),
 
         // GoRoute(
