@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
+import 'package:flutter_bamboo/Helper/appLink.dart';
 import 'package:flutter_bamboo/Helper/data.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
@@ -36,8 +37,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         actions: [
           IconButton(
             onPressed: () {
+              String productLink =
+                  createProductPath(productId: 200, referCode: "ABC12817");
               Share.share(
-                "Checkout this product ${createProductPath(productId: 200, referCode: "ABC12817")}",
+                "Checkout this product $productLink",
                 subject: "ABCD",
               );
             },

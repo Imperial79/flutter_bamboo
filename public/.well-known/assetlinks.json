@@ -1,0 +1,13 @@
+[
+	{
+		"relation": ["delegate_permission/common.handle_all_urls"],
+		"target": {
+			"namespace": "android_app",
+			"package_name": "com.ngforganic.shopping",
+			"sha256_cert_fingerprints": [
+				"A7:BC:1F:81:76:2E:37:34:82:70:1D:DE:19:33:BE:7D:37:71:E7:AE",
+				"D6:41:8A:91:6F:17:71:77:B7:1A:4C:09:E0:44:18:3E:E5:3D:40:C7"
+			]
+		}
+	}
+]

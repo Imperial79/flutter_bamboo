@@ -1,0 +1,62 @@
+{
+	"project_info": {
+		"project_number": "320745356337",
+		"project_id": "ngf-organic",
+		"storage_bucket": "ngf-organic.firebasestorage.app"
+	},
+	"client": [
+		{
+			"client_info": {
+				"mobilesdk_app_id": "1:320745356337:android:c8520373bbe1705b2a2910",
+				"android_client_info": {
+					"package_name": "com.ngforganic.shopping"
+				}
+			},
+			"oauth_client": [
+				{
+					"client_id": "320745356337-6fv243b6ai97njs32hddhehg026fu81u.apps.googleusercontent.com",
+					"client_type": 1,
+					"android_info": {
+						"package_name": "com.ngforganic.shopping",
+						"certificate_hash": "a7bc1f81762e373482701dde1933be7d3771e7ae"
+					}
+				},
+				{
+					"client_id": "320745356337-fu52fbgjk7pbj9rrbl385msk91hvst4q.apps.googleusercontent.com",
+					"client_type": 1,
+					"android_info": {
+						"package_name": "com.ngforganic.shopping",
+						"certificate_hash": "d6418a916f177177b71a4c09e044183ee53d40c7"
+					}
+				},
+				{
+					"client_id": "320745356337-g0n67k8c7mq250men3h8lj3va1cv0dh2.apps.googleusercontent.com",
+					"client_type": 3
+				}
+			],
+			"api_key": [
+				{
+					"current_key": "AIzaSyDMtyv55BFT6uHulVTdqCy-vjl0H7SQ-44"
+				}
+			],
+			"services": {
+				"appinvite_service": {
+					"other_platform_oauth_client": [
+						{
+							"client_id": "320745356337-g0n67k8c7mq250men3h8lj3va1cv0dh2.apps.googleusercontent.com",
+							"client_type": 3
+						},
+						{
+							"client_id": "320745356337-mgs936ada1jp45m3ll17kk0973coq8g9.apps.googleusercontent.com",
+							"client_type": 2,
+							"ios_info": {
+								"bundle_id": "com.ngforganic.shopping"
+							}
+						}
+					]
+				}
+			}
+		}
+	],
+	"configuration_version": "1"
+}

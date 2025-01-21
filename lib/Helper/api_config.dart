@@ -7,7 +7,7 @@ import 'dart:developer';
 
 import '../Models/Response_Model.dart';
 
-const String baseUrl = "https://customer-api.appkraft.in";
+const String baseUrl = "https://customer-api.ngforganic.com";
 
 Future<ResponseModel> apiCallBack({
   String method = 'POST',

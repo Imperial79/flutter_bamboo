@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -7,18 +9,43 @@ import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-class Login_UI extends StatefulWidget {
+import '../../Models/User_Model.dart';
+import '../../Repository/auth_repo.dart';
+
+class Login_UI extends ConsumerStatefulWidget {
   const Login_UI({super.key});
 
   @override
-  State<Login_UI> createState() => _Login_UIState();
+  ConsumerState<Login_UI> createState() => _Login_UIState();
 }
 
-class _Login_UIState extends State<Login_UI> {
+class _Login_UIState extends ConsumerState<Login_UI> {
   final phone = TextEditingController();
+  ValueNotifier<bool> isLoading = ValueNotifier(false);
+
+  _signInWithGoogle() async {
+    try {
+      isLoading.value = true;
+      final res = await ref.read(authRepository).signInWithGoogle(ref);
+
+      if (!res.error) {
+        ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
+        context.go("/");
+      } else {
+        KSnackbar(context, message: res.message, error: res.error);
+      }
+    } catch (e) {
+      log("$e");
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   @override
   void dispose() {
@@ -79,7 +106,7 @@ class _Login_UIState extends State<Login_UI> {
                             EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                         child: TextField(
                           controller: phone,
-                          autofocus: true,
+                          // autofocus: true,
                           keyboardType: TextInputType.phone,
                           autofillHints: [AutofillHints.telephoneNumber],
                           style: TextStyle(
@@ -131,7 +158,7 @@ class _Login_UIState extends State<Login_UI> {
                           ),
                           height10,
                           ElevatedButton(
-                            onPressed: () {},
+                            onPressed: _signInWithGoogle,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: LColor.scaffold,
                               foregroundColor: Colors.black,
