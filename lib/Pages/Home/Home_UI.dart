@@ -1,25 +1,51 @@
+// ignore_for_file: unused_result
+
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
+import 'package:flutter_bamboo/Repository/product_repo.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../Components/kCard.dart';
 import '../../Components/kCarousel.dart';
+import '../../Repository/cart_repo.dart';
 import '../../Resources/colors.dart';
 
-class Home_UI extends StatefulWidget {
+class Home_UI extends ConsumerStatefulWidget {
   const Home_UI({super.key});
 
   @override
-  State<Home_UI> createState() => _Home_UIState();
+  ConsumerState<Home_UI> createState() => _Home_UIState();
 }
 
-class _Home_UIState extends State<Home_UI> {
+class _Home_UIState extends ConsumerState<Home_UI> {
+  int pageNo = 0;
+  Future<void> _refresh() async {
+    pageNo = 0;
+    String apiData = jsonEncode({
+      'pageNo': pageNo,
+      'searchKey': "",
+      'category': "All",
+    });
+    await ref.refresh(productListFuture(apiData).future);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.watch(productListFuture(
+      jsonEncode(
+        {"pageNo": 0, "searchKey": "", "category": "All"},
+      ),
+    ));
+
+    final products = ref.watch(productsList);
+    final cartLength = ref.watch(cartProvider).length;
     return KScaffold(
       body: SafeArea(
         child: Column(
@@ -31,32 +57,44 @@ class _Home_UIState extends State<Home_UI> {
                 spacing: 10,
                 children: [
                   Expanded(
-                      child: KCard(
-                    onTap: () => context.push("/search-products"),
-                    radius: 10,
-                    child: Row(
-                      spacing: 10,
-                      children: [
-                        SvgPicture.asset(
-                          "$kIconPath/search.svg",
-                          height: 20,
-                          colorFilter: kSvgColor(LColor.fadeText),
-                        ),
-                        Flexible(
-                          child: Label(
-                            "Search products",
-                            fontSize: 17,
-                            color: LColor.fadeText,
-                          ).title,
-                        ),
-                      ],
+                    child: KCard(
+                      onTap: () => context.push("/search-products").then(
+                        (value) {
+                          _refresh();
+                        },
+                      ),
+                      radius: 10,
+                      child: Row(
+                        spacing: 10,
+                        children: [
+                          SvgPicture.asset(
+                            "$kIconPath/search.svg",
+                            height: 20,
+                            colorFilter: kSvgColor(LColor.fadeText),
+                          ),
+                          Flexible(
+                            child: Label(
+                              "Search products",
+                              fontSize: 17,
+                              color: LColor.fadeText,
+                            ).title,
+                          ),
+                        ],
+                      ),
                     ),
-                  )),
-                  IconButton(
-                    onPressed: () => context.push("/cart"),
-                    icon: Icon(
-                      Icons.shopping_bag_outlined,
-                      size: 30,
+                  ),
+                  Badge(
+                    label: Label("$cartLength", fontSize: 15).regular,
+                    largeSize: 20,
+                    child: IconButton(
+                      onPressed: () => context.push("/cart"),
+                      icon: Icon(
+                        cartLength > 0
+                            ? Icons.shopping_bag
+                            : Icons.shopping_bag_outlined,
+                        size: 30,
+                        color: cartLength > 0 ? LColor.primary : null,
+                      ),
                     ),
                   ),
                   IconButton(
@@ -194,11 +232,12 @@ class _Home_UIState extends State<Home_UI> {
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: 5,
+                            itemCount: products.length,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return ProductPreviewCard(
                                 cardWidth: double.infinity,
+                                product: products[index],
                               );
                             },
                           ),

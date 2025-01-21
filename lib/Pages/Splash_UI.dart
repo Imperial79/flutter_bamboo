@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../Components/Label.dart';
+import 'package:flutter_bamboo/Resources/constants.dart';
 
 class Splash_UI extends StatefulWidget {
   const Splash_UI({super.key});
@@ -13,11 +12,17 @@ class _Splash_UIState extends State<Splash_UI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Label("Login").regular,
-      ),
       body: Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              "$kImagePath/logo.png",
+              height: 200,
+            ),
+            CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }

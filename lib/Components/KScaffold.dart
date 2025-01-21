@@ -41,9 +41,10 @@ class KScaffold extends StatelessWidget {
                 Scaffold(
                   appBar: appBar,
                   body: SizedBox(
-                      height: double.maxFinite,
-                      width: double.maxFinite,
-                      child: body),
+                    height: double.maxFinite,
+                    width: double.maxFinite,
+                    child: body,
+                  ),
                   floatingActionButtonAnimator: floatingActionButtonAnimator,
                   floatingActionButtonLocation: floatingActionButtonLocation,
                   floatingActionButton: floatingActionButton,
@@ -64,7 +65,7 @@ class KScaffold extends StatelessWidget {
           ? Container(
               height: double.maxFinite,
               width: double.maxFinite,
-              color: Colors.black.withAlpha((.8 * 255).round()),
+              color: LColor.scaffold.withAlpha((.8 * 255).round()),
               child: Center(
                 child: KCard(
                   padding: const EdgeInsets.all(30),

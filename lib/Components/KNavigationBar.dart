@@ -14,6 +14,7 @@ class KNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KCard(
+      borderWidth: 1,
       color: LColor.scaffold,
       radius: 0,
       child: SafeArea(

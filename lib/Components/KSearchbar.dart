@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
-import 'package:flutter_bamboo/Resources/commons.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
-import '../Resources/constants.dart';
+import 'kTextfield.dart';
 
 class KSearchbar extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
-  final TextCapitalization textCapitalization;
   final void Function(String)? onFieldSubmitted;
-  final void Function(String)? onSpeechResult;
   final void Function()? onClear;
-  final bool isSearching;
 
   const KSearchbar({
     super.key,
@@ -20,9 +15,6 @@ class KSearchbar extends StatefulWidget {
     required this.hintText,
     this.onFieldSubmitted,
     this.onClear,
-    this.onSpeechResult,
-    this.textCapitalization = TextCapitalization.none,
-    this.isSearching = false,
   });
 
   @override
@@ -32,51 +24,31 @@ class KSearchbar extends StatefulWidget {
 class _KSearchbarState extends State<KSearchbar> {
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return KTextfield(
       controller: widget.controller,
-      cursorColor: LColor.primary,
-      style: const TextStyle(
-        fontVariations: [FontVariation.weight(700)],
-        fontSize: 17,
+      fontSize: 15,
+      fieldColor: LColor.scaffold,
+      prefix: const Icon(
+        Icons.search,
+        size: 25,
       ),
-      textCapitalization: widget.textCapitalization,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: LColor.card,
-        focusedBorder: kBorder(),
-        border: kBorder(),
-        enabledBorder: kBorder(),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: !widget.isSearching
-              ? SvgPicture.asset(
-                  "$kIconPath/search.svg",
-                  colorFilter: kSvgColor(LColor.fadeText),
-                  height: 20,
-                )
-              : SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 3,
-                    color: kColor(context).primaryContainer,
-                  ),
-                ),
-        ),
-        suffixIconConstraints: const BoxConstraints(minHeight: 0, minWidth: 0),
-        contentPadding: const EdgeInsets.all(15),
-        hintText: widget.hintText,
-        hintStyle: TextStyle(
-            color: LColor.border,
-            fontWeight: FontWeight.w600,
-            fontVariations: [FontVariation.weight(600)]),
-      ),
+      hintText: widget.hintText,
+      suffix: widget.controller.text.isNotEmpty
+          ? IconButton(
+              onPressed: () {
+                widget.controller.clear();
+                widget.onClear?.call();
+                setState(() {});
+              },
+              icon: const Icon(
+                Icons.close,
+                size: 22,
+              ),
+              visualDensity: VisualDensity.compact,
+            )
+          : SizedBox(),
       onChanged: (_) => setState(() {}),
-    );
+      onFieldSubmitted: widget.onFieldSubmitted,
+    ).regular;
   }
-
-  kBorder() => OutlineInputBorder(
-        borderRadius: kRadius(10),
-        borderSide: BorderSide.none,
-      );
 }

@@ -16,6 +16,23 @@ final authRepository = Provider(
   (ref) => AuthRepo(),
 );
 
+final authFuture = FutureProvider(
+  (ref) async {
+    try {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+
+      final res =
+          await apiCallBack(path: "/user/auth", body: {"fcmToken": fcmToken});
+
+      if (!res.error) {
+        ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
+      }
+    } catch (e) {
+      log("$e");
+    }
+  },
+);
+
 class AuthRepo {
   static GoogleSignIn get googleSignIn => GoogleSignIn(
         serverClientId: dotenv.get("WEB_CLIENT_ID"),

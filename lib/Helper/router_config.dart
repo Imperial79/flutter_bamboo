@@ -9,6 +9,7 @@ import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Saved_Address_UI.dart';
 import 'package:flutter_bamboo/Pages/Root_UI.dart';
 import 'package:flutter_bamboo/Pages/Splash_UI.dart';
+import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,19 +41,19 @@ final List<String> protectedRoutes = [
 
 final goRouterProvider = Provider<GoRouter>(
   (ref) {
-    // final authState = ref.watch(authFuture);
-    // final user = ref.watch(userProvider);
-    // bool isLoading = false;
+    final authState = ref.watch(authFuture);
+    final user = ref.watch(userProvider);
     return GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/',
+      redirect: (context, state) {
+        if (authState.isLoading) return '/splash';
 
-      // redirect: (context, state) {
-      //   if (isLoading) return '/splash';
-      //   // if (user == null && protectedRoutes.contains(state.fullPath)) return '/login';
-      //   // if (user != null && authRoutes.contains(state.fullPath)) return '/';
-      //   return null;
-      // },
-
+        if (user == null && protectedRoutes.contains(state.fullPath)) {
+          return '/login';
+        }
+        if (user != null && authRoutes.contains(state.fullPath)) return '/';
+        return null;
+      },
       errorBuilder: (context, state) => Error_UI(),
       routes: [
         GoRoute(

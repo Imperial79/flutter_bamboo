@@ -1,12 +1,11 @@
 import 'package:intl/intl.dart';
 
 const double kPadding = 20;
-
 const String kIconPath = "assets/icons";
 const String kImagePath = "assets/images";
 
 String kCurrencyFormat(dynamic number,
-    {String symbol = "INR ", int decimalDigits = 0}) {
+    {String symbol = "₹", int decimalDigits = 0}) {
   var f = NumberFormat.currency(
     symbol: symbol,
     locale: 'en_US',

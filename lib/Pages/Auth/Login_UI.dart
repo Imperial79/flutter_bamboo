@@ -9,7 +9,6 @@ import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +25,7 @@ class Login_UI extends ConsumerStatefulWidget {
 
 class _Login_UIState extends ConsumerState<Login_UI> {
   final phone = TextEditingController();
-  ValueNotifier<bool> isLoading = ValueNotifier(false);
+  final isLoading = ValueNotifier(false);
 
   _signInWithGoogle() async {
     try {
@@ -56,6 +55,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
   @override
   Widget build(BuildContext context) {
     return KScaffold(
+      isLoading: isLoading,
       appBar: AppBar(
         centerTitle: true,
         title: Label("Welcome", fontSize: 20).regular,

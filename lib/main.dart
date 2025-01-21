@@ -5,6 +5,7 @@ import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/firebase_options.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'Helper/router_config.dart';
 import 'Resources/commons.dart';
 import 'Resources/theme.dart';
@@ -16,6 +17,8 @@ void main() async {
   );
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   await dotenv.load(fileName: ".env");
+  await Hive.initFlutter();
+  await Hive.openBox('hiveBox');
   runApp(const ProviderScope(child: MyApp()));
 }
 

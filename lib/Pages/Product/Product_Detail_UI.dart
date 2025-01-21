@@ -4,7 +4,6 @@ import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Helper/appLink.dart';
 import 'package:flutter_bamboo/Helper/data.dart';
-import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
@@ -208,21 +207,21 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 child: Row(
                   spacing: 10,
                   children: [
-                    ProductPreviewCard(
-                      cardWidth: 200,
-                    ),
-                    ProductPreviewCard(
-                      cardWidth: 200,
-                    ),
-                    ProductPreviewCard(
-                      cardWidth: 200,
-                    ),
-                    ProductPreviewCard(
-                      cardWidth: 200,
-                    ),
-                    ProductPreviewCard(
-                      cardWidth: 200,
-                    ),
+                    // ProductPreviewCard(
+                    //   cardWidth: 200,
+                    // ),
+                    // ProductPreviewCard(
+                    //   cardWidth: 200,
+                    // ),
+                    // ProductPreviewCard(
+                    //   cardWidth: 200,
+                    // ),
+                    // ProductPreviewCard(
+                    //   cardWidth: 200,
+                    // ),
+                    // ProductPreviewCard(
+                    //   cardWidth: 200,
+                    // ),
                   ],
                 ),
               ),

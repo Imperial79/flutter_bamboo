@@ -5,6 +5,7 @@ import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:animations/animations.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class Root_UI extends StatefulWidget {
   const Root_UI({super.key});
@@ -20,6 +21,13 @@ class _Root_UIState extends State<Root_UI> {
     const Home_UI(),
     const Profile_UI(),
   ];
+
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     systemColors();

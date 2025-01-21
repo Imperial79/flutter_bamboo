@@ -1,17 +1,42 @@
+// ignore_for_file: unused_result
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/KSearchbar.dart';
+import 'package:flutter_bamboo/Components/Label.dart';
+import 'package:flutter_bamboo/Resources/colors.dart';
+import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class Search_Products_UI extends StatefulWidget {
+import '../../Repository/product_repo.dart';
+import 'Product_Preview_Card.dart';
+
+class Search_Products_UI extends ConsumerStatefulWidget {
   const Search_Products_UI({super.key});
 
   @override
-  State<Search_Products_UI> createState() => _Search_Products_UIState();
+  ConsumerState<Search_Products_UI> createState() => _Search_Products_UIState();
 }
 
-class _Search_Products_UIState extends State<Search_Products_UI> {
+class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
   final searchKey = TextEditingController();
+  int pageNo = 0;
+  String catgeory = "All";
+
+  Future<void> _refresh() async {
+    pageNo = 0;
+    String apiData = jsonEncode({
+      'pageNo': pageNo,
+      'searchKey': searchKey.text.trim(),
+      'category': catgeory,
+    });
+    await ref.refresh(productListFuture(apiData).future);
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -21,19 +46,75 @@ class _Search_Products_UIState extends State<Search_Products_UI> {
 
   @override
   Widget build(BuildContext context) {
-    return KScaffold(
-      appBar: AppBar(),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(kPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              KSearchbar(
-                controller: searchKey,
-                hintText: "Search all products",
-              ),
-            ],
+    final asyncData = ref.watch(productListFuture(
+      jsonEncode(
+        {
+          "pageNo": pageNo,
+          "searchKey": searchKey.text.trim(),
+          "category": "All"
+        },
+      ),
+    ));
+    final products = ref.watch(productsList);
+    return RefreshIndicator(
+      onRefresh: _refresh,
+      child: KScaffold(
+        appBar: AppBar(
+          title: Label("Our Products").regular,
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.all(kPadding),
+            child: Column(
+              spacing: 10,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                KSearchbar(
+                  controller: searchKey,
+                  hintText: "Search products",
+                  onClear: () {
+                    _refresh();
+                  },
+                  onFieldSubmitted: (val) async {
+                    _refresh();
+                  },
+                ),
+                if (asyncData.isLoading) LinearProgressIndicator(),
+                height10,
+                if (products.isNotEmpty) ...[
+                  Label(searchKey.text.isEmpty
+                          ? "Top rated products"
+                          : "Searching for \"${searchKey.text}\"")
+                      .title,
+                  height5,
+                  MasonryGridView.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: products.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return ProductPreviewCard(
+                        cardWidth: double.infinity,
+                        product: products[index],
+                      );
+                    },
+                  ),
+                ] else ...[
+                  Center(
+                    child: Column(
+                      children: [
+                        Label("Sorry :(", weight: 500, fontSize: 25).title,
+                        Label("No products found!", color: LColor.fadeText)
+                            .title,
+                      ],
+                    ),
+                  )
+                ]
+              ],
+            ),
           ),
         ),
       ),

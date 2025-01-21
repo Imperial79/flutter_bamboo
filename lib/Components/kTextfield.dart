@@ -97,14 +97,14 @@ class KTextfield {
   });
 
   static const TextStyle kFieldTextstyle = TextStyle(
-    fontWeight: FontWeight.w500,
+    fontVariations: [FontVariation.weight(600)],
     fontSize: kFontSize,
     letterSpacing: .5,
     height: kTextHeight,
   );
 
   static const TextStyle kHintTextstyle = TextStyle(
-    fontWeight: FontWeight.w400,
+    fontVariations: [FontVariation.weight(600)],
     fontSize: kFontSize,
     height: kTextHeight,
     color: LColor.fadeText,
