@@ -21,7 +21,6 @@ class AuthRepo {
         serverClientId: dotenv.get("WEB_CLIENT_ID"),
         scopes: [
           'email',
-          'https://www.googleapis.com/auth/contacts.readonly',
           'https://www.googleapis.com/auth/userinfo.profile',
           'openid',
         ],
