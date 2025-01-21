@@ -51,13 +51,13 @@ Future<T?> navPopUntilPush<T extends Object?>(
 }
 
 KSnackbar(context,
-    {required String message, bool error = false, SnackBarAction? action}) {
+    {required dynamic message, bool error = false, SnackBarAction? action}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor: error
           ? kColor(context).errorContainer
           : kColor(context).primaryContainer,
-      content: Label(message,
+      content: Label("$message",
               color: error
                   ? kColor(context).onErrorContainer
                   : kColor(context).onPrimaryContainer)

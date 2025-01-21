@@ -25,6 +25,7 @@ class _Root_UIState extends State<Root_UI> {
   @override
   void dispose() {
     Hive.close();
+
     super.dispose();
   }
 

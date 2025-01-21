@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bamboo/Components/KNavigationBar.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:go_router/go_router.dart';
 
@@ -46,7 +47,10 @@ Widget kLoginRequired(BuildContext context) {
           ).subtitle,
           height10,
           KButton(
-            onPressed: () => context.push("/login"),
+            onPressed: () {
+              activePageNotifier.value = 0;
+              context.push("/login");
+            },
             label: "Login",
             radius: 10,
             backgroundColor: kColor(context).tertiary,

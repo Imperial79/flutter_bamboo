@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bamboo/Components/KNavigationBar.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
@@ -19,10 +20,29 @@ class Profile_UI extends ConsumerStatefulWidget {
 }
 
 class _Profile_UIState extends ConsumerState<Profile_UI> {
+  final isLoading = ValueNotifier(false);
+  logout() async {
+    try {
+      isLoading.value = true;
+      final res = await ref.read(authRepository).logout();
+      if (!res.error) {
+        context.go("/");
+        activePageNotifier.value = 0;
+        AuthRepo.googleSignIn.signOut();
+        ref.read(userProvider.notifier).state = null;
+      }
+    } catch (e) {
+      KSnackbar(context, message: e, error: true);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
     return KScaffold(
+      isLoading: isLoading,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Label("Profile").regular,
@@ -123,6 +143,13 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                             label: "Help",
                             path: "/profile/help",
                           ),
+                          div,
+                          _profileBtn(
+                            icon: Icons.exit_to_app,
+                            label: "Logout",
+                            path: "",
+                            onTap: logout,
+                          ),
                         ],
                       ),
                     ),
@@ -154,9 +181,10 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
     required IconData icon,
     required String label,
     required String path,
+    void Function()? onTap,
   }) {
     return InkWell(
-      onTap: () => context.push(path),
+      onTap: onTap ?? () => context.push(path),
       child: Ink(
         child: Row(
           spacing: 20,

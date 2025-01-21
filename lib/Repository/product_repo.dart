@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter_bamboo/Helper/api_config.dart';
+import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
 import 'package:flutter_bamboo/Models/Product_Model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,25 +14,36 @@ final searchedProductsList = StateProvider<List<ProductModel>>(
 
 final productListFuture = FutureProvider.family<void, String>(
   (ref, params) async {
-    try {
-      final body = jsonDecode(params);
-      final pageNo = body["pageNo"];
-      final searchKey = body["searchKey"];
-      final res = await apiCallBack(path: "/products/fetch", body: body);
+    final body = jsonDecode(params);
+    final pageNo = body["pageNo"];
 
-      if (!res.error) {
-        final dataList = res.data as List;
+    final res = await apiCallBack(path: "/products/fetch", body: body);
 
-        if (pageNo == 0) {
-          ref.read(productsList.notifier).state = [];
-        }
+    if (!res.error) {
+      final dataList = res.data as List;
 
-        ref.read(productsList.notifier).state.addAll(
-              dataList.map((e) => ProductModel.fromMap(e)),
-            );
+      if (pageNo == 0) {
+        ref.read(productsList.notifier).state = [];
       }
-    } catch (e) {
-      log("$e");
+
+      ref.read(productsList.notifier).state.addAll(
+            dataList.map((e) => ProductModel.fromMap(e)),
+          );
     }
+  },
+);
+
+final productDetailsFuture =
+    FutureProvider.family.autoDispose<ProductDetailModel?, int>(
+  (ref, productId) async {
+    final res = await apiCallBack(
+      path: "/products/details",
+      body: {"productId": productId},
+    );
+
+    if (!res.error) {
+      return ProductDetailModel.fromMap(res.data);
+    }
+    return null;
   },
 );

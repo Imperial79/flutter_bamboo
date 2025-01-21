@@ -50,7 +50,7 @@ class KCarousel extends StatefulWidget {
               image: isCached
                   ? CachedNetworkImageProvider(url)
                   : NetworkImage(url),
-              fit: BoxFit.cover,
+              fit: BoxFit.contain,
             ),
           ),
         ),

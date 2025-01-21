@@ -47,12 +47,13 @@ final goRouterProvider = Provider<GoRouter>(
       initialLocation: '/',
       redirect: (context, state) {
         if (authState.isLoading) return '/splash';
-
-        if (user == null && protectedRoutes.contains(state.fullPath)) {
-          return '/login';
-        }
-        if (user != null && authRoutes.contains(state.fullPath)) return '/';
         return null;
+
+        // if (user == null && protectedRoutes.contains(state.fullPath)) {
+        //   return '/login';
+        // }
+        // if (user != null && authRoutes.contains(state.fullPath)) return '/';
+        // return null;
       },
       errorBuilder: (context, state) => Error_UI(),
       routes: [
@@ -85,7 +86,7 @@ final goRouterProvider = Provider<GoRouter>(
             final id = state.pathParameters["id"];
             final referCode = state.uri.queryParameters["referCode"];
             return Product_Detail_UI(
-              id: id ?? "",
+              id: int.parse("$id"),
               referCode: referCode,
             );
           },

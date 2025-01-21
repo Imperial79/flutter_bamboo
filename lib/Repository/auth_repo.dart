@@ -64,18 +64,6 @@ class AuthRepo {
 
   Future<ResponseModel> signInWithGoogle(WidgetRef ref) async {
     try {
-      log("Trying to login...");
-      final GoogleSignIn googleSignIn = GoogleSignIn(
-        serverClientId:
-            "320745356337-g0n67k8c7mq250men3h8lj3va1cv0dh2.apps.googleusercontent.com",
-        scopes: [
-          'email',
-          'https://www.googleapis.com/auth/contacts.readonly',
-          'https://www.googleapis.com/auth/userinfo.profile',
-          'openid',
-        ],
-      );
-      log("Signning out...");
       await googleSignIn.signOut();
 
       final GoogleSignInAccount? gAccount = await googleSignIn.signIn();
@@ -92,7 +80,7 @@ class AuthRepo {
     }
   }
 
-  Future<ResponseModel> logout(WidgetRef ref) async {
+  Future<ResponseModel> logout() async {
     try {
       final res = await apiCallBack(path: "/user/logout");
       return res;

@@ -57,16 +57,18 @@ class _Login_UIState extends ConsumerState<Login_UI> {
     return KScaffold(
       isLoading: isLoading,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Label("Welcome", fontSize: 20).regular,
         actions: [
           TextButton(
-            onPressed: () => context.go("/"),
+            onPressed: () {
+              context.go("/");
+            },
             child: Label(
               "Skip",
               weight: 600,
-              fontSize: 17,
-              color: LColor.fadeText,
+              color: LColor.primary,
             ).regular,
           ),
         ],
@@ -82,35 +84,38 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Label("Sign in or Create\nan account",
-                              weight: 600, fontSize: 40)
-                          .title,
+                      Label(
+                        "Sign in or Create an account",
+                        weight: 800,
+                        fontSize: 27,
+                      ).title,
                       height10,
                       Label(
-                        "Choose bamboo and ditch plastic for a better tomorrow!",
+                        "Choose Organic and Natural ptoducts and ditch plastic for a better tomorrow!",
                         weight: 600,
-                        fontSize: 18,
+                        fontSize: 15,
                       ).subtitle,
+                      height20,
                       Label(
                         "Please enter your phone number to start.",
                         weight: 600,
-                        fontSize: 18,
+                        fontSize: 15,
                       ).subtitle,
-                      height20,
+                      height5,
                       KCard(
                         radius: 15,
                         borderColor: LColor.border,
                         color: LColor.scaffold,
                         borderWidth: 1,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                         child: TextField(
                           controller: phone,
                           // autofocus: true,
                           keyboardType: TextInputType.phone,
                           autofillHints: [AutofillHints.telephoneNumber],
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 17,
                             fontVariations: [
                               FontVariation.weight(800),
                             ],
@@ -135,10 +140,10 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                           },
                         ),
                         label: "Continue",
-                        fontSize: 20,
+                        fontSize: 17,
                         backgroundColor: kColor(context).primaryContainer,
                         foregroundColor: kColor(context).primary,
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(17),
                         style: KButtonStyle.expanded,
                       ),
                     ],
@@ -152,9 +157,8 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Center(
-                            child: Label("or continue with",
-                                    fontSize: 17, weight: 700)
-                                .subtitle,
+                            child:
+                                Label("or continue with", weight: 700).subtitle,
                           ),
                           height10,
                           ElevatedButton(
@@ -177,10 +181,10 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                               children: [
                                 SvgPicture.asset(
                                   "$kIconPath/glogo.svg",
-                                  height: 30,
+                                  height: 25,
                                 ),
                                 Label("Continue with Google",
-                                        fontSize: 18, weight: 600)
+                                        fontSize: 17, weight: 600)
                                     .regular,
                               ],
                             ),
@@ -189,7 +193,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                           Text.rich(
                             TextSpan(
                               style: TextStyle(
-                                fontSize: 17,
+                                fontSize: 15,
                                 color: LColor.fadeText,
                                 fontVariations: [FontVariation.weight(600)],
                               ),
