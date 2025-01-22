@@ -39,41 +39,45 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     final productData = ref.watch(productDetailsFuture(widget.id));
 
     return KScaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            onPressed: () => context.go("/"), icon: Icon(Icons.arrow_back)),
-        actions: [
-          IconButton(
-            onPressed: () {
-              String productLink =
-                  createProductPath(productId: 200, referCode: "ABC12817");
-              Share.share(
-                "Checkout this product $productLink",
-                subject: "ABCD",
-              );
-            },
-            icon: SvgPicture.asset(
-              "$kIconPath/share.svg",
-              height: 22,
-              colorFilter: kSvgColor(LColor.fadeText),
-            ),
-          ),
-          width10,
-          Badge(
-            backgroundColor: Colors.pink,
-            label: Label("1").regular,
-            child: IconButton(
-              onPressed: () => context.push("/cart"),
-              icon: SvgPicture.asset(
-                "$kIconPath/shopping-bag.svg",
-                height: 22,
-                colorFilter: kSvgColor(LColor.fadeText),
-              ),
-            ),
-          ),
-          width10,
-        ],
-      ),
+      appBar: productData.hasValue && productData.value != null
+          ? AppBar(
+              leading: IconButton(
+                  onPressed: () => context.go("/"),
+                  icon: Icon(Icons.arrow_back)),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    String productLink = createProductPath(
+                        productId: productData.value!.id,
+                        referCode: "ABC12817");
+                    Share.share(
+                      "Checkout this product $productLink",
+                      subject: "ABCD",
+                    );
+                  },
+                  icon: SvgPicture.asset(
+                    "$kIconPath/share.svg",
+                    height: 22,
+                    colorFilter: kSvgColor(LColor.fadeText),
+                  ),
+                ),
+                width10,
+                Badge(
+                  backgroundColor: Colors.pink,
+                  label: Label("1").regular,
+                  child: IconButton(
+                    onPressed: () => context.push("/cart"),
+                    icon: SvgPicture.asset(
+                      "$kIconPath/shopping-bag.svg",
+                      height: 22,
+                      colorFilter: kSvgColor(LColor.fadeText),
+                    ),
+                  ),
+                ),
+                width10,
+              ],
+            )
+          : null,
       body: SafeArea(
         child: productData.when(
           data: (data) => data != null
@@ -130,7 +134,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           Flexible(
                             child: Label(
                               kCurrencyFormat(
-                                data.product_variants![selectedVariant]
+                                data.product_variants[selectedVariant]
                                     ["salePrice"],
                                 symbol: "",
                               ),
@@ -141,7 +145,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ),
                           width10,
                           Label(
-                            "-${((parseToDouble(data.product_variants![selectedVariant]["salePrice"]) / parseToDouble(data.product_variants![selectedVariant]["mrp"])) * 100).round()}%",
+                            "-${((parseToDouble(data.product_variants[selectedVariant]["salePrice"]) / parseToDouble(data.product_variants[selectedVariant]["mrp"])) * 100).round()}%",
                             fontSize: 20,
                             height: 1,
                             weight: 400,
@@ -150,7 +154,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         ],
                       ),
                       Label(
-                        "MRP ${kCurrencyFormat(data.product_variants![selectedVariant]["mrp"])}",
+                        "MRP ${kCurrencyFormat(data.product_variants[selectedVariant]["mrp"])}",
                         decoration: TextDecoration.lineThrough,
                       ).regular,
                       Row(
@@ -162,7 +166,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ).regular,
                           Flexible(
                             child: Label(
-                              data.product_variants![selectedVariant]
+                              data.product_variants[selectedVariant]
                                   ["attributeValue"],
                               fontSize: 16,
                               weight: 800,
@@ -175,17 +179,17 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         child: Row(
                           spacing: 8,
                           children: List.generate(
-                            data.product_variants!.length,
+                            data.product_variants.length,
                             (index) => _variantCard(
                               index: index,
-                              label: data.product_variants![selectedVariant]
+                              label: data.product_variants[selectedVariant]
                                   ["attributeValue"],
                               amount: kCurrencyFormat(
-                                data.product_variants![selectedVariant]
+                                data.product_variants[selectedVariant]
                                     ["salePrice"],
                               ),
                               mrp: kCurrencyFormat(
-                                data.product_variants![selectedVariant]["mrp"],
+                                data.product_variants[selectedVariant]["mrp"],
                                 symbol: "MRP ",
                               ),
                             ),
@@ -236,7 +240,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   ),
                 )
               : Center(
-                  child: Label("No data!").regular,
+                  child: Label("No product found.").regular,
                 ),
           error: (error, stackTrace) => Center(
             child: Label("$error").regular,

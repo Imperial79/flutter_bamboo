@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter_bamboo/Helper/api_config.dart';
 import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
 import 'package:flutter_bamboo/Models/Product_Model.dart';
@@ -40,7 +41,7 @@ final productDetailsFuture =
       path: "/products/details",
       body: {"productId": productId},
     );
-
+    log(res.toString());
     if (!res.error) {
       return ProductDetailModel.fromMap(res.data);
     }

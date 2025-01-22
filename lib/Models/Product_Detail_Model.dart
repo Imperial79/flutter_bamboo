@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+
 import 'package:flutter_bamboo/Resources/constants.dart';
 
 class ProductDetailModel {
@@ -15,7 +16,7 @@ class ProductDetailModel {
   double mrp = 0;
   double salePrice = 0;
   List<String> images = [];
-  List? product_variants = [];
+  List product_variants = [];
   ProductDetailModel({
     required this.id,
     required this.name,
@@ -28,7 +29,7 @@ class ProductDetailModel {
     required this.mrp,
     required this.salePrice,
     required this.images,
-    this.product_variants,
+    required this.product_variants,
   });
 
   ProductDetailModel copyWith({
@@ -90,7 +91,9 @@ class ProductDetailModel {
       returnDays: map['returnDays']?.toInt() ?? 0,
       mrp: parseToDouble(map['mrp']),
       salePrice: parseToDouble(map['salePrice']),
-      images: List<String>.from(map['images'].split("#_#")),
+      images: map['images'] != null
+          ? List<String>.from(map['images'].split("#_#"))
+          : [],
       product_variants: map['product_variants'] ?? [],
     );
   }
@@ -121,7 +124,7 @@ class ProductDetailModel {
         other.mrp == mrp &&
         other.salePrice == salePrice &&
         listEquals(other.images, images) &&
-        other.product_variants == product_variants;
+        listEquals(other.product_variants, product_variants);
   }
 
   @override

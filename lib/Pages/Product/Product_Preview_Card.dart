@@ -24,7 +24,7 @@ class ProductPreviewCard extends ConsumerWidget {
     final cartData = ref.watch(cartProvider);
     final inCart = cartData.any((item) => item.productId == product.id);
     return InkWell(
-      onTap: () => context.push("/product/${product.id}"),
+      onTap: () => context.push("/product/46"),
       child: KCard(
         padding: EdgeInsets.all(0),
         width: cardWidth,

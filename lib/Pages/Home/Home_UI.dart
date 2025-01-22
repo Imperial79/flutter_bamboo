@@ -85,8 +85,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                   ),
                   Badge(
                     isLabelVisible: cartLength > 0,
-                    label: Label("$cartLength", fontSize: 15).regular,
-                    largeSize: 20,
+                    label: Label("$cartLength").regular,
                     child: IconButton(
                       onPressed: () => context.push("/cart"),
                       icon: Icon(

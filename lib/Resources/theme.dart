@@ -34,8 +34,10 @@ ThemeData kTheme(context) => ThemeData(
         ),
       ),
       badgeTheme: BadgeThemeData(
-        backgroundColor: kScheme.primary,
-      ),
+          backgroundColor: kScheme.primary,
+          largeSize: 20,
+          textStyle: TextStyle(
+              fontSize: 15, fontVariations: [FontVariation.weight(600)])),
       textSelectionTheme: TextSelectionThemeData(
         selectionHandleColor: LColor.primary,
         cursorColor: kScheme.primary,
