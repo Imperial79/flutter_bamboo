@@ -7,6 +7,7 @@ import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_bamboo/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,12 +27,13 @@ class Home_UI extends ConsumerStatefulWidget {
 
 class _Home_UIState extends ConsumerState<Home_UI> {
   int pageNo = 0;
+  String selectedCategory = "All";
   Future<void> _refresh() async {
     pageNo = 0;
     String apiData = jsonEncode({
       'pageNo': pageNo,
       'searchKey': "",
-      'category': "All",
+      'category': selectedCategory,
     });
     await ref.refresh(productListFuture(apiData).future);
     setState(() {});
@@ -41,7 +43,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
   Widget build(BuildContext context) {
     ref.watch(productListFuture(
       jsonEncode(
-        {"pageNo": 0, "searchKey": "", "category": "All"},
+        {"pageNo": 0, "searchKey": "", "category": selectedCategory},
       ),
     ));
 
@@ -162,87 +164,16 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                         ),
                       ],
                     ),
-                    // SizedBox(
-                    //   height: 20,
-                    //   child: Marquee(
-                    //     text:
-                    //         'Mega Offer! Get Instant 20% OFF* on Selected Products. Mega Offer! Get Instant 20% OFF* on Selected Products.',
-                    //     style: TextStyle(
-                    //       fontVariations: [
-                    //         FontVariation.weight(600),
-                    //       ],
-                    //     ),
-                    //     scrollAxis: Axis.horizontal,
-                    //     crossAxisAlignment: CrossAxisAlignment.start,
-                    //     blankSpace: 20.0,
-                    //     velocity: 50.0,
-                    //     startPadding: 10.0,
-                    //     accelerationDuration: Duration(seconds: 1),
-                    //     accelerationCurve: Curves.linear,
-                    //     decelerationDuration: Duration(milliseconds: 500),
-                    //     decelerationCurve: Curves.decelerate,
-                    //   ),
-                    // ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: kPadding),
                       child: Row(
                         spacing: 20,
                         children: [
-                          Column(
-                            spacing: 5,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              KCard(
-                                radius: 15,
-                                child: Icon(
-                                  Icons.apps,
-                                ),
-                              ),
-                              Label("Category").regular,
-                            ],
-                          ),
-                          Column(
-                            spacing: 5,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              KCard(
-                                radius: 15,
-                                child: Icon(
-                                  Icons.male,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                              Label("Men").regular,
-                            ],
-                          ),
-                          Column(
-                            spacing: 5,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              KCard(
-                                radius: 15,
-                                child: Icon(
-                                  Icons.female,
-                                  color: Colors.pink,
-                                ),
-                              ),
-                              Label("Women").regular,
-                            ],
-                          ),
-                          Column(
-                            spacing: 5,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              KCard(
-                                radius: 15,
-                                child: Icon(
-                                  Icons.child_care,
-                                  color: Colors.yellow.shade900,
-                                ),
-                              ),
-                              Label("Kids").regular,
-                            ],
-                          ),
+                          _categoryBtn(Icons.apps, "All", Colors.black),
+                          _categoryBtn(Icons.male, "Men", Colors.blue),
+                          _categoryBtn(Icons.female, "Women", Colors.pink),
+                          _categoryBtn(
+                              Icons.child_care, "Kids", Colors.amber.shade900),
                         ],
                       ),
                     ),
@@ -295,6 +226,28 @@ class _Home_UIState extends ConsumerState<Home_UI> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _categoryBtn(IconData icon, String label, Color color) {
+    return GestureDetector(
+      onTap: () => context.push('/search-products?category=$label').then(
+            (value) => _refresh(),
+          ),
+      child: Column(
+        spacing: 5,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          KCard(
+            radius: 15,
+            child: Icon(
+              icon,
+              color: color,
+            ),
+          ),
+          Label(label, fontSize: 12).regular,
+        ],
       ),
     );
   }

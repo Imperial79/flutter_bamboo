@@ -1,9 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
-
-import '../Resources/constants.dart';
-
 class CartItemModel {
   int? productId = 0;
   int quantity = 1;

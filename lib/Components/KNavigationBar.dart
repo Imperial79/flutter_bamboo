@@ -14,6 +14,7 @@ class KNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KCard(
+      padding: EdgeInsets.all(10),
       borderWidth: 1,
       color: LColor.scaffold,
       radius: 0,
@@ -61,13 +62,14 @@ class KNavigationBar extends StatelessWidget {
               activePageNotifier.value = index;
             },
             icon: Column(
-              spacing: 10,
+              spacing: 7,
               mainAxisSize: MainAxisSize.min,
               children: [
                 SvgPicture.asset(
                   selected
                       ? "$navIconPath/$iconPath-filled.svg"
                       : "$navIconPath/$iconPath.svg",
+                  height: 20,
                   colorFilter: ColorFilter.mode(
                     selected ? LColor.primary : LColor.fadeText,
                     BlendMode.srcIn,
@@ -75,8 +77,9 @@ class KNavigationBar extends StatelessWidget {
                 ),
                 Label(
                   label,
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w600,
+                  weight: selected ? 700 : 600,
                   color: selected ? null : LColor.fadeText,
+                  fontSize: 13,
                 ).regular,
               ],
             ),

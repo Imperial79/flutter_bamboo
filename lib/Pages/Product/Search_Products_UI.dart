@@ -16,7 +16,11 @@ import '../../Repository/product_repo.dart';
 import 'Product_Preview_Card.dart';
 
 class Search_Products_UI extends ConsumerStatefulWidget {
-  const Search_Products_UI({super.key});
+  final String category;
+  const Search_Products_UI({
+    super.key,
+    required this.category,
+  });
 
   @override
   ConsumerState<Search_Products_UI> createState() => _Search_Products_UIState();
@@ -25,14 +29,13 @@ class Search_Products_UI extends ConsumerStatefulWidget {
 class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
   final searchKey = TextEditingController();
   int pageNo = 0;
-  String catgeory = "All";
 
   Future<void> _refresh() async {
     pageNo = 0;
     String apiData = jsonEncode({
       'pageNo': pageNo,
       'searchKey': searchKey.text.trim(),
-      'category': catgeory,
+      'category': widget.category,
     });
     await ref.refresh(productListFuture(apiData).future);
     setState(() {});
@@ -51,7 +54,7 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
         {
           "pageNo": pageNo,
           "searchKey": searchKey.text.trim(),
-          "category": "All"
+          "category": widget.category
         },
       ),
     ));
@@ -60,7 +63,10 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
       onRefresh: _refresh,
       child: KScaffold(
         appBar: AppBar(
-          title: Label("Our Products").regular,
+          title: Label(widget.category == "All"
+                  ? "Our Products"
+                  : "Showing products for ${widget.category}")
+              .regular,
         ),
         body: SafeArea(
           child: SingleChildScrollView(

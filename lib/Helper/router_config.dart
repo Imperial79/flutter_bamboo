@@ -95,7 +95,10 @@ final goRouterProvider = Provider<GoRouter>(
         GoRoute(
           path: '/search-products',
           builder: (context, state) {
-            return const Search_Products_UI();
+            final catgeory = state.uri.queryParameters["category"];
+            return Search_Products_UI(
+              category: catgeory ?? "All",
+            );
           },
         ),
         GoRoute(

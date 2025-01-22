@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Models/Product_Model.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_bamboo/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../Components/Label.dart';
@@ -51,23 +52,22 @@ class ProductPreviewCard extends ConsumerWidget {
                       ref.read(cartProvider.notifier).addItem(
                             CartItemModel(
                               quantity: 1,
-                              // image: product.images[0],
-                              // name: product.name,
-                              // price: product.salePrice,
                               productId: product.id,
-                              // totalPrice: product.mrp,
-                              // rating: product.totalRatings,
-                              // actualPrice: product.salePrice,
                             ),
                           );
                     } else {
                       ref.read(cartProvider.notifier).removeItem(product.id);
                     }
                   },
-                  icon: Icon(
-                    inCart ? Icons.favorite : Icons.favorite_border,
-                    size: 25,
-                    color: inCart ? LColor.primary : null,
+                  icon: CircleAvatar(
+                    backgroundColor: inCart ? kScheme.primary : Colors.white,
+                    radius: 15,
+                    child: Icon(
+                      inCart ? Icons.favorite : Icons.favorite_border,
+                      size: 15,
+                      color:
+                          inCart ? kScheme.primaryContainer : LColor.secondary,
+                    ),
                   ),
                 )
               ],
