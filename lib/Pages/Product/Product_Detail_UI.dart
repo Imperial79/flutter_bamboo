@@ -9,6 +9,7 @@ import 'package:flutter_bamboo/Helper/appLink.dart';
 import 'package:flutter_bamboo/Helper/data.dart';
 import 'package:flutter_bamboo/Models/Cart_Item_Model.dart';
 import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
+import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_bamboo/Repository/cart_repo.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../Models/User_Model.dart';
 import '../../Resources/theme.dart';
 
 class Product_Detail_UI extends ConsumerStatefulWidget {
@@ -39,11 +41,76 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   String selectedDescriptionType = "About Item";
   int selectedVariant = 0;
   bool showLess = false;
+  final isLoading = ValueNotifier(false);
+
+  _signInWithGoogle() async {
+    try {
+      Navigator.pop(context);
+      isLoading.value = true;
+      final res = await ref.read(authRepository).signInWithGoogle(ref);
+
+      if (!res.error) {
+        ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
+      } else {
+        KSnackbar(context, message: res.message, error: res.error);
+      }
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  buyNow(user) {
+    if (user != null) {
+    } else {
+      // context.push("/login");
+      showModalBottomSheet(
+        context: context,
+        builder: (context) => loginModal(),
+      );
+    }
+  }
+
+  loginModal() {
+    return StatefulBuilder(builder: (context, setState) {
+      return SingleChildScrollView(
+        child: KCard(
+          padding: EdgeInsets.all(kPadding),
+          radius: 20,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: KCard(
+                    height: 7,
+                    width: 50,
+                    radius: 100,
+                    color: LColor.fadeText,
+                  ),
+                ),
+                height20,
+                Label("Login to continue").title,
+                Label("Please login to order products and track your orders.",
+                        fontSize: 16)
+                    .subtitle,
+                height20,
+                googleLoginButton(onPressed: _signInWithGoogle),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final productData = ref.watch(productDetailsFuture(widget.id));
     final cartData = ref.watch(cartProvider);
     return KScaffold(
+      isLoading: isLoading,
       appBar: productData.hasValue && productData.value != null
           ? AppBar(
               leading: IconButton(
@@ -267,6 +334,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
       builder: (context, ref, child) {
         final cartData = ref.watch(cartProvider);
         final inCart = cartData.any((item) => item.productId == product.id);
+        final user = ref.watch(userProvider);
         return Container(
           padding: EdgeInsets.all(kPadding),
           decoration: BoxDecoration(
@@ -348,20 +416,25 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     ),
                   ),
                 ),
-                Container(
-                  height: 55,
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                  decoration: BoxDecoration(
-                    color: LColor.secondary,
-                    borderRadius: BorderRadius.horizontal(
-                      right: Radius.circular(7),
+                GestureDetector(
+                  onTap: () {
+                    buyNow(user);
+                  },
+                  child: Container(
+                    height: 55,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                    decoration: BoxDecoration(
+                      color: LColor.secondary,
+                      borderRadius: BorderRadius.horizontal(
+                        right: Radius.circular(7),
+                      ),
                     ),
-                  ),
-                  child: FittedBox(
-                    child: Label("Buy Now",
-                            fontSize: 20, weight: 700, color: Colors.white)
-                        .regular,
+                    child: FittedBox(
+                      child: Label("Buy Now",
+                              fontSize: 20, weight: 700, color: Colors.white)
+                          .regular,
+                    ),
                   ),
                 )
               ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KNavigationBar.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
+import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kWidgets.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_bamboo/Resources/app_config.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_bamboo/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +28,6 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
       isLoading.value = true;
       final res = await ref.read(authRepository).logout();
       if (!res.error) {
-        context.go("/");
         activePageNotifier.value = 0;
         AuthRepo.googleSignIn.signOut();
         ref.read(userProvider.notifier).state = null;
@@ -117,7 +118,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                       ),
                     height20,
                     KCard(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(7),
                       color: LColor.scaffold,
                       borderWidth: 1,
                       width: double.infinity,
@@ -151,7 +152,12 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                             icon: Icons.exit_to_app,
                             label: "Logout",
                             path: "",
-                            onTap: logout,
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => logoutDialog(),
+                              );
+                            },
                           ),
                         ],
                       ),
@@ -170,6 +176,36 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                 ],
               ),
       ),
+    );
+  }
+
+  Widget logoutDialog() {
+    return AlertDialog(
+      title: Label("Do you want to logout?").title,
+      content: Label(
+              "Logging out will stop all the notifications for offers and promotions.")
+          .regular,
+      actions: [
+        KButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          label: "No",
+          radius: 100,
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+          backgroundColor: kScheme.error,
+        ),
+        KButton(
+          onPressed: () {
+            Navigator.pop(context);
+            logout();
+          },
+          label: "Yes",
+          radius: 100,
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+          backgroundColor: kScheme.tertiary,
+        ),
+      ],
     );
   }
 

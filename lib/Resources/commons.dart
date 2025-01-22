@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Components/Label.dart';
 import 'colors.dart';
@@ -66,6 +68,35 @@ KSnackbar(context,
       action: action,
       behavior: SnackBarBehavior.floating,
       dismissDirection: DismissDirection.horizontal,
+    ),
+  );
+}
+
+Widget googleLoginButton({required void Function()? onPressed}) {
+  return ElevatedButton(
+    onPressed: onPressed,
+    style: ElevatedButton.styleFrom(
+      backgroundColor: LColor.scaffold,
+      foregroundColor: Colors.black,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: kRadius(15),
+        side: BorderSide(
+          color: LColor.border,
+        ),
+      ),
+      padding: EdgeInsets.all(15),
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 10,
+      children: [
+        SvgPicture.asset(
+          "$kIconPath/glogo.svg",
+          height: 25,
+        ),
+        Label("Continue with Google", fontSize: 17, weight: 600).regular,
+      ],
     ),
   );
 }

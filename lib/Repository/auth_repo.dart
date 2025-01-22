@@ -67,7 +67,6 @@ class AuthRepo {
       await googleSignIn.signOut();
 
       final GoogleSignInAccount? gAccount = await googleSignIn.signIn();
-      log("Google Signned In");
 
       if (gAccount != null) {
         final GoogleSignInAuthentication gAuth = await gAccount.authentication;

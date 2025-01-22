@@ -7,7 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class Error_UI extends StatelessWidget {
-  const Error_UI({super.key});
+  final String path;
+  const Error_UI({super.key, required this.path});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class Error_UI extends StatelessWidget {
               height20,
               Label("Page Not Found!", fontSize: 30, weight: 700).title,
               Label(
-                "Sorry we cannot find the requested page!",
+                "Sorry we cannot find the requested path $path!",
                 fontSize: 20,
                 weight: 500,
                 textAlign: TextAlign.center,

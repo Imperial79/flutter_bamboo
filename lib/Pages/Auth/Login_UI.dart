@@ -18,7 +18,9 @@ import '../../Repository/auth_repo.dart';
 import '../../Resources/theme.dart';
 
 class Login_UI extends ConsumerStatefulWidget {
-  const Login_UI({super.key});
+  const Login_UI({
+    super.key,
+  });
 
   @override
   ConsumerState<Login_UI> createState() => _Login_UIState();
@@ -35,7 +37,6 @@ class _Login_UIState extends ConsumerState<Login_UI> {
 
       if (!res.error) {
         ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
-        context.go("/");
       } else {
         KSnackbar(context, message: res.message, error: res.error);
       }
