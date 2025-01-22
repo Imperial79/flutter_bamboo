@@ -10,6 +10,8 @@ import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../Resources/theme.dart';
+
 class Saved_Address_UI extends StatefulWidget {
   const Saved_Address_UI({super.key});
 
@@ -83,9 +85,8 @@ class _Saved_Address_UIState extends State<Saved_Address_UI> {
                               children: [
                                 Pill(
                                   label: "main",
-                                  backgroundColor:
-                                      kColor(context).tertiaryContainer,
-                                  textColor: kColor(context).tertiary,
+                                  backgroundColor: kScheme.tertiaryContainer,
+                                  textColor: kScheme.tertiary,
                                 ).text,
                                 Icon(
                                   Icons.check_circle_outline_outlined,

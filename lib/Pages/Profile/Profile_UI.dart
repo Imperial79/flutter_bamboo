@@ -49,136 +49,147 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            user != null
-                ? SingleChildScrollView(
-                    padding: EdgeInsets.all(kPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: CircleAvatar(
-                            radius: 30,
-                            child:
-                                Label(user.name[0].toUpperCase(), fontSize: 22)
-                                    .regular,
-                          ),
-                        ),
-                        height10,
-                        Center(
-                          child: Label(user.name).title,
-                        ),
-                        if (user.phone!.isNotEmpty)
-                          Row(
-                            spacing: 5,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Label(
-                                user.phone!,
-                                fontSize: 17,
-                                weight: 700,
-                              ).subtitle,
-                              InkWell(
-                                onTap: () => context.push("/edit-profile"),
-                                child: Row(
-                                  spacing: 5,
-                                  children: [
-                                    Icon(
-                                      Icons.edit,
-                                      size: 15,
-                                    ),
-                                    Label("Edit").regular
-                                  ],
-                                ),
-                              )
-                            ],
-                          )
-                        else
-                          Center(
-                            child: InkWell(
-                              onTap: () => context.push("/edit-profile"),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                spacing: 5,
-                                children: [
-                                  Icon(
-                                    Icons.add_circle_outline,
-                                    color: LColor.fadeText,
-                                    size: 20,
-                                  ),
-                                  Label("Add phone", fontSize: 17, weight: 700)
-                                      .subtitle,
-                                ],
-                              ),
-                            ),
-                          ),
-                        height20,
-                        KCard(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 25, horizontal: 15),
-                          color: LColor.scaffold,
-                          borderWidth: 1,
-                          width: double.infinity,
-                          child: Column(
-                            spacing: 15,
-                            children: [
-                              _profileBtn(
-                                icon: Icons.location_on_outlined,
-                                label: "Saved Address",
-                                path: "/profile/saved-address",
-                              ),
-                              div,
-                              _profileBtn(
-                                icon: Icons.inventory_2_outlined,
-                                label: "Orders",
-                                path: "/profile/orders",
-                              ),
-                              div,
-                              _profileBtn(
-                                icon: Icons.receipt_long,
-                                label: "Transactions",
-                                path: "/profile/transactions",
-                              ),
-                              div,
-                              _profileBtn(
-                                icon: Icons.help,
-                                label: "Help",
-                                path: "/profile/help",
-                              ),
-                              div,
-                              _profileBtn(
-                                icon: Icons.exit_to_app,
-                                label: "Logout",
-                                path: "",
-                                onTap: logout,
-                              ),
-                            ],
-                          ),
-                        ),
-                        height10,
-                        Label("Version $kAppVersion").regular,
-                      ],
+        child: user != null
+            ? SingleChildScrollView(
+                padding: EdgeInsets.all(kPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: CircleAvatar(
+                        radius: 30,
+                        backgroundImage: user.image.isNotEmpty
+                            ? NetworkImage(user.image)
+                            : null,
+                        child: user.image.isEmpty
+                            ? Label(user.name[0].toUpperCase(), fontSize: 22)
+                                .regular
+                            : null,
+                      ),
                     ),
-                  )
-                : kLoginRequired(context),
-            Container(
-              height: 250,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    "$kImagePath/logo.png",
-                  ),
+                    height10,
+                    Center(
+                      child: Label(user.name).title,
+                    ),
+                    if (user.phone!.isNotEmpty)
+                      Row(
+                        spacing: 5,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Label(
+                            user.phone!,
+                            fontSize: 17,
+                            weight: 700,
+                          ).subtitle,
+                          InkWell(
+                            onTap: () => context.push("/edit-profile"),
+                            child: Row(
+                              spacing: 5,
+                              children: [
+                                Icon(
+                                  Icons.edit,
+                                  size: 15,
+                                ),
+                                Label("Edit").regular
+                              ],
+                            ),
+                          )
+                        ],
+                      )
+                    else
+                      Center(
+                        child: InkWell(
+                          onTap: () => context.push("/edit-profile"),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 5,
+                            children: [
+                              Icon(
+                                Icons.add_circle_outline,
+                                color: LColor.fadeText,
+                                size: 20,
+                              ),
+                              Label("Add phone", fontSize: 17, weight: 700)
+                                  .subtitle,
+                            ],
+                          ),
+                        ),
+                      ),
+                    height20,
+                    KCard(
+                      padding: EdgeInsets.all(10),
+                      color: LColor.scaffold,
+                      borderWidth: 1,
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          _profileBtn(
+                            icon: Icons.location_on_outlined,
+                            label: "Saved Address",
+                            path: "/profile/saved-address",
+                          ),
+                          div,
+                          _profileBtn(
+                            icon: Icons.inventory_2_outlined,
+                            label: "Orders",
+                            path: "/profile/orders",
+                          ),
+                          div,
+                          _profileBtn(
+                            icon: Icons.receipt_long,
+                            label: "Transactions",
+                            path: "/profile/transactions",
+                          ),
+                          div,
+                          _profileBtn(
+                            icon: Icons.help,
+                            label: "Help",
+                            path: "/profile/help",
+                          ),
+                          div,
+                          _profileBtn(
+                            icon: Icons.exit_to_app,
+                            label: "Logout",
+                            path: "",
+                            onTap: logout,
+                          ),
+                        ],
+                      ),
+                    ),
+                    height10,
+                    Label("Version $kAppVersion").regular,
+                    _appLogo(),
+                  ],
                 ),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  kLoginRequired(context),
+                  _appLogo(),
+                ],
+              ),
+      ),
+    );
+  }
+
+  Widget _appLogo() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 250,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(
+                "$kImagePath/logo.png",
               ),
             ),
-            Center(
-                child: Label("NGF Organic © ${DateTime.now().year}").regular),
-            Center(child: Label("Nightbirdes Hub OPC Pvt.").regular),
-          ],
+          ),
         ),
-      ),
+        Center(child: Label("NGF Organic © ${DateTime.now().year}").regular),
+        Center(child: Label("Nightbirdes Hub OPC Pvt.").regular),
+      ],
     );
   }
 
@@ -188,25 +199,24 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
     required String path,
     void Function()? onTap,
   }) {
-    return InkWell(
+    return KCard(
+      color: LColor.scaffold,
       onTap: onTap ?? () => context.push(path),
-      child: Ink(
-        child: Row(
-          spacing: 20,
-          children: [
-            Icon(
-              icon,
-              size: 25,
-            ),
-            Expanded(
-              child: Label(label).regular,
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 15,
-            )
-          ],
-        ),
+      child: Row(
+        spacing: 20,
+        children: [
+          Icon(
+            icon,
+            size: 25,
+          ),
+          Expanded(
+            child: Label(label).regular,
+          ),
+          Icon(
+            Icons.arrow_forward_ios,
+            size: 15,
+          )
+        ],
       ),
     );
   }

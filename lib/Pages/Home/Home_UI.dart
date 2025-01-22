@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:marquee/marquee.dart';
 import '../../Components/kCard.dart';
 import '../../Components/kCarousel.dart';
 import '../../Repository/cart_repo.dart';
@@ -107,6 +108,29 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                 ],
               ),
             ),
+            KCard(
+              radius: 0,
+              padding: EdgeInsets.symmetric(vertical: 5),
+              height: 30,
+              child: Marquee(
+                text:
+                    'Mega Offer! Get Instant 20% OFF* on Selected Products. Mega Offer! Get Instant 20% OFF* on Selected Products.',
+                style: TextStyle(
+                  fontVariations: [
+                    FontVariation.weight(600),
+                  ],
+                ),
+                scrollAxis: Axis.horizontal,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                blankSpace: 20.0,
+                velocity: 50.0,
+                startPadding: 10.0,
+                accelerationDuration: Duration(seconds: 1),
+                accelerationCurve: Curves.linear,
+                decelerationDuration: Duration(milliseconds: 500),
+                decelerationCurve: Curves.decelerate,
+              ),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -138,6 +162,27 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                         ),
                       ],
                     ),
+                    // SizedBox(
+                    //   height: 20,
+                    //   child: Marquee(
+                    //     text:
+                    //         'Mega Offer! Get Instant 20% OFF* on Selected Products. Mega Offer! Get Instant 20% OFF* on Selected Products.',
+                    //     style: TextStyle(
+                    //       fontVariations: [
+                    //         FontVariation.weight(600),
+                    //       ],
+                    //     ),
+                    //     scrollAxis: Axis.horizontal,
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     blankSpace: 20.0,
+                    //     velocity: 50.0,
+                    //     startPadding: 10.0,
+                    //     accelerationDuration: Duration(seconds: 1),
+                    //     accelerationCurve: Curves.linear,
+                    //     decelerationDuration: Duration(milliseconds: 500),
+                    //     decelerationCurve: Curves.decelerate,
+                    //   ),
+                    // ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: kPadding),
                       child: Row(

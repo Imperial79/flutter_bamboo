@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../Models/User_Model.dart';
 import '../../Repository/auth_repo.dart';
+import '../../Resources/theme.dart';
 
 class Login_UI extends ConsumerStatefulWidget {
   const Login_UI({super.key});
@@ -141,8 +142,8 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                         ),
                         label: "Continue",
                         fontSize: 17,
-                        backgroundColor: kColor(context).primaryContainer,
-                        foregroundColor: kColor(context).primary,
+                        backgroundColor: kScheme.primaryContainer,
+                        foregroundColor: kScheme.primary,
                         padding: EdgeInsets.all(17),
                         style: KButtonStyle.expanded,
                       ),
@@ -209,7 +210,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                                   text: "Terms & Conditions",
                                   style: TextStyle(
                                     fontVariations: [FontVariation.weight(800)],
-                                    color: kColor(context).primary,
+                                    color: kScheme.primary,
                                   ),
                                 ),
                                 const TextSpan(text: " and "),
@@ -222,7 +223,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                                   text: "Privacy Policy",
                                   style: TextStyle(
                                     fontVariations: [FontVariation.weight(800)],
-                                    color: kColor(context).primary,
+                                    color: kScheme.primary,
                                   ),
                                 ),
                               ],

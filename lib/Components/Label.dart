@@ -47,8 +47,8 @@ class Label {
         style: TextStyle(
           fontSize: fontSize ?? 14,
           color: color ?? LColor.fadeText,
-          fontVariations: [FontVariation.weight(weight ?? 400)],
-          fontWeight: fontWeight ?? FontWeight.w400,
+          fontVariations: [FontVariation.weight(weight ?? 600)],
+          fontWeight: fontWeight ?? FontWeight.w600,
           fontStyle: fontStyle,
           height: height,
         ),
@@ -77,8 +77,8 @@ class Label {
   Widget get regular => Text(
         text,
         style: TextStyle(
-          fontVariations: [FontVariation.weight(weight ?? 600)],
-          fontWeight: fontWeight ?? FontWeight.w600,
+          fontVariations: [FontVariation.weight(weight ?? 700)],
+          fontWeight: fontWeight ?? FontWeight.w700,
           color: color,
           fontSize: fontSize,
           fontStyle: fontStyle,

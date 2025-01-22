@@ -20,13 +20,7 @@ class CartNotifier extends StateNotifier<List<CartItemModel>> {
       if (item.productId == productId) {
         return CartItemModel(
           productId: item.productId,
-          price: item.price,
-          totalPrice: (item.price ?? 0) * newQuantity,
-          name: item.name,
-          image: item.image,
           quantity: newQuantity,
-          actualPrice: item.actualPrice,
-          rating: item.rating,
         );
       }
       return item;

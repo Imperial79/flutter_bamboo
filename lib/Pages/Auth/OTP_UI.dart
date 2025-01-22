@@ -9,6 +9,8 @@ import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../Resources/theme.dart';
+
 class OTP_UI extends StatefulWidget {
   final String phone;
   const OTP_UI({super.key, required this.phone});
@@ -42,8 +44,8 @@ class _OTP_UIState extends State<OTP_UI> {
                 onPressed: () => context.push("/"),
                 label: "Continue",
                 fontSize: 20,
-                backgroundColor: kColor(context).primaryContainer,
-                foregroundColor: kColor(context).primary,
+                backgroundColor: kScheme.primaryContainer,
+                foregroundColor: kScheme.primary,
                 padding: EdgeInsets.all(20),
                 style: KButtonStyle.expanded,
               ),
@@ -66,7 +68,7 @@ class _OTP_UIState extends State<OTP_UI> {
                       text: "Terms & Conditions",
                       style: TextStyle(
                         fontVariations: [FontVariation.weight(700)],
-                        color: kColor(context).primary,
+                        color: kScheme.primary,
                       ),
                     ),
                     const TextSpan(text: " and "),
@@ -79,7 +81,7 @@ class _OTP_UIState extends State<OTP_UI> {
                       text: "Privacy Policy",
                       style: TextStyle(
                         fontVariations: [FontVariation.weight(700)],
-                        color: kColor(context).primary,
+                        color: kScheme.primary,
                       ),
                     ),
                   ],

@@ -3,12 +3,15 @@ import 'package:flutter/services.dart';
 
 import '../Components/Label.dart';
 import 'colors.dart';
+import 'theme.dart';
 
 const SizedBox width5 = SizedBox(width: 5);
 const SizedBox width10 = SizedBox(width: 10);
+const SizedBox width15 = SizedBox(width: 15);
 const SizedBox width20 = SizedBox(width: 20);
 const SizedBox height5 = SizedBox(height: 5);
 const SizedBox height10 = SizedBox(height: 10);
+const SizedBox height15 = SizedBox(height: 15);
 const SizedBox height20 = SizedBox(height: 20);
 SizedBox kHeight(double height) => SizedBox(height: height);
 SizedBox kWidth(double width) => SizedBox(width: width);
@@ -54,13 +57,11 @@ KSnackbar(context,
     {required dynamic message, bool error = false, SnackBarAction? action}) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      backgroundColor: error
-          ? kColor(context).errorContainer
-          : kColor(context).primaryContainer,
+      backgroundColor:
+          error ? kScheme.errorContainer : kScheme.primaryContainer,
       content: Label("$message",
-              color: error
-                  ? kColor(context).onErrorContainer
-                  : kColor(context).onPrimaryContainer)
+              color:
+                  error ? kScheme.onErrorContainer : kScheme.onPrimaryContainer)
           .regular,
       action: action,
       behavior: SnackBarBehavior.floating,

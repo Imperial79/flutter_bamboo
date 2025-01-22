@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KNavigationBar.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_bamboo/Resources/theme.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-
-import '../Resources/colors.dart';
 import '../Resources/commons.dart';
 import 'Label.dart';
 import 'kButton.dart';
 
-Widget KHeading({required String title, required String subtitle}) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 70),
-    child: Center(
-      child: Column(
-        children: [
-          Label(title, fontSize: 25, weight: 800).title,
-          Label(
-            subtitle,
-            fontSize: 20,
-            weight: 200,
-            textAlign: TextAlign.center,
-          ).title,
-        ],
-      ),
-    ),
-  );
-}
+Widget kNoData(BuildContext context) => Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          "$kIconPath/panda.svg",
+          height: 200,
+        ),
+        height10,
+        Label("Sorry!", fontSize: 30).title,
+        Label("No data found.", fontSize: 22, weight: 500).regular,
+        height20,
+        KButton(
+          onPressed: () {
+            context.go("/");
+          },
+          label: "Go Home",
+          style: KButtonStyle.regular,
+          radius: 100,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          backgroundColor: kScheme.secondaryContainer,
+          foregroundColor: kScheme.secondary,
+        )
+      ],
+    );
 
 Widget kLoginRequired(BuildContext context) {
   return Center(
@@ -53,7 +59,7 @@ Widget kLoginRequired(BuildContext context) {
             },
             label: "Login",
             radius: 10,
-            backgroundColor: kColor(context).tertiary,
+            backgroundColor: kScheme.tertiary,
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
           ),
         ],

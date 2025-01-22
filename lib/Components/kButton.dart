@@ -47,10 +47,9 @@ class KButton extends StatelessWidget {
     switch (style) {
       case KButtonStyle.outlined:
         return ElevatedButton.styleFrom(
-          side: BorderSide(
-              color: foregroundColor ?? kColor(context).primaryContainer),
-          backgroundColor: backgroundColor ?? kColor(context).surface,
-          foregroundColor: foregroundColor ?? kColor(context).primaryContainer,
+          side: BorderSide(color: foregroundColor ?? kScheme.primaryContainer),
+          backgroundColor: backgroundColor ?? kScheme.surface,
+          foregroundColor: foregroundColor ?? kScheme.primaryContainer,
           iconColor: foregroundColor,
           padding: padding ?? const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
@@ -73,15 +72,15 @@ class KButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: kRadius(radius ?? 15),
           ),
-          backgroundColor: backgroundColor ?? kColor(context).primary,
-          foregroundColor: foregroundColor ?? kColor(context).onPrimary,
+          backgroundColor: backgroundColor ?? kScheme.primary,
+          foregroundColor: foregroundColor ?? kScheme.onPrimary,
           iconColor: foregroundColor,
           padding: padding ?? const EdgeInsets.symmetric(horizontal: 15),
         );
       case KButtonStyle.thickPill:
         return ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? kColor(context).primary,
-          foregroundColor: foregroundColor ?? kColor(context).onPrimary,
+          backgroundColor: backgroundColor ?? kScheme.primary,
+          foregroundColor: foregroundColor ?? kScheme.onPrimary,
           iconColor: foregroundColor,
           padding: padding ??
               const EdgeInsets.symmetric(horizontal: 20, vertical: 17),
@@ -102,8 +101,8 @@ class KButton extends StatelessWidget {
         );
       case KButtonStyle.regular:
         return ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? kColor(context).primary,
-          foregroundColor: foregroundColor ?? kColor(context).onPrimary,
+          backgroundColor: backgroundColor ?? kScheme.primary,
+          foregroundColor: foregroundColor ?? kScheme.onPrimary,
           iconColor: foregroundColor,
           padding: padding ?? const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
@@ -123,8 +122,8 @@ class KButton extends StatelessWidget {
         );
       case KButtonStyle.expanded:
         return ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? kColor(context).primary,
-          foregroundColor: foregroundColor ?? kColor(context).onPrimary,
+          backgroundColor: backgroundColor ?? kScheme.primary,
+          foregroundColor: foregroundColor ?? kScheme.onPrimary,
           iconColor: foregroundColor,
           padding: padding ?? const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(

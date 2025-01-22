@@ -100,7 +100,7 @@ class _KCarouselState extends State<KCarousel> {
                   .toList()
               : widget.children,
         ),
-        if (widget.showIndicator)
+        if (widget.showIndicator && widget.images.length > 1)
           _indicator(
             activeIndex: activePage,
             length: widget.images.isNotEmpty

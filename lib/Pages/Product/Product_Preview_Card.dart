@@ -24,7 +24,7 @@ class ProductPreviewCard extends ConsumerWidget {
     final cartData = ref.watch(cartProvider);
     final inCart = cartData.any((item) => item.productId == product.id);
     return InkWell(
-      onTap: () => context.push("/product/46"),
+      onTap: () => context.push("/product/${product.id}"),
       child: KCard(
         padding: EdgeInsets.all(0),
         width: cardWidth,
@@ -51,13 +51,13 @@ class ProductPreviewCard extends ConsumerWidget {
                       ref.read(cartProvider.notifier).addItem(
                             CartItemModel(
                               quantity: 1,
-                              image: product.images[0],
-                              name: product.name,
-                              price: product.salePrice,
+                              // image: product.images[0],
+                              // name: product.name,
+                              // price: product.salePrice,
                               productId: product.id,
-                              totalPrice: product.mrp,
-                              rating: product.totalRatings,
-                              actualPrice: product.salePrice,
+                              // totalPrice: product.mrp,
+                              // rating: product.totalRatings,
+                              // actualPrice: product.salePrice,
                             ),
                           );
                     } else {
@@ -107,7 +107,6 @@ class ProductPreviewCard extends ConsumerWidget {
                         kCurrencyFormat(product.salePrice),
                         weight: 700,
                         fontSize: 22,
-                        // height: 1,
                       ).title,
                       Label(
                         "MRP ${kCurrencyFormat(product.mrp)}",

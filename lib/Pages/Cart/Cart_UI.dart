@@ -11,6 +11,8 @@ import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../Resources/theme.dart';
+
 class Cart_UI extends StatefulWidget {
   const Cart_UI({super.key});
 
@@ -88,7 +90,7 @@ class _Cart_UIState extends State<Cart_UI> {
                   recognizer: TapGestureRecognizer()..onTap = () async {},
                   text: "Browse Coupons",
                   style: TextStyle(
-                    color: kColor(context).primary,
+                    color: kScheme.primary,
                     fontSize: 17,
                     fontVariations: [
                       FontVariation.weight(700),
@@ -164,18 +166,18 @@ class _Cart_UIState extends State<Cart_UI> {
       children: [
         KCard(
           margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          color: kColor(context).primaryContainer,
+          color: kScheme.primaryContainer,
           child: Row(
             spacing: 15,
             children: [
               Icon(
                 Icons.local_offer,
-                color: kColor(context).primary,
+                color: kScheme.primary,
               ),
               Expanded(
                 child: Label(
                   "Offer Applied! Get extra 20% OFF on first order.",
-                  color: kColor(context).primary,
+                  color: kScheme.primary,
                   weight: 700,
                   fontSize: 15,
                 ).regular,
@@ -185,7 +187,7 @@ class _Cart_UIState extends State<Cart_UI> {
         ),
         CircleAvatar(
           radius: 12,
-          backgroundColor: kColor(context).primary,
+          backgroundColor: kScheme.primary,
           foregroundColor: LColor.scaffold,
           child: Icon(
             Icons.close,
@@ -267,7 +269,7 @@ class _Cart_UIState extends State<Cart_UI> {
                       Container(
                         padding: EdgeInsets.all(3),
                         decoration: BoxDecoration(
-                          color: kColor(context).primaryContainer,
+                          color: kScheme.primaryContainer,
                           borderRadius: BorderRadius.horizontal(
                             left: Radius.circular(5),
                           ),
@@ -284,7 +286,7 @@ class _Cart_UIState extends State<Cart_UI> {
                       Container(
                         padding: EdgeInsets.all(3),
                         decoration: BoxDecoration(
-                          color: kColor(context).primaryContainer,
+                          color: kScheme.primaryContainer,
                           borderRadius: BorderRadius.horizontal(
                             right: Radius.circular(5),
                           ),

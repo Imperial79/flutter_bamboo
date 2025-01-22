@@ -28,16 +28,19 @@ ThemeData kTheme(context) => ThemeData(
         elevation: 0,
       ),
       chipTheme: ChipThemeData(
-        selectedColor: kColor(context).secondary,
+        selectedColor: kScheme.secondary,
         labelStyle: const TextStyle(
           color: Colors.black,
         ),
       ),
       badgeTheme: BadgeThemeData(
-          backgroundColor: kScheme.primary,
-          largeSize: 20,
-          textStyle: TextStyle(
-              fontSize: 15, fontVariations: [FontVariation.weight(600)])),
+        backgroundColor: kScheme.primary,
+        largeSize: 20,
+        textStyle: TextStyle(
+          fontSize: 15,
+          fontVariations: [FontVariation.weight(600)],
+        ),
+      ),
       textSelectionTheme: TextSelectionThemeData(
         selectionHandleColor: LColor.primary,
         cursorColor: kScheme.primary,

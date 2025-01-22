@@ -4,9 +4,12 @@ import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kCarousel.dart';
+import 'package:flutter_bamboo/Components/kWidgets.dart';
 import 'package:flutter_bamboo/Helper/appLink.dart';
 import 'package:flutter_bamboo/Helper/data.dart';
+import 'package:flutter_bamboo/Models/Cart_Item_Model.dart';
 import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
+import 'package:flutter_bamboo/Repository/cart_repo.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
@@ -16,6 +19,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../Resources/theme.dart';
 
 class Product_Detail_UI extends ConsumerStatefulWidget {
   final int id;
@@ -37,7 +42,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   @override
   Widget build(BuildContext context) {
     final productData = ref.watch(productDetailsFuture(widget.id));
-
+    final cartData = ref.watch(cartProvider);
     return KScaffold(
       appBar: productData.hasValue && productData.value != null
           ? AppBar(
@@ -62,12 +67,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   ),
                 ),
                 width10,
-                Badge(
-                  backgroundColor: Colors.pink,
-                  label: Label("1").regular,
-                  child: IconButton(
-                    onPressed: () => context.push("/cart"),
-                    icon: SvgPicture.asset(
+                IconButton(
+                  onPressed: () => context.push("/cart"),
+                  icon: Badge(
+                    isLabelVisible: cartData.isNotEmpty,
+                    offset: Offset(10, -10),
+                    label: Label("${cartData.length}", fontSize: 10).regular,
+                    child: SvgPicture.asset(
                       "$kIconPath/shopping-bag.svg",
                       height: 22,
                       colorFilter: kSvgColor(LColor.fadeText),
@@ -85,14 +91,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   padding: EdgeInsets.all(kPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    spacing: 10,
                     children: [
                       KCarousel(
                         isLooped: false,
                         images: data.images,
                         height: 300,
                       ),
-                      height10,
+                      height20,
                       Row(
                         spacing: 5,
                         children: [
@@ -108,9 +113,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ).regular,
                         ],
                       ),
+                      height5,
                       Label(data.name, weight: 700, fontSize: 17, height: 1.3)
                           .title,
-                      height5,
+                      height10,
                       Row(
                         spacing: 7,
                         children: [
@@ -126,7 +132,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ).title,
                         ],
                       ),
-                      height5,
+                      height20,
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -145,18 +151,23 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ),
                           width10,
                           Label(
-                            "-${((parseToDouble(data.product_variants[selectedVariant]["salePrice"]) / parseToDouble(data.product_variants[selectedVariant]["mrp"])) * 100).round()}%",
+                            "-${(((parseToDouble(data.product_variants[selectedVariant]["mrp"]) - parseToDouble(data.product_variants[selectedVariant]["salePrice"])) / parseToDouble(data.product_variants[selectedVariant]["mrp"])) * 100).round()}%",
                             fontSize: 20,
                             height: 1,
                             weight: 400,
-                            color: kColor(context).error,
+                            color: kScheme.error,
                           ).title,
                         ],
                       ),
+                      height5,
                       Label(
                         "MRP ${kCurrencyFormat(data.product_variants[selectedVariant]["mrp"])}",
                         decoration: TextDecoration.lineThrough,
                       ).regular,
+                      Label("Inclusive of all taxes",
+                              color: Colors.grey.shade600, weight: 700)
+                          .subtitle,
+                      height20,
                       Row(
                         spacing: 5,
                         children: [
@@ -174,6 +185,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ),
                         ],
                       ),
+                      height5,
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -182,27 +194,27 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             data.product_variants.length,
                             (index) => _variantCard(
                               index: index,
-                              label: data.product_variants[selectedVariant]
+                              label: data.product_variants[index]
                                   ["attributeValue"],
                               amount: kCurrencyFormat(
-                                data.product_variants[selectedVariant]
-                                    ["salePrice"],
+                                data.product_variants[index]["salePrice"],
                               ),
                               mrp: kCurrencyFormat(
-                                data.product_variants[selectedVariant]["mrp"],
+                                data.product_variants[index]["mrp"],
                                 symbol: "MRP ",
                               ),
                             ),
                           ),
                         ),
                       ),
-                      height10,
+                      height20,
                       Row(
                         children: [
                           descriptionSelectBtn("About Item"),
                           descriptionSelectBtn("Reviews"),
                         ],
                       ),
+                      height20,
                       if (selectedDescriptionType == "About Item")
                         ...aboutItemTab(data)
                       else
@@ -239,108 +251,124 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     ],
                   ),
                 )
-              : Center(
-                  child: Label("No product found.").regular,
-                ),
-          error: (error, stackTrace) => Center(
-            child: Label("$error").regular,
-          ),
+              : kNoData(context),
+          error: (error, stackTrace) => kNoData(context),
           loading: () => Center(child: CircularProgressIndicator()),
         ),
       ),
       bottomNavigationBar: productData.hasValue && productData.value != null
-          ? Container(
-              padding: EdgeInsets.all(kPadding),
-              decoration: BoxDecoration(
-                color: LColor.scaffold,
-                boxShadow: [
-                  BoxShadow(
-                    color: kOpacity(LColor.secondary, .1),
-                    blurRadius: 20,
-                    spreadRadius: 20,
-                    offset: Offset(0, 10),
+          ? footer(productData.value!)
+          : null,
+    );
+  }
+
+  Widget footer(ProductDetailModel product) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final cartData = ref.watch(cartProvider);
+        final inCart = cartData.any((item) => item.productId == product.id);
+        return Container(
+          padding: EdgeInsets.all(kPadding),
+          decoration: BoxDecoration(
+            color: LColor.scaffold,
+            boxShadow: [
+              BoxShadow(
+                color: kOpacity(LColor.secondary, .1),
+                blurRadius: 20,
+                spreadRadius: 20,
+                offset: Offset(0, 10),
+              ),
+            ],
+          ),
+          child: SafeArea(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Label("Total Price").regular,
+                      Label(
+                        kCurrencyFormat(
+                            product.product_variants[selectedVariant]
+                                ["salePrice"],
+                            symbol: "INR "),
+                        weight: 800,
+                        fontSize: 25,
+                        color: LColor.primary,
+                      ).title,
+                    ],
                   ),
-                ],
-              ),
-              child: SafeArea(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Label("Total Price").regular,
-                          Label(
-                            "INR 190",
-                            weight: 800,
-                            fontSize: 25,
-                            color: LColor.primary,
-                          ).title,
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        KSnackbar(
-                          context,
-                          message: "Product added to cart.",
-                        );
-                      },
-                      child: Container(
-                        height: 55,
-                        alignment: Alignment.center,
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                        decoration: BoxDecoration(
-                          color: LColor.primary,
-                          borderRadius: BorderRadius.horizontal(
-                            left: Radius.circular(7),
-                          ),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          spacing: 10,
-                          children: [
-                            SvgPicture.asset(
-                              "$kIconPath/shopping-bag.svg",
-                              height: 20,
-                              colorFilter: kSvgColor(Colors.white),
-                            ),
-                            Label(
-                              "1",
-                              fontSize: 20,
-                              weight: 700,
-                              height: 1,
-                              color: Colors.white,
-                            ).regular,
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 55,
-                      alignment: Alignment.center,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                      decoration: BoxDecoration(
-                        color: LColor.secondary,
-                        borderRadius: BorderRadius.horizontal(
-                          right: Radius.circular(7),
-                        ),
-                      ),
-                      child: FittedBox(
-                        child: Label("Buy Now",
-                                fontSize: 20, weight: 700, color: Colors.white)
-                            .regular,
-                      ),
-                    )
-                  ],
                 ),
-              ),
-            )
-          : SizedBox(),
+                GestureDetector(
+                  onTap: () {
+                    if (!inCart) {
+                      KSnackbar(
+                        context,
+                        message: "Product added to cart.",
+                      );
+                      ref.read(cartProvider.notifier).addItem(CartItemModel(
+                            quantity: 1,
+                            productId: product.id,
+                          ));
+                    }
+                  },
+                  child: Container(
+                    height: 55,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: LColor.primary,
+                      borderRadius: BorderRadius.horizontal(
+                        left: Radius.circular(7),
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      spacing: 10,
+                      children: [
+                        SvgPicture.asset(
+                          "$kIconPath/shopping-bag.svg",
+                          height: 20,
+                          colorFilter: kSvgColor(Colors.white),
+                        ),
+                        if (cartData.isNotEmpty && !inCart)
+                          Label(
+                            "${cartData.length}",
+                            fontSize: 20,
+                            weight: 700,
+                            height: 1,
+                            color: Colors.white,
+                          ).regular,
+                        if (inCart)
+                          Label("Go to cart", color: Colors.white).regular
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 55,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                  decoration: BoxDecoration(
+                    color: LColor.secondary,
+                    borderRadius: BorderRadius.horizontal(
+                      right: Radius.circular(7),
+                    ),
+                  ),
+                  child: FittedBox(
+                    child: Label("Buy Now",
+                            fontSize: 20, weight: 700, color: Colors.white)
+                        .regular,
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -355,8 +383,8 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         selectedVariant = index;
       }),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      borderColor: selected ? kColor(context).primary : LColor.card,
-      color: selected ? kColor(context).primaryContainer : LColor.card,
+      borderColor: selected ? kScheme.primary : LColor.card,
+      color: selected ? kScheme.primaryContainer : LColor.card,
       borderWidth: 1.5,
       radius: 10,
       width: 200,
@@ -364,8 +392,11 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            spacing: 10,
             children: [
-              Expanded(child: Label(label, fontSize: 17, weight: 800).regular),
+              Expanded(
+                  child: Label(label, fontSize: 17, weight: 800, maxLines: 1)
+                      .regular),
               KCard(
                 borderWidth: 2,
                 color: kOpacity(Colors.white, .8),
@@ -392,7 +423,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     return [
       Label(
         "Description",
-        weight: 900,
+        weight: 700,
         fontSize: 17,
       ).regular,
       Text.rich(
@@ -420,7 +451,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 text: showLess ? "...read less" : "...read more",
                 style: TextStyle(
                     fontVariations: [FontVariation.weight(900)],
-                    color: kColor(context).primary),
+                    color: kScheme.primary),
               ),
           ],
         ),
@@ -457,9 +488,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
       height20,
       Label(
         "Reviews & Ratings",
-        weight: 900,
         fontSize: 17,
       ).regular,
+      height15,
       KCard(
         radius: 0,
         child: Column(
@@ -475,7 +506,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 Expanded(
                     child: Label(
                   "User N***e",
-                  weight: 800,
                   fontSize: 17,
                 ).regular),
                 Icon(
@@ -484,7 +514,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 ),
                 Label(
                   "5.0",
-                  weight: 800,
                   fontSize: 17,
                 ).regular
               ],
@@ -492,7 +521,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
             Label(
               "\"The product is more than my expectations\"",
               fontSize: 16,
-            ).regular,
+            ).subtitle,
           ],
         ),
       )
@@ -514,14 +543,14 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
             color: LColor.scaffold,
             border: Border(
               bottom: BorderSide(
-                  color: selected ? LColor.primary : Colors.grey.shade300,
+                  color: selected ? kScheme.primary : Colors.grey.shade300,
                   width: 3),
             ),
           ),
           child: Label(
             label,
-            weight: selected ? 900 : 700,
-            color: selected ? LColor.primary : Colors.grey.shade400,
+            weight: selected ? 700 : 600,
+            color: selected ? kScheme.primary : LColor.fadeText,
           ).title,
         ),
       ),

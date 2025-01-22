@@ -7,6 +7,7 @@ import 'package:flutter_bamboo/Pages/Product/Search_Products_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Orders_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Saved_Address_UI.dart';
+import 'package:flutter_bamboo/Pages/Profile/Transactions_UI.dart';
 import 'package:flutter_bamboo/Pages/Root_UI.dart';
 import 'package:flutter_bamboo/Pages/Splash_UI.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
@@ -119,6 +120,12 @@ final goRouterProvider = Provider<GoRouter>(
               path: 'orders',
               builder: (context, state) {
                 return const Orders_UI();
+              },
+            ),
+            GoRoute(
+              path: 'transactions',
+              builder: (context, state) {
+                return const Transactions_UI();
               },
             ),
           ],

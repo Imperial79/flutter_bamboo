@@ -22,6 +22,6 @@ class StatusText {
 Color kOpacity(Color color, double opacity) =>
     color.withAlpha((opacity * 255).round());
 
-ColorScheme kColor(BuildContext context) => Theme.of(context).colorScheme;
+// ColorScheme kColor(BuildContext context) => Theme.of(context).colorScheme;
 
 ColorFilter kSvgColor(Color color) => ColorFilter.mode(color, BlendMode.srcIn);
