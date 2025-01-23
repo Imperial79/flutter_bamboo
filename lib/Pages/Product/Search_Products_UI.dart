@@ -94,20 +94,36 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
                           : "Searching for \"${searchKey.text}\"")
                       .title,
                   height5,
-                  MasonryGridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
+
+                  GridView.builder(
+                    shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: products.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return ProductPreviewCard(
-                        cardWidth: double.infinity,
-                        product: products[index],
-                      );
-                    },
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: .59,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                    ),
+                    itemBuilder: (context, index) => ProductPreviewCard(
+                      cardWidth: double.infinity,
+                      product: products[index],
+                    ),
                   ),
+                  // MasonryGridView.count(
+                  //   crossAxisCount: 2,
+                  //   mainAxisSpacing: 10,
+                  //   crossAxisSpacing: 10,
+                  //   physics: NeverScrollableScrollPhysics(),
+                  //   itemCount: products.length,
+                  //   shrinkWrap: true,
+                  //   itemBuilder: (context, index) {
+                  //     return ProductPreviewCard(
+                  //       cardWidth: double.infinity,
+                  //       product: products[index],
+                  //     );
+                  //   },
+                  // ),
                 ] else ...[
                   Center(
                     child: Column(

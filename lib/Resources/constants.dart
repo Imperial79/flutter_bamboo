@@ -25,3 +25,17 @@ double parseToDouble(dynamic value) {
   }
   return 0.0; // Default fallback if the value is of an unexpected type
 }
+
+String thoundsandToK(dynamic number) {
+  final num = parseToDouble(number);
+  if (num < 1000) return "$num";
+  return "${(num / 1000).toStringAsFixed(1)}K";
+}
+
+String calculateDiscount(dynamic mrp, dynamic salePrice) {
+  return (((parseToDouble(mrp) - parseToDouble(salePrice)) /
+              parseToDouble(mrp)) *
+          100)
+      .round()
+      .toString();
+}

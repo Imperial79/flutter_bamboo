@@ -45,12 +45,12 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
 
   _signInWithGoogle() async {
     try {
-      Navigator.pop(context);
       isLoading.value = true;
       final res = await ref.read(authRepository).signInWithGoogle(ref);
 
       if (!res.error) {
         ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
+        Navigator.pop(context);
       } else {
         KSnackbar(context, message: res.message, error: res.error);
       }
@@ -67,6 +67,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
       // context.push("/login");
       showModalBottomSheet(
         context: context,
+        isDismissible: !isLoading.value,
         builder: (context) => loginModal(),
       );
     }
@@ -74,34 +75,65 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
 
   loginModal() {
     return StatefulBuilder(builder: (context, setState) {
-      return SingleChildScrollView(
-        child: KCard(
-          padding: EdgeInsets.all(kPadding),
-          radius: 20,
-          child: SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: KCard(
-                    height: 7,
-                    width: 50,
-                    radius: 100,
-                    color: LColor.fadeText,
-                  ),
+      return ValueListenableBuilder(
+          valueListenable: isLoading,
+          builder: (context, loading, _) {
+            return SingleChildScrollView(
+              child: KCard(
+                width: double.infinity,
+                padding: EdgeInsets.all(kPadding),
+                radius: 20,
+                child: SafeArea(
+                  child: !loading
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: KCard(
+                                height: 7,
+                                width: 50,
+                                radius: 100,
+                                color: LColor.fadeText,
+                              ),
+                            ),
+                            height20,
+                            Label("Login to continue").title,
+                            Label(
+                              "Please login to order products and track your orders.",
+                              fontSize: 16,
+                            ).subtitle,
+                            height20,
+                            googleLoginButton(onPressed: _signInWithGoogle),
+                          ],
+                        )
+                      : Center(
+                          child: Column(
+                            children: [
+                              Label("Logging in").title,
+                              height20,
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 70,
+                                    width: 70,
+                                    child: CircularProgressIndicator(
+                                      color: LColor.primary,
+                                    ),
+                                  ),
+                                  SvgPicture.asset(
+                                    "$kIconPath/glogo.svg",
+                                    height: 50,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                 ),
-                height20,
-                Label("Login to continue").title,
-                Label("Please login to order products and track your orders.",
-                        fontSize: 16)
-                    .subtitle,
-                height20,
-                googleLoginButton(onPressed: _signInWithGoogle),
-              ],
-            ),
-          ),
-        ),
-      );
+              ),
+            );
+          });
     });
   }
 
@@ -110,7 +142,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     final productData = ref.watch(productDetailsFuture(widget.id));
     final cartData = ref.watch(cartProvider);
     return KScaffold(
-      isLoading: isLoading,
+      // isLoading: isLoading,
       appBar: productData.hasValue && productData.value != null
           ? AppBar(
               leading: IconButton(
@@ -175,7 +207,8 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ),
                           Label(
                             data.category,
-                            fontSize: 17,
+                            fontSize: 15,
+                            weight: 600,
                             color: LColor.fadeText,
                           ).regular,
                         ],
@@ -191,12 +224,14 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             Icons.star,
                             color: Colors.amber.shade700,
                           ),
-                          Label(
-                            "${data.totalRatings} Ratings • ${data.totalReviews} Reviews • ${data.totalSell} Sold",
-                            weight: 600,
-                            fontSize: 17,
-                            color: LColor.fadeText,
-                          ).title,
+                          Expanded(
+                            child: Label(
+                              "${data.totalRatings} Ratings • ${thoundsandToK(data.totalReviews)} Reviews • ${thoundsandToK(data.totalSell)} Sold",
+                              weight: 500,
+                              fontSize: 15,
+                              color: LColor.fadeText,
+                            ).title,
+                          ),
                         ],
                       ),
                       height20,
@@ -218,10 +253,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ),
                           width10,
                           Label(
-                            "-${(((parseToDouble(data.product_variants[selectedVariant]["mrp"]) - parseToDouble(data.product_variants[selectedVariant]["salePrice"])) / parseToDouble(data.product_variants[selectedVariant]["mrp"])) * 100).round()}%",
+                            "-${calculateDiscount(data.product_variants[selectedVariant]["mrp"], data.product_variants[selectedVariant]["salePrice"])}%",
                             fontSize: 20,
                             height: 1,
-                            weight: 400,
+                            weight: 500,
                             color: kScheme.error,
                           ).title,
                         ],
@@ -229,25 +264,24 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                       height5,
                       Label(
                         "MRP ${kCurrencyFormat(data.product_variants[selectedVariant]["mrp"])}",
+                        weight: 600,
+                        color: LColor.fadeText,
                         decoration: TextDecoration.lineThrough,
                       ).regular,
                       Label("Inclusive of all taxes",
-                              color: Colors.grey.shade600, weight: 700)
+                              color: LColor.fadeText, weight: 600)
                           .subtitle,
                       height20,
                       Row(
                         spacing: 5,
                         children: [
-                          Label(
-                            "Variant:",
-                            fontSize: 16,
-                          ).regular,
+                          Label("Variant:", fontSize: 16, weight: 600).regular,
                           Flexible(
                             child: Label(
                               data.product_variants[selectedVariant]
                                   ["attributeValue"],
                               fontSize: 16,
-                              weight: 800,
+                              weight: 700,
                             ).regular,
                           ),
                         ],
@@ -286,35 +320,33 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         ...aboutItemTab(data)
                       else
                         ...reviewsTab(),
-                      height10,
-                      Label(
-                        "Products you may like",
-                        weight: 900,
-                        fontSize: 17,
-                      ).regular,
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          spacing: 10,
-                          children: [
-                            // ProductPreviewCard(
-                            //   cardWidth: 200,
-                            // ),
-                            // ProductPreviewCard(
-                            //   cardWidth: 200,
-                            // ),
-                            // ProductPreviewCard(
-                            //   cardWidth: 200,
-                            // ),
-                            // ProductPreviewCard(
-                            //   cardWidth: 200,
-                            // ),
-                            // ProductPreviewCard(
-                            //   cardWidth: 200,
-                            // ),
-                          ],
-                        ),
-                      ),
+                      // height20,
+                      // Label(
+                      //   "Products you may like",
+                      // ).regular,
+                      // SingleChildScrollView(
+                      //   scrollDirection: Axis.horizontal,
+                      //   child: Row(
+                      //     spacing: 10,
+                      //     children: [
+                      //       // ProductPreviewCard(
+                      //       //   cardWidth: 200,
+                      //       // ),
+                      //       // ProductPreviewCard(
+                      //       //   cardWidth: 200,
+                      //       // ),
+                      //       // ProductPreviewCard(
+                      //       //   cardWidth: 200,
+                      //       // ),
+                      //       // ProductPreviewCard(
+                      //       //   cardWidth: 200,
+                      //       // ),
+                      //       // ProductPreviewCard(
+                      //       //   cardWidth: 200,
+                      //       // ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                 )
@@ -359,12 +391,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                       Label("Total Price").regular,
                       Label(
                         kCurrencyFormat(
-                            product.product_variants[selectedVariant]
-                                ["salePrice"],
-                            symbol: "INR "),
-                        weight: 800,
+                          product.product_variants[selectedVariant]
+                              ["salePrice"],
+                          symbol: "INR ",
+                        ),
+                        weight: 700,
                         fontSize: 25,
-                        color: LColor.primary,
+                        color: LColor.secondary,
                       ).title,
                     ],
                   ),
@@ -397,11 +430,12 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                       mainAxisSize: MainAxisSize.min,
                       spacing: 10,
                       children: [
-                        SvgPicture.asset(
-                          "$kIconPath/shopping-bag.svg",
-                          height: 20,
-                          colorFilter: kSvgColor(Colors.white),
-                        ),
+                        if (!inCart)
+                          SvgPicture.asset(
+                            "$kIconPath/shopping-bag.svg",
+                            height: 20,
+                            colorFilter: kSvgColor(Colors.white),
+                          ),
                         if (cartData.isNotEmpty && !inCart)
                           Label(
                             "${cartData.length}",
@@ -432,7 +466,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     ),
                     child: FittedBox(
                       child: Label("Buy Now",
-                              fontSize: 20, weight: 700, color: Colors.white)
+                              fontSize: 17, weight: 600, color: Colors.white)
                           .regular,
                     ),
                   ),
@@ -457,7 +491,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
       }),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       borderColor: selected ? kScheme.primary : LColor.card,
-      color: selected ? kScheme.primaryContainer : LColor.card,
+      color: selected ? kOpacity(kScheme.primaryContainer, .7) : LColor.card,
       borderWidth: 1.5,
       radius: 10,
       width: 200,
@@ -468,8 +502,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
             spacing: 10,
             children: [
               Expanded(
-                  child: Label(label, fontSize: 17, weight: 800, maxLines: 1)
-                      .regular),
+                child: Label(label, fontSize: 17, weight: 700, maxLines: 1)
+                    .regular,
+              ),
               KCard(
                 borderWidth: 2,
                 color: kOpacity(Colors.white, .8),
@@ -478,15 +513,15 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 child: Label(
                   amount,
                   fontSize: 15,
-                  weight: 800,
+                  weight: 700,
                 ).regular,
               ),
             ],
           ),
-          Label(
-            mrp,
-            decoration: TextDecoration.lineThrough,
-          ).regular,
+          Label(mrp,
+                  decoration: TextDecoration.lineThrough,
+                  color: LColor.fadeText)
+              .regular,
         ],
       ),
     );
@@ -496,12 +531,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     return [
       Label(
         "Description",
-        weight: 700,
-        fontSize: 17,
       ).regular,
       Text.rich(
-        style: TextStyle(
-            fontVariations: [FontVariation.weight(500)], fontSize: 16),
+        style: TextStyle(fontVariations: [FontVariation.weight(500)]),
         TextSpan(
           children: [
             TextSpan(
@@ -540,7 +572,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         crossAxisAlignment: CrossAxisAlignment.end,
         spacing: 10,
         children: [
-          Label("4.9", fontSize: 50, height: 1, weight: 900).title,
+          Label("4.9", fontSize: 50, height: 1, weight: 700).title,
           Label("/ 5.0").title,
         ],
       ),
@@ -548,7 +580,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         rating: 4.9,
         allowHalfRating: false,
         color: Colors.amber.shade800,
-        // onRatingChanged: (rating) => setState(() => this.rating = rating),
       ),
       Center(
         child: Label(
@@ -561,7 +592,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
       height20,
       Label(
         "Reviews & Ratings",
-        fontSize: 17,
       ).regular,
       height15,
       KCard(
@@ -571,15 +601,16 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              spacing: 10,
+              spacing: 5,
               children: [
                 CircleAvatar(
                   radius: 15,
                 ),
+                width5,
                 Expanded(
                     child: Label(
                   "User N***e",
-                  fontSize: 17,
+                  fontSize: 15,
                 ).regular),
                 Icon(
                   Icons.star,
@@ -587,14 +618,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 ),
                 Label(
                   "5.0",
-                  fontSize: 17,
+                  fontSize: 15,
                 ).regular
               ],
             ),
-            Label(
-              "\"The product is more than my expectations\"",
-              fontSize: 16,
-            ).subtitle,
+            Label("\"The product is more than my expectations\"",
+                    fontSize: 13, weight: 600)
+                .subtitle,
           ],
         ),
       )
@@ -616,14 +646,15 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
             color: LColor.scaffold,
             border: Border(
               bottom: BorderSide(
-                  color: selected ? kScheme.primary : Colors.grey.shade300,
-                  width: 3),
+                color: selected ? LColor.primary : Colors.grey.shade300,
+                width: selected ? 3 : 2,
+              ),
             ),
           ),
           child: Label(
             label,
-            weight: selected ? 700 : 600,
-            color: selected ? kScheme.primary : LColor.fadeText,
+            weight: selected ? 700 : 500,
+            color: selected ? LColor.primary : LColor.fadeText,
           ).title,
         ),
       ),

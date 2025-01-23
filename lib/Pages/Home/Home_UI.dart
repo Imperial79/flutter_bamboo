@@ -65,6 +65,8 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                           _refresh();
                         },
                       ),
+                      color: LColor.scaffold,
+                      borderWidth: 1,
                       radius: 10,
                       child: Row(
                         spacing: 10,
@@ -77,7 +79,8 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                           Flexible(
                             child: Label(
                               "Search products",
-                              fontSize: 17,
+                              fontSize: 15,
+                              weight: 600,
                               color: LColor.fadeText,
                             ).title,
                           ),
@@ -202,19 +205,35 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                               ),
                             ],
                           ),
-                          MasonryGridView.count(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
+                          // MasonryGridView.count(
+                          //   crossAxisCount: 2,
+                          //   mainAxisSpacing: 10,
+                          //   crossAxisSpacing: 10,
+                          //   physics: NeverScrollableScrollPhysics(),
+                          //   itemCount: products.length,
+                          //   shrinkWrap: true,
+                          //   itemBuilder: (context, index) {
+                          //     return ProductPreviewCard(
+                          //       cardWidth: double.infinity,
+                          //       product: products[index],
+                          //     );
+                          //   },
+                          // ),
+                          GridView.builder(
+                            shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: products.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              return ProductPreviewCard(
-                                cardWidth: double.infinity,
-                                product: products[index],
-                              );
-                            },
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: .59,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
+                            ),
+                            itemBuilder: (context, index) => ProductPreviewCard(
+                              cardWidth: double.infinity,
+                              product: products[index],
+                            ),
                           ),
                         ],
                       ),

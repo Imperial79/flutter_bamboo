@@ -101,6 +101,9 @@ flutter:
     - family: Urbanist
       fonts:
         - asset: assets/fonts/Urbanist-VariableFont_wght.ttf
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-VariableFont_wght.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

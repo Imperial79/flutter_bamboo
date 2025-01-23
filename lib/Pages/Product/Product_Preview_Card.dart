@@ -38,11 +38,13 @@ class ProductPreviewCard extends ConsumerWidget {
                 Container(
                   height: 150,
                   decoration: BoxDecoration(
-                    color: LColor.scaffold,
+                    borderRadius: kRadius(15),
+                    color: kOpacity(LColor.fadeText, .5),
                     image: DecorationImage(
                       image: NetworkImage(
                         product.images[0],
                       ),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
@@ -72,52 +74,67 @@ class ProductPreviewCard extends ConsumerWidget {
                 )
               ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Label(product.category, weight: 600).subtitle,
-                  Label(
-                    product.name,
-                    fontSize: 16,
-                    maxLines: 2,
-                    weight: 700,
-                  ).regular,
-                  height10,
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star,
-                        size: 20,
-                        color: Colors.amber.shade700,
-                      ),
-                      Label(
-                        "${product.totalRatings} | ${product.totalSell}",
-                        weight: 500,
-                      ).regular,
-                    ],
-                  ),
-                  height5,
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 10,
-                    children: [
-                      Label(
-                        kCurrencyFormat(product.salePrice),
-                        weight: 700,
-                        fontSize: 22,
-                      ).title,
-                      Label(
-                        "MRP ${kCurrencyFormat(product.mrp)}",
-                        weight: 700,
-                        fontSize: 17,
-                        color: LColor.fadeText,
-                        decoration: TextDecoration.lineThrough,
-                      ).regular,
-                    ],
-                  ),
-                ],
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Label(
+                      product.category,
+                      weight: 600,
+                      fontSize: 12,
+                      color: LColor.fadeText,
+                    ).subtitle,
+                    Label(
+                      "${product.name}\n",
+                      maxLines: 2,
+                      weight: 700,
+                    ).regular,
+                    height10,
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star,
+                          size: 20,
+                          color: Colors.amber.shade700,
+                        ),
+                        Label(
+                          "${product.totalRatings} | ${thoundsandToK(product.totalSell)}",
+                          weight: 600,
+                          fontSize: 12,
+                          color: LColor.fadeText,
+                        ).regular,
+                      ],
+                    ),
+                    height5,
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 10,
+                      children: [
+                        Label(
+                          kCurrencyFormat(product.salePrice),
+                          weight: 700,
+                          fontSize: 20,
+                        ).title,
+                        Label(
+                          "-${calculateDiscount(product.mrp, product.salePrice)}%",
+                          weight: 600,
+                          fontSize: 15,
+                          color: StatusText.danger,
+                        ).title,
+                        Label(
+                          "MRP ${kCurrencyFormat(product.mrp)}",
+                          weight: 600,
+                          fontSize: 15,
+                          color: LColor.fadeText,
+                          decoration: TextDecoration.lineThrough,
+                        ).regular,
+                      ],
+                    ),
+                  ],
+                ),
               ),
             )
           ],

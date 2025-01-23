@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 
-const String kFont = "Urbanist";
+const String kFont = "Montserrat";
 
 ColorScheme get kScheme => ColorScheme.fromSeed(
       seedColor: LColor.primary,
