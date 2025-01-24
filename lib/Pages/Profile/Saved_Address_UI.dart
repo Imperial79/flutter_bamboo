@@ -65,7 +65,7 @@ class _Saved_Address_UIState extends State<Saved_Address_UI> {
                 itemCount: 2,
                 shrinkWrap: true,
                 itemBuilder: (context, index) => KCard(
-                  color: LColor.scaffold,
+                  color: KColor.scaffold,
                   borderWidth: 1,
                   width: double.infinity,
                   child: Row(
@@ -90,7 +90,7 @@ class _Saved_Address_UIState extends State<Saved_Address_UI> {
                                 ).text,
                                 Icon(
                                   Icons.check_circle_outline_outlined,
-                                  color: LColor.primary,
+                                  color: KColor.primary,
                                 ),
                               ],
                             ),

@@ -27,7 +27,7 @@ class _KSearchbarState extends State<KSearchbar> {
     return KTextfield(
       controller: widget.controller,
       fontSize: 15,
-      fieldColor: LColor.scaffold,
+      fieldColor: KColor.scaffold,
       prefix: const Icon(
         Icons.search,
         size: 25,

@@ -83,7 +83,7 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
                       : "$kIconPath/shopping-bag.svg",
                   height: 22,
                   colorFilter: kSvgColor(
-                    cartLength > 0 ? LColor.primary : Colors.black,
+                    cartLength > 0 ? KColor.primary : Colors.black,
                   ),
                 ),
               ),
@@ -152,7 +152,7 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
                     child: Column(
                       children: [
                         Label("Sorry :(", weight: 500, fontSize: 25).title,
-                        Label("No products found!", color: LColor.fadeText)
+                        Label("No products found!", color: KColor.fadeText)
                             .title,
                       ],
                     ),

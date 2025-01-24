@@ -81,7 +81,7 @@ class _DayPickerState extends State<DayPicker> {
                   }
                 },
                 child: KCard(
-                  color: widget.inactiveCardColor ?? LColor.card,
+                  color: widget.inactiveCardColor ?? KColor.card,
                   child: !showPick
                       ? Column(
                           children: [
@@ -164,7 +164,7 @@ class _DayPickerState extends State<DayPicker> {
           margin: EdgeInsets.only(right: index == (widget.days - 1) ? 0 : 10),
           decoration: BoxDecoration(
             color: isActive
-                ? widget.activeColor ?? LColor.primary
+                ? widget.activeColor ?? KColor.primary
                 : widget.inactiveCardColor ?? Colors.white,
             borderRadius: kRadius(100),
           ),

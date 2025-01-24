@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Cart_UI.dart';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
@@ -89,6 +90,10 @@ final goRouterProvider = Provider<GoRouter>(
           builder: (context, state) {
             return const Cart_UI();
           },
+        ),
+        GoRoute(
+          path: "/affiliate",
+          builder: (context, state) => Affiliate_UI(),
         ),
         GoRoute(
           path: '/profile',

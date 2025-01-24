@@ -52,7 +52,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
         child: Column(
           children: [
             KCard(
-              color: LColor.scaffold,
+              color: KColor.scaffold,
               radius: 0,
               child: Row(
                 spacing: 10,
@@ -64,7 +64,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                           _refresh();
                         },
                       ),
-                      color: LColor.scaffold,
+                      color: KColor.scaffold,
                       borderWidth: 1,
                       radius: 10,
                       child: Row(
@@ -73,14 +73,14 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                           SvgPicture.asset(
                             "$kIconPath/search.svg",
                             height: 20,
-                            colorFilter: kSvgColor(LColor.fadeText),
+                            colorFilter: kSvgColor(KColor.fadeText),
                           ),
                           Flexible(
                             child: Label(
                               "Search products",
                               fontSize: 15,
                               weight: 600,
-                              color: LColor.fadeText,
+                              color: KColor.fadeText,
                             ).title,
                           ),
                         ],
@@ -99,7 +99,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                             : "$kIconPath/shopping-bag.svg",
                         height: 22,
                         colorFilter: kSvgColor(
-                          cartLength > 0 ? LColor.primary : Colors.black,
+                          cartLength > 0 ? KColor.primary : Colors.black,
                         ),
                       ),
                     ),
@@ -139,32 +139,28 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                       height: 250,
                       isLooped: true,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "https://images.unsplash.com/photo-1736776256361-360f071c2540?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                        "https://static.vecteezy.com/system/resources/previews/001/381/216/non_2x/special-offer-sale-banner-with-megaphone-free-vector.jpg",
+                        "https://img.freepik.com/free-vector/mega-sale-offers-banner-template_1017-31299.jpg",
+                        "https://mir-s3-cdn-cf.behance.net/project_modules/hd/e0258724785543.5633a09ab2d1d.jpg",
+                      ]
+                          .map(
+                            (e) => Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    e,
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              fit: BoxFit.cover,
                             ),
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                "https://images.unsplash.com/photo-1736344319749-93bc29f03d5d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                              ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ],
+                          )
+                          .toList(),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: kPadding),
                       child: Row(
-                        spacing: 20,
+                        spacing: 10,
                         children: [
                           _categoryBtn(Icons.apps, "All", Colors.black),
                           _categoryBtn(Icons.male, "Men", Colors.blue),
@@ -184,18 +180,17 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                           Row(
                             children: [
                               Expanded(
-                                child: Label(
-                                  "Best Sale Products",
-                                  fontWeight: FontWeight.w700,
-                                ).title,
+                                child: Label("Best Sale Products",
+                                        weight: 700, fontSize: 17)
+                                    .title,
                               ),
                               TextButton(
                                 onPressed: () =>
                                     context.push("/search-products"),
                                 child: Label(
                                   "See More",
-                                  fontSize: 16,
                                   weight: 700,
+                                  color: KColor.primary,
                                 ).regular,
                               ),
                             ],
@@ -244,23 +239,26 @@ class _Home_UIState extends ConsumerState<Home_UI> {
   }
 
   Widget _categoryBtn(IconData icon, String label, Color color) {
-    return GestureDetector(
-      onTap: () => context.push('/search-products?category=$label').then(
-            (value) => _refresh(),
-          ),
-      child: Column(
-        spacing: 5,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          KCard(
-            radius: 15,
-            child: Icon(
-              icon,
-              color: color,
+    return Expanded(
+      child: GestureDetector(
+        onTap: () => context.push('/search-products?category=$label').then(
+              (value) => _refresh(),
             ),
-          ),
-          Label(label, fontSize: 12).regular,
-        ],
+        child: Column(
+          spacing: 5,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            KCard(
+              width: double.infinity,
+              radius: 15,
+              child: Icon(
+                icon,
+                color: color,
+              ),
+            ),
+            Label(label, fontSize: 12, weight: 600).regular,
+          ],
+        ),
       ),
     );
   }

@@ -53,7 +53,7 @@ class _OTP_UIState extends State<OTP_UI> {
                 TextSpan(
                   style: TextStyle(
                     fontSize: 15,
-                    color: LColor.fadeText,
+                    color: KColor.fadeText,
                     fontVariations: [FontVariation.weight(600)],
                   ),
                   children: [
@@ -96,8 +96,8 @@ class _OTP_UIState extends State<OTP_UI> {
   Widget buildOtpField() {
     return KCard(
       radius: 15,
-      borderColor: LColor.border,
-      color: LColor.scaffold,
+      borderColor: KColor.border,
+      color: KColor.scaffold,
       borderWidth: 1,
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Row(
@@ -127,7 +127,7 @@ class _OTP_UIState extends State<OTP_UI> {
                 ),
                 label: Label(
                   "One Time Password (OTP)",
-                  color: LColor.fadeText,
+                  color: KColor.fadeText,
                   weight: 600,
                 ).regular,
                 border: InputBorder.none,
@@ -139,7 +139,7 @@ class _OTP_UIState extends State<OTP_UI> {
             icon: Icon(
               Icons.sync_sharp,
               size: 25,
-              color: LColor.fadeText,
+              color: KColor.fadeText,
             ),
             visualDensity: VisualDensity.compact,
           ),

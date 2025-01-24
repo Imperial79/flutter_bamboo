@@ -39,7 +39,7 @@ class KCarousel extends StatefulWidget {
             boxShadow: showShadow
                 ? [
                     const BoxShadow(
-                      color: LColor.border,
+                      color: KColor.border,
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
@@ -131,7 +131,7 @@ class _KCarouselState extends State<KCarousel> {
               width: activeIndex == index ? 15 : 4,
               decoration: BoxDecoration(
                 borderRadius: kRadius(100),
-                color: activeIndex == index ? LColor.secondary : LColor.border,
+                color: activeIndex == index ? KColor.secondary : KColor.border,
               ),
             ),
           ),

@@ -33,7 +33,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Bamboo Inc.',
-      color: LColor.scaffold,
+      color: KColor.scaffold,
       theme: kTheme(context),
       themeMode: ThemeMode.light,
       routerConfig: routerConfig,

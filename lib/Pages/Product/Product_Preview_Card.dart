@@ -40,7 +40,7 @@ class ProductPreviewCard extends ConsumerWidget {
                   height: 150,
                   decoration: BoxDecoration(
                     borderRadius: kRadius(15),
-                    color: kOpacity(LColor.fadeText, .5),
+                    color: kOpacity(KColor.fadeText, .5),
                     image: DecorationImage(
                       image: NetworkImage(
                         product.images[0],
@@ -71,7 +71,7 @@ class ProductPreviewCard extends ConsumerWidget {
                           : "$kIconPath/shopping-bag.svg",
                       height: 15,
                       colorFilter: kSvgColor(
-                        inCart ? kScheme.primaryContainer : LColor.secondary,
+                        inCart ? kScheme.primaryContainer : KColor.secondary,
                       ),
                     ),
                   ),
@@ -89,7 +89,7 @@ class ProductPreviewCard extends ConsumerWidget {
                       product.category,
                       weight: 600,
                       fontSize: 12,
-                      color: LColor.fadeText,
+                      color: KColor.fadeText,
                     ).subtitle,
                     Label(
                       "${product.name}\n",
@@ -108,7 +108,7 @@ class ProductPreviewCard extends ConsumerWidget {
                           "${product.totalRatings} | ${thoundsandToK(product.totalSell)}",
                           weight: 600,
                           fontSize: 12,
-                          color: LColor.fadeText,
+                          color: KColor.fadeText,
                         ).regular,
                       ],
                     ),
@@ -132,7 +132,7 @@ class ProductPreviewCard extends ConsumerWidget {
                           "MRP ${kCurrencyFormat(product.mrp)}",
                           weight: 600,
                           fontSize: 15,
-                          color: LColor.fadeText,
+                          color: KColor.fadeText,
                           decoration: TextDecoration.lineThrough,
                         ).regular,
                       ],

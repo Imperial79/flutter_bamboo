@@ -8,40 +8,27 @@ import 'package:flutter_bamboo/Resources/constants.dart';
 ValueNotifier activePageNotifier = ValueNotifier(0);
 
 class KNavigationBar extends StatelessWidget {
+  final List navList;
   String get navIconPath => "$kIconPath/navigation";
-  const KNavigationBar({super.key});
+  const KNavigationBar({super.key, required this.navList});
 
   @override
   Widget build(BuildContext context) {
     return KCard(
       padding: EdgeInsets.all(10),
       borderWidth: 1,
-      color: LColor.scaffold,
+      color: KColor.scaffold,
       radius: 0,
       child: SafeArea(
         child: Row(
-          children: [
-            btn(
-              iconPath: "home",
-              index: 0,
-              label: "Home",
-            ),
-            btn(
-              iconPath: "profile",
-              index: 1,
-              label: "----",
-            ),
-            btn(
-              iconPath: "profile",
-              index: 2,
-              label: "----",
-            ),
-            btn(
-              iconPath: "profile",
-              index: 3,
-              label: "Profile",
-            ),
-          ],
+          children: navList
+              .map(
+                (e) => btn(
+                    iconPath: e['iconPath'],
+                    index: e['index'],
+                    label: e['label']),
+              )
+              .toList(),
         ),
       ),
     );
@@ -71,14 +58,14 @@ class KNavigationBar extends StatelessWidget {
                       : "$navIconPath/$iconPath.svg",
                   height: 20,
                   colorFilter: ColorFilter.mode(
-                    selected ? LColor.primary : LColor.fadeText,
+                    selected ? KColor.primary : KColor.fadeText,
                     BlendMode.srcIn,
                   ),
                 ),
                 Label(
                   label,
-                  weight: selected ? 700 : 600,
-                  color: selected ? null : LColor.fadeText,
+                  weight: selected ? 600 : 500,
+                  color: selected ? null : KColor.fadeText,
                   fontSize: 13,
                 ).regular,
               ],

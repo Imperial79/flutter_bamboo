@@ -65,7 +65,7 @@ class KScaffold extends StatelessWidget {
           ? Container(
               height: double.maxFinite,
               width: double.maxFinite,
-              color: LColor.scaffold.withAlpha((.8 * 255).round()),
+              color: KColor.scaffold.withAlpha((.8 * 255).round()),
               child: Center(
                 child: KCard(
                   padding: const EdgeInsets.all(30),
@@ -78,7 +78,7 @@ class KScaffold extends StatelessWidget {
                         width: 25,
                         child: CircularProgressIndicator(
                           strokeWidth: 3,
-                          color: LColor.primary,
+                          color: KColor.primary,
                         ),
                       ),
                       Label("Please Wait", fontSize: 17, weight: 400).title,
@@ -101,7 +101,7 @@ AppBar KAppBar(
   List<Widget>? actions,
 }) {
   return AppBar(
-    backgroundColor: LColor.scaffold,
+    backgroundColor: KColor.scaffold,
     automaticallyImplyLeading: false,
     titleSpacing: showBack ? 0 : kPadding,
     leadingWidth: 70,

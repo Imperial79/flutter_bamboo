@@ -40,9 +40,19 @@ class Product_Detail_UI extends ConsumerStatefulWidget {
 
 class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   String selectedDescriptionType = "About Item";
-  int selectedVariant = 0;
+  int selectedVariant = -1;
   bool showLess = false;
   final isLoading = ValueNotifier(false);
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback(
+  //     (timeStamp) {
+  //       if (widget.sku != null) selectedSku = widget.sku!;
+  //     },
+  //   );
+  // }
 
   _signInWithGoogle() async {
     try {
@@ -88,74 +98,22 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     }
   }
 
-  loginModal() {
-    return StatefulBuilder(builder: (context, setState) {
-      return ValueListenableBuilder(
-          valueListenable: isLoading,
-          builder: (context, loading, _) {
-            return SingleChildScrollView(
-              child: KCard(
-                width: double.infinity,
-                padding: EdgeInsets.all(kPadding),
-                radius: 20,
-                child: SafeArea(
-                  child: !loading
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: KCard(
-                                height: 7,
-                                width: 50,
-                                radius: 100,
-                                color: LColor.fadeText,
-                              ),
-                            ),
-                            height20,
-                            Label("Login to continue").title,
-                            Label(
-                              "Please login to order products and track your orders.",
-                              fontSize: 16,
-                            ).subtitle,
-                            height20,
-                            googleLoginButton(onPressed: _signInWithGoogle),
-                          ],
-                        )
-                      : Center(
-                          child: Column(
-                            children: [
-                              Label("Logging in").title,
-                              height20,
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 70,
-                                    width: 70,
-                                    child: CircularProgressIndicator(
-                                      color: LColor.primary,
-                                    ),
-                                  ),
-                                  SvgPicture.asset(
-                                    "$kIconPath/glogo.svg",
-                                    height: 50,
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                ),
-              ),
-            );
-          });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final productData = ref.watch(productDetailsFuture(widget.id));
     final cartData = ref.watch(cartProvider);
+
+    productData.whenData(
+      (value) {
+        if (value != null && selectedVariant == -1) {
+          selectedVariant = value.product_variants
+              .indexWhere((item) => item["sku"] == widget.sku);
+          if (selectedVariant == -1) {
+            selectedVariant = 0;
+          }
+        }
+      },
+    );
     return KScaffold(
       isLoading: isLoading,
       appBar: productData.hasValue && productData.value != null
@@ -184,7 +142,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           : "$kIconPath/shopping-bag.svg",
                       height: 22,
                       colorFilter: kSvgColor(
-                        cartData.isNotEmpty ? LColor.primary : Colors.black,
+                        cartData.isNotEmpty ? KColor.primary : Colors.black,
                       ),
                     ),
                   ),
@@ -197,107 +155,117 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         child: productData.when(
           data: (data) => data != null
               ? SingleChildScrollView(
-                  padding: EdgeInsets.all(kPadding),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      KCarousel(
-                        isLooped: false,
-                        images: data.images,
-                        height: 300,
-                      ),
-                      height20,
-                      Row(
-                        spacing: 5,
-                        children: [
-                          Icon(
-                            kCatgeoryMap[data.category] ?? Icons.apps,
-                            size: 20,
-                            color: LColor.fadeText,
-                          ),
-                          Label(
-                            data.category,
-                            fontSize: 15,
-                            weight: 600,
-                            color: LColor.fadeText,
-                          ).regular,
-                        ],
-                      ),
-                      height5,
-                      Label(data.name, weight: 700, fontSize: 17, height: 1.3)
-                          .title,
-                      height10,
-                      Row(
-                        spacing: 7,
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: Colors.amber.shade700,
-                          ),
-                          Expanded(
-                            child: Label(
-                              "${data.totalRatings} Ratings • ${thoundsandToK(data.totalReviews)} Reviews • ${thoundsandToK(data.totalSell)} Sold",
-                              weight: 500,
-                              fontSize: 15,
-                              color: LColor.fadeText,
-                            ).title,
-                          ),
-                        ],
-                      ),
-                      height20,
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Label("₹", fontSize: 20, height: 1.2).regular,
-                          Flexible(
-                            child: Label(
-                              kCurrencyFormat(
-                                data.product_variants[selectedVariant]
-                                    ["salePrice"],
-                                symbol: "",
-                              ),
-                              fontSize: 30,
-                              height: 1,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: kPadding),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            KCarousel(
+                              isLooped: false,
+                              images: data.images,
+                              height: 300,
+                            ),
+                            height20,
+                            Row(
+                              spacing: 5,
+                              children: [
+                                Icon(
+                                  kCatgeoryMap[data.category] ?? Icons.apps,
+                                  size: 20,
+                                  color: KColor.fadeText,
+                                ),
+                                Label(
+                                  data.category,
+                                  fontSize: 15,
+                                  weight: 600,
+                                  color: KColor.fadeText,
+                                ).regular,
+                              ],
+                            ),
+                            height5,
+                            Label(data.name,
+                                    weight: 700, fontSize: 17, height: 1.3)
+                                .title,
+                            height10,
+                            Row(
+                              spacing: 7,
+                              children: [
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber.shade700,
+                                ),
+                                Expanded(
+                                  child: Label(
+                                    "${data.totalRatings} Ratings • ${thoundsandToK(data.totalReviews)} Reviews • ${thoundsandToK(data.totalSell)} Sold",
+                                    weight: 500,
+                                    fontSize: 15,
+                                    color: KColor.fadeText,
+                                  ).title,
+                                ),
+                              ],
+                            ),
+                            height20,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Label("₹", fontSize: 20, height: 1.2).regular,
+                                Flexible(
+                                  child: Label(
+                                    kCurrencyFormat(
+                                      data.product_variants[selectedVariant]
+                                          ["salePrice"],
+                                      symbol: "",
+                                    ),
+                                    fontSize: 30,
+                                    height: 1,
+                                    weight: 600,
+                                  ).title,
+                                ),
+                                width10,
+                                Label(
+                                  "-${calculateDiscount(data.product_variants[selectedVariant]["mrp"], data.product_variants[selectedVariant]["salePrice"])}%",
+                                  fontSize: 20,
+                                  height: 1,
+                                  weight: 500,
+                                  color: kScheme.error,
+                                ).title,
+                              ],
+                            ),
+                            height5,
+                            Label(
+                              "MRP ${kCurrencyFormat(data.product_variants[selectedVariant]["mrp"])}",
                               weight: 600,
-                            ).title,
-                          ),
-                          width10,
-                          Label(
-                            "-${calculateDiscount(data.product_variants[selectedVariant]["mrp"], data.product_variants[selectedVariant]["salePrice"])}%",
-                            fontSize: 20,
-                            height: 1,
-                            weight: 500,
-                            color: kScheme.error,
-                          ).title,
-                        ],
-                      ),
-                      height5,
-                      Label(
-                        "MRP ${kCurrencyFormat(data.product_variants[selectedVariant]["mrp"])}",
-                        weight: 600,
-                        color: LColor.fadeText,
-                        decoration: TextDecoration.lineThrough,
-                      ).regular,
-                      Label("Inclusive of all taxes",
-                              color: LColor.fadeText, weight: 600)
-                          .subtitle,
-                      height20,
-                      Row(
-                        spacing: 5,
-                        children: [
-                          Label("Variant:", fontSize: 16, weight: 600).regular,
-                          Flexible(
-                            child: Label(
-                              data.product_variants[selectedVariant]
-                                  ["attributeValue"],
-                              fontSize: 16,
-                              weight: 700,
+                              color: KColor.fadeText,
+                              decoration: TextDecoration.lineThrough,
                             ).regular,
-                          ),
-                        ],
+                            Label("Inclusive of all taxes",
+                                    color: KColor.fadeText, weight: 600)
+                                .subtitle,
+                            height20,
+                            Row(
+                              spacing: 5,
+                              children: [
+                                Label("Variant:", fontSize: 16, weight: 600)
+                                    .regular,
+                                Flexible(
+                                  child: Label(
+                                    data.product_variants[selectedVariant]
+                                        ["attributeValue"],
+                                    fontSize: 16,
+                                    weight: 700,
+                                  ).regular,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       height5,
                       SingleChildScrollView(
+                        padding: EdgeInsets.symmetric(horizontal: kPadding),
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           spacing: 8,
@@ -318,18 +286,27 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ),
                         ),
                       ),
-                      height20,
-                      Row(
-                        children: [
-                          descriptionSelectBtn("About Item"),
-                          descriptionSelectBtn("Reviews"),
-                        ],
-                      ),
-                      height20,
-                      if (selectedDescriptionType == "About Item")
-                        ...aboutItemTab(data)
-                      else
-                        ...reviewsTab(),
+
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: kPadding),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            height20,
+                            Row(
+                              children: [
+                                descriptionSelectBtn("About Item"),
+                                descriptionSelectBtn("Reviews"),
+                              ],
+                            ),
+                            height20,
+                            if (selectedDescriptionType == "About Item")
+                              ...aboutItemTab(data)
+                            else
+                              ...reviewsTab(),
+                          ],
+                        ),
+                      )
                       // height20,
                       // Label(
                       //   "Products you may like",
@@ -371,6 +348,70 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     );
   }
 
+  loginModal() {
+    return StatefulBuilder(builder: (context, setState) {
+      return ValueListenableBuilder(
+          valueListenable: isLoading,
+          builder: (context, loading, _) {
+            return SingleChildScrollView(
+              child: KCard(
+                width: double.infinity,
+                padding: EdgeInsets.all(kPadding),
+                radius: 20,
+                child: SafeArea(
+                  child: !loading
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: KCard(
+                                height: 7,
+                                width: 50,
+                                radius: 100,
+                                color: KColor.fadeText,
+                              ),
+                            ),
+                            height20,
+                            Label("Login to continue").title,
+                            Label(
+                              "Please login to order products and track your orders.",
+                              fontSize: 16,
+                            ).subtitle,
+                            height20,
+                            googleLoginButton(onPressed: _signInWithGoogle),
+                          ],
+                        )
+                      : Center(
+                          child: Column(
+                            children: [
+                              Label("Logging in").title,
+                              height20,
+                              Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  SizedBox(
+                                    height: 70,
+                                    width: 70,
+                                    child: CircularProgressIndicator(
+                                      color: KColor.primary,
+                                    ),
+                                  ),
+                                  SvgPicture.asset(
+                                    "$kIconPath/glogo.svg",
+                                    height: 50,
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
+              ),
+            );
+          });
+    });
+  }
+
   Widget footer(ProductDetailModel product) {
     return Consumer(
       builder: (context, ref, child) {
@@ -380,10 +421,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         return Container(
           padding: EdgeInsets.all(kPadding),
           decoration: BoxDecoration(
-            color: LColor.scaffold,
+            color: KColor.scaffold,
             boxShadow: [
               BoxShadow(
-                color: kOpacity(LColor.secondary, .1),
+                color: kOpacity(KColor.secondary, .1),
                 blurRadius: 20,
                 spreadRadius: 20,
                 offset: Offset(0, 10),
@@ -407,7 +448,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         ),
                         weight: 700,
                         fontSize: 25,
-                        color: LColor.secondary,
+                        color: KColor.secondary,
                       ).title,
                     ],
                   ),
@@ -423,6 +464,8 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             quantity: 1,
                             productId: product.id,
                           ));
+                    } else {
+                      context.push("/cart");
                     }
                   },
                   child: Container(
@@ -430,7 +473,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     decoration: BoxDecoration(
-                      color: LColor.primary,
+                      color: KColor.primary,
                       borderRadius: BorderRadius.horizontal(
                         left: Radius.circular(7),
                       ),
@@ -469,7 +512,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                     decoration: BoxDecoration(
-                      color: LColor.secondary,
+                      color: KColor.secondary,
                       borderRadius: BorderRadius.horizontal(
                         right: Radius.circular(7),
                       ),
@@ -489,19 +532,20 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     );
   }
 
-  Widget _variantCard(
-      {required int index,
-      required String label,
-      required String amount,
-      required String mrp}) {
+  Widget _variantCard({
+    required int index,
+    required String label,
+    required String amount,
+    required String mrp,
+  }) {
     bool selected = selectedVariant == index;
     return KCard(
       onTap: () => setState(() {
         selectedVariant = index;
       }),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      borderColor: selected ? kScheme.primary : LColor.card,
-      color: selected ? kOpacity(kScheme.primaryContainer, .7) : LColor.card,
+      borderColor: selected ? kScheme.primary : KColor.card,
+      color: selected ? kOpacity(kScheme.primaryContainer, .7) : KColor.card,
       borderWidth: 1.5,
       radius: 10,
       width: 200,
@@ -530,7 +574,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           ),
           Label(mrp,
                   decoration: TextDecoration.lineThrough,
-                  color: LColor.fadeText)
+                  color: KColor.fadeText)
               .regular,
         ],
       ),
@@ -653,10 +697,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         child: Container(
           padding: EdgeInsets.only(bottom: 10, left: 20),
           decoration: BoxDecoration(
-            color: LColor.scaffold,
+            color: KColor.scaffold,
             border: Border(
               bottom: BorderSide(
-                color: selected ? LColor.primary : Colors.grey.shade300,
+                color: selected ? KColor.primary : Colors.grey.shade300,
                 width: selected ? 3 : 2,
               ),
             ),
@@ -664,7 +708,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           child: Label(
             label,
             weight: selected ? 700 : 500,
-            color: selected ? LColor.primary : LColor.fadeText,
+            color: selected ? KColor.primary : KColor.fadeText,
           ).title,
         ),
       ),

@@ -37,6 +37,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
 
       if (!res.error) {
         ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
+        context.go("/");
       } else {
         KSnackbar(context, message: res.message, error: res.error);
       }
@@ -70,7 +71,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
             child: Label(
               "Skip",
               weight: 600,
-              color: LColor.primary,
+              color: KColor.primary,
             ).regular,
           ),
         ],
@@ -106,8 +107,8 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                       height5,
                       KCard(
                         radius: 15,
-                        borderColor: LColor.border,
-                        color: LColor.scaffold,
+                        borderColor: KColor.border,
+                        color: KColor.scaffold,
                         borderWidth: 1,
                         padding:
                             EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -166,13 +167,13 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                           ElevatedButton(
                             onPressed: _signInWithGoogle,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: LColor.scaffold,
+                              backgroundColor: KColor.scaffold,
                               foregroundColor: Colors.black,
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: kRadius(15),
                                 side: BorderSide(
-                                  color: LColor.border,
+                                  color: KColor.border,
                                 ),
                               ),
                               padding: EdgeInsets.all(15),
@@ -196,7 +197,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                             TextSpan(
                               style: TextStyle(
                                 fontSize: 15,
-                                color: LColor.fadeText,
+                                color: KColor.fadeText,
                                 fontVariations: [FontVariation.weight(600)],
                               ),
                               children: [

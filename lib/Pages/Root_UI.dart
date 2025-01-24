@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KNavigationBar.dart';
+import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:flutter_bamboo/Pages/Home/Home_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
@@ -17,15 +18,21 @@ class Root_UI extends StatefulWidget {
 class _Root_UIState extends State<Root_UI> {
   final List<Widget> _screens = [
     const Home_UI(),
-    const Home_UI(),
+    const Affiliate_UI(),
     const Home_UI(),
     const Profile_UI(),
+  ];
+
+  final List _navs = [
+    {"label": "Home", "iconPath": "home", "index": 0},
+    {"label": "Affiliate", "iconPath": "refer", "index": 1},
+    {"label": "----", "iconPath": "home", "index": 2},
+    {"label": "Profile", "iconPath": "profile", "index": 3},
   ];
 
   @override
   void dispose() {
     Hive.close();
-
     super.dispose();
   }
 
@@ -41,7 +48,7 @@ class _Root_UIState extends State<Root_UI> {
               return FadeThroughTransition(
                 animation: animation,
                 secondaryAnimation: secondaryAnimation,
-                fillColor: LColor.scaffold,
+                fillColor: KColor.scaffold,
                 child: child,
               );
             },
@@ -49,7 +56,9 @@ class _Root_UIState extends State<Root_UI> {
           );
         },
       ),
-      bottomNavigationBar: const KNavigationBar(),
+      bottomNavigationBar: KNavigationBar(
+        navList: _navs,
+      ),
     );
   }
 }

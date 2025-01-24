@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KNavigationBar.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -42,6 +44,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
+    log("$user");
     return KScaffold(
       isLoading: isLoading,
       appBar: AppBar(
@@ -72,7 +75,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                     Center(
                       child: Label(user.name).title,
                     ),
-                    if (user.phone!.isNotEmpty)
+                    if (user.phone != null)
                       Row(
                         spacing: 5,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -107,10 +110,10 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                             children: [
                               Icon(
                                 Icons.add_circle_outline,
-                                color: LColor.fadeText,
+                                color: KColor.fadeText,
                                 size: 20,
                               ),
-                              Label("Add phone", fontSize: 17, weight: 700)
+                              Label("Add phone", fontSize: 15, weight: 600)
                                   .subtitle,
                             ],
                           ),
@@ -119,7 +122,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                     height20,
                     KCard(
                       padding: EdgeInsets.all(7),
-                      color: LColor.scaffold,
+                      color: KColor.scaffold,
                       borderWidth: 1,
                       width: double.infinity,
                       child: Column(
@@ -163,7 +166,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                       ),
                     ),
                     height10,
-                    Label("Version $kAppVersion").regular,
+                    Label("Version $kAppVersion", weight: 600).subtitle,
                     _appLogo(),
                   ],
                 ),
@@ -236,7 +239,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
     void Function()? onTap,
   }) {
     return KCard(
-      color: LColor.scaffold,
+      color: KColor.scaffold,
       onTap: onTap ?? () => context.push(path),
       child: Row(
         spacing: 20,
@@ -246,7 +249,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
             size: 25,
           ),
           Expanded(
-            child: Label(label).regular,
+            child: Label(label, weight: 600).regular,
           ),
           Icon(
             Icons.arrow_forward_ios,

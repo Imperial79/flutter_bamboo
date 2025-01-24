@@ -35,29 +35,27 @@ class _Cart_UIState extends State<Cart_UI> {
             spacing: 10,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Label("Shipping Address").title,
+              Label("Shipping Address", fontSize: 17).title,
               KCard(
                 radius: 10,
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 15),
                 child: Row(
                   children: [
                     Expanded(
-                      child: Label(
-                        "ABC Street, Durgapur Bazaar - 713201",
-                        fontSize: 17,
-                        color: Colors.grey.shade700,
-                      ).regular,
+                      child: Label("ABC Street, Durgapur Bazaar - 713201",
+                              weight: 600)
+                          .regular,
                     ),
                     Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 20,
-                      color: LColor.fadeText,
+                      color: KColor.fadeText,
                     ),
                   ],
                 ),
               ),
               height10,
-              Label("Products Summary").title,
+              Label("Products Summary", fontSize: 17).title,
               Column(
                 spacing: 15,
                 children: [1, 2]
@@ -67,13 +65,14 @@ class _Cart_UIState extends State<Cart_UI> {
                     .toList(),
               ),
               height10,
-              Label("Coupons & Promotional").title,
+              Label("Coupons & Promotional", fontSize: 17).title,
               Row(
                 spacing: 10,
                 children: [
                   Flexible(
                     child: KTextfield(
                       hintText: "Enter Coupon Code",
+                      textCapitalization: TextCapitalization.characters,
                     ).regular,
                   ),
                   IconButton.filled(
@@ -85,24 +84,20 @@ class _Cart_UIState extends State<Cart_UI> {
                   ),
                 ],
               ),
-              Text.rich(
-                TextSpan(
-                  recognizer: TapGestureRecognizer()..onTap = () async {},
-                  text: "Browse Coupons",
-                  style: TextStyle(
-                    color: kScheme.primary,
-                    fontSize: 17,
-                    fontVariations: [
-                      FontVariation.weight(700),
-                    ],
-                  ),
-                ),
+              InkWell(
+                onTap: () {},
+                child: Label(
+                  "Browse Coupons",
+                  weight: 600,
+                  color: kScheme.tertiary,
+                ).regular,
               ),
-              _selectedCouponCard(context),
+              selectedCoupon(context),
               height10,
-              Label('Price Breakdown').title,
+              Label('Price Breakdown', fontSize: 17).title,
               KCard(
                 child: Column(
+                  spacing: 5,
                   children: [
                     _row("Price (2 Items)", "₹ 200"),
                     _row("Discount", "-₹ 20", isDiscount: true),
@@ -119,8 +114,8 @@ class _Cart_UIState extends State<Cart_UI> {
       bottomNavigationBar: Container(
         padding: EdgeInsets.all(15),
         decoration: BoxDecoration(
-            color: LColor.card,
-            border: Border(top: BorderSide(color: LColor.border))),
+            color: KColor.card,
+            border: Border(top: BorderSide(color: KColor.border))),
         child: SafeArea(
           child: Row(
             children: [
@@ -129,7 +124,7 @@ class _Cart_UIState extends State<Cart_UI> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Label("Sub-Total").regular,
+                    Label("Sub-Total", weight: 600).regular,
                     height5,
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +155,7 @@ class _Cart_UIState extends State<Cart_UI> {
     );
   }
 
-  Widget _selectedCouponCard(BuildContext context) {
+  Widget selectedCoupon(BuildContext context) {
     return Stack(
       alignment: Alignment.topRight,
       children: [
@@ -178,7 +173,7 @@ class _Cart_UIState extends State<Cart_UI> {
                 child: Label(
                   "Offer Applied! Get extra 20% OFF on first order.",
                   color: kScheme.primary,
-                  weight: 700,
+                  weight: 600,
                   fontSize: 15,
                 ).regular,
               ),
@@ -188,7 +183,7 @@ class _Cart_UIState extends State<Cart_UI> {
         CircleAvatar(
           radius: 12,
           backgroundColor: kScheme.primary,
-          foregroundColor: LColor.scaffold,
+          foregroundColor: KColor.scaffold,
           child: Icon(
             Icons.close,
             size: 15,
@@ -201,8 +196,10 @@ class _Cart_UIState extends State<Cart_UI> {
   Widget _row(String text1, String text2, {bool isDiscount = false}) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Label(text1).regular,
-          Label(text2, color: isDiscount ? StatusText.success : null).regular,
+          Label(text1, weight: 500).regular,
+          Label(text2,
+                  color: isDiscount ? StatusText.success : null, weight: 600)
+              .regular,
         ],
       );
 
@@ -220,7 +217,7 @@ class _Cart_UIState extends State<Cart_UI> {
               width: 100,
               decoration: BoxDecoration(
                 borderRadius: kRadius(10),
-                color: LColor.card,
+                color: KColor.card,
               ),
             ),
             Expanded(
@@ -228,10 +225,9 @@ class _Cart_UIState extends State<Cart_UI> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 5,
                 children: [
-                  Label(
-                    "NIGHTBIRDES HUB Bamboo Toothbrush With Charcoal Activated Soft Bristles | Treated With Neem Oil | For Fungus Protection | Bpa Free, Biodegradable And Compostable Handle | Eco-friendly |Pack of 3",
-                    maxLines: 2,
-                  ).regular,
+                  Label("NIGHTBIRDES HUB Bamboo Toothbrush With Charcoal Activated Soft Bristles | Treated With Neem Oil | For Fungus Protection | Bpa Free, Biodegradable And Compostable Handle | Eco-friendly |Pack of 3",
+                          maxLines: 2, weight: 600, fontSize: 13)
+                      .regular,
                   height5,
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +236,6 @@ class _Cart_UIState extends State<Cart_UI> {
                       Expanded(
                         child: Label(
                           "190",
-                          fontSize: 25,
                           height: 1,
                           weight: 600,
                         ).title,

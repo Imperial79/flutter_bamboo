@@ -4,16 +4,16 @@ import 'package:flutter_bamboo/Resources/colors.dart';
 const String kFont = "Montserrat";
 
 ColorScheme get kScheme => ColorScheme.fromSeed(
-      seedColor: LColor.primary,
+      seedColor: KColor.primary,
       brightness: Brightness.light,
     );
 
 ThemeData kTheme(context) => ThemeData(
       useMaterial3: true,
-      scaffoldBackgroundColor: LColor.scaffold,
+      scaffoldBackgroundColor: KColor.scaffold,
       splashFactory: InkSplash.splashFactory,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: LColor.primary,
+        seedColor: KColor.primary,
         brightness: Brightness.light,
       ),
       fontFamily: kFont,
@@ -21,10 +21,10 @@ ThemeData kTheme(context) => ThemeData(
           style: TextButton.styleFrom(foregroundColor: kScheme.tertiary)),
       appBarTheme: const AppBarTheme(
         actionsIconTheme: IconThemeData(
-          color: LColor.fadeText,
+          color: KColor.fadeText,
         ),
-        surfaceTintColor: LColor.primary,
-        backgroundColor: LColor.scaffold,
+        surfaceTintColor: KColor.primary,
+        backgroundColor: KColor.scaffold,
         elevation: 0,
       ),
       chipTheme: ChipThemeData(
@@ -42,14 +42,14 @@ ThemeData kTheme(context) => ThemeData(
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        selectionHandleColor: LColor.primary,
+        selectionHandleColor: KColor.primary,
         cursorColor: kScheme.primary,
         selectionColor: kScheme.secondaryContainer,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: LColor.secondary,
-        linearTrackColor: LColor.card,
-        circularTrackColor: LColor.card,
-        refreshBackgroundColor: LColor.card,
+        color: KColor.secondary,
+        linearTrackColor: KColor.card,
+        circularTrackColor: KColor.card,
+        refreshBackgroundColor: KColor.card,
       ),
     );
