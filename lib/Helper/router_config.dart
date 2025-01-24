@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Cart_UI.dart';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
@@ -25,6 +27,7 @@ final goRouterProvider = Provider<GoRouter>(
 
     return GoRouter(
       redirect: (context, state) {
+        log("${state.fullPath}");
         if (authState.isLoading) return "/splash";
         return null;
       },

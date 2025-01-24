@@ -18,7 +18,7 @@ class ProductHelper {
     required String name,
     required String sku,
   }) {
-    String path = "$appLink/${createNameForUrl(name)}/$productId";
+    String path = "$appLink/product/${createNameForUrl(name)}/$productId";
     path += "?sku=$sku";
     if (referCode != null) {
       path += "&referCode=$referCode";
