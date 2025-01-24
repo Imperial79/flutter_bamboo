@@ -60,12 +60,14 @@ final goRouterProvider = Provider<GoRouter>(
           builder: (context, state) => const Root_UI(),
         ),
         GoRoute(
-          path: '/product/:id',
+          path: '/product/:name/:id',
           builder: (context, state) {
             final id = state.pathParameters["id"];
             final referCode = state.uri.queryParameters["referCode"];
+            final sku = state.uri.queryParameters["sku"];
             return Product_Detail_UI(
               id: int.parse("$id"),
+              sku: sku,
               referCode: referCode,
             );
           },

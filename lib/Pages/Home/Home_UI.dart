@@ -8,7 +8,6 @@ import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:marquee/marquee.dart';
@@ -89,24 +88,20 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                     ),
                   ),
                   Badge(
+                    offset: Offset(-1, 20),
                     isLabelVisible: cartLength > 0,
                     label: Label("$cartLength").regular,
                     child: IconButton(
                       onPressed: () => context.push("/cart"),
-                      icon: Icon(
+                      icon: SvgPicture.asset(
                         cartLength > 0
-                            ? Icons.shopping_bag
-                            : Icons.shopping_bag_outlined,
-                        size: 30,
-                        color: cartLength > 0 ? LColor.primary : null,
+                            ? "$kIconPath/shopping-bag-filled.svg"
+                            : "$kIconPath/shopping-bag.svg",
+                        height: 22,
+                        colorFilter: kSvgColor(
+                          cartLength > 0 ? LColor.primary : Colors.black,
+                        ),
                       ),
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.notifications_none,
-                      size: 30,
                     ),
                   ),
                 ],

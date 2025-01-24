@@ -42,14 +42,15 @@ Widget kLoginRequired(BuildContext context) {
         children: [
           Label(
             "Login Required",
-            fontSize: 25,
+            fontSize: 22,
             textAlign: TextAlign.center,
           ).title,
+          height5,
           Label(
             "Please login or create an account to access all the features our app offers.",
             textAlign: TextAlign.center,
-            fontSize: 17,
-            weight: 600,
+            fontSize: 15,
+            weight: 500,
           ).subtitle,
           height10,
           KButton(
@@ -58,7 +59,7 @@ Widget kLoginRequired(BuildContext context) {
               context.push("/login");
             },
             label: "Login",
-            radius: 10,
+            radius: 7,
             backgroundColor: kScheme.tertiary,
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
           ),

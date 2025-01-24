@@ -10,8 +10,10 @@ import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../Repository/cart_repo.dart';
 import '../../Repository/product_repo.dart';
 import 'Product_Preview_Card.dart';
 
@@ -59,6 +61,7 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
       ),
     ));
     final products = ref.watch(productsList);
+    final cartLength = ref.watch(cartProvider).length;
     return RefreshIndicator(
       onRefresh: _refresh,
       child: KScaffold(
@@ -67,6 +70,26 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
                   ? "Our Products"
                   : "Showing products for ${widget.category}")
               .regular,
+          actions: [
+            Badge(
+              offset: Offset(-1, 20),
+              isLabelVisible: cartLength > 0,
+              label: Label("$cartLength").regular,
+              child: IconButton(
+                onPressed: () => context.push("/cart"),
+                icon: SvgPicture.asset(
+                  cartLength > 0
+                      ? "$kIconPath/shopping-bag-filled.svg"
+                      : "$kIconPath/shopping-bag.svg",
+                  height: 22,
+                  colorFilter: kSvgColor(
+                    cartLength > 0 ? LColor.primary : Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            width10,
+          ],
         ),
         body: SafeArea(
           child: SingleChildScrollView(

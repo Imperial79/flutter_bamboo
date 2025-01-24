@@ -5,8 +5,8 @@ import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kCarousel.dart';
 import 'package:flutter_bamboo/Components/kWidgets.dart';
-import 'package:flutter_bamboo/Helper/appLink.dart';
 import 'package:flutter_bamboo/Helper/data.dart';
+import 'package:flutter_bamboo/Helper/share_product.dart';
 import 'package:flutter_bamboo/Models/Cart_Item_Model.dart';
 import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
@@ -19,7 +19,6 @@ import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../Models/User_Model.dart';
 import '../../Resources/theme.dart';
@@ -27,10 +26,12 @@ import '../../Resources/theme.dart';
 class Product_Detail_UI extends ConsumerStatefulWidget {
   final int id;
   final String? referCode;
+  final String? sku;
   const Product_Detail_UI({
     super.key,
     required this.id,
     this.referCode,
+    this.sku,
   });
 
   @override
@@ -70,6 +71,20 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         isDismissible: !isLoading.value,
         builder: (context) => loginModal(),
       );
+    }
+  }
+
+  shareProduct(ProductDetailModel product) async {
+    try {
+      isLoading.value = true;
+      await ProductHelper().shareProduct(
+        product,
+        selectedVariant: selectedVariant,
+      );
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -142,7 +157,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     final productData = ref.watch(productDetailsFuture(widget.id));
     final cartData = ref.watch(cartProvider);
     return KScaffold(
-      // isLoading: isLoading,
+      isLoading: isLoading,
       appBar: productData.hasValue && productData.value != null
           ? AppBar(
               leading: IconButton(
@@ -150,32 +165,27 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   icon: Icon(Icons.arrow_back)),
               actions: [
                 IconButton(
-                  onPressed: () {
-                    String productLink = createProductPath(
-                        productId: productData.value!.id,
-                        referCode: "ABC12817");
-                    Share.share(
-                      "Checkout this product $productLink",
-                      subject: "ABCD",
-                    );
-                  },
+                  onPressed: () => shareProduct(productData.value!),
                   icon: SvgPicture.asset(
                     "$kIconPath/share.svg",
                     height: 22,
-                    colorFilter: kSvgColor(LColor.fadeText),
                   ),
                 ),
                 width10,
-                IconButton(
-                  onPressed: () => context.push("/cart"),
-                  icon: Badge(
-                    isLabelVisible: cartData.isNotEmpty,
-                    offset: Offset(10, -10),
-                    label: Label("${cartData.length}", fontSize: 10).regular,
-                    child: SvgPicture.asset(
-                      "$kIconPath/shopping-bag.svg",
+                Badge(
+                  offset: Offset(-1, 20),
+                  isLabelVisible: cartData.isNotEmpty,
+                  label: Label("${cartData.length}").regular,
+                  child: IconButton(
+                    onPressed: () => context.push("/cart"),
+                    icon: SvgPicture.asset(
+                      cartData.isNotEmpty
+                          ? "$kIconPath/shopping-bag-filled.svg"
+                          : "$kIconPath/shopping-bag.svg",
                       height: 22,
-                      colorFilter: kSvgColor(LColor.fadeText),
+                      colorFilter: kSvgColor(
+                        cartData.isNotEmpty ? LColor.primary : Colors.black,
+                      ),
                     ),
                   ),
                 ),

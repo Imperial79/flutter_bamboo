@@ -8,7 +8,6 @@ import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:go_router/go_router.dart';
-
 import '../../Resources/theme.dart';
 
 class OTP_UI extends StatefulWidget {
@@ -30,12 +29,12 @@ class _OTP_UIState extends State<OTP_UI> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Label("Verification", weight: 600, fontSize: 40).title,
+              Label("Verification", weight: 800, fontSize: 27).title,
               height10,
               Label(
                 "Please enter the OTP received on +91 ${widget.phone}.",
                 weight: 600,
-                fontSize: 18,
+                fontSize: 15,
               ).subtitle,
               height20,
               buildOtpField(),
@@ -43,17 +42,17 @@ class _OTP_UIState extends State<OTP_UI> {
               KButton(
                 onPressed: () => context.push("/"),
                 label: "Continue",
-                fontSize: 20,
+                fontSize: 17,
                 backgroundColor: kScheme.primaryContainer,
                 foregroundColor: kScheme.primary,
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(17),
                 style: KButtonStyle.expanded,
               ),
               height10,
               Text.rich(
                 TextSpan(
-                  style: const TextStyle(
-                    fontSize: 17,
+                  style: TextStyle(
+                    fontSize: 15,
                     color: LColor.fadeText,
                     fontVariations: [FontVariation.weight(600)],
                   ),
@@ -67,7 +66,7 @@ class _OTP_UIState extends State<OTP_UI> {
                         },
                       text: "Terms & Conditions",
                       style: TextStyle(
-                        fontVariations: [FontVariation.weight(700)],
+                        fontVariations: [FontVariation.weight(800)],
                         color: kScheme.primary,
                       ),
                     ),
@@ -80,7 +79,7 @@ class _OTP_UIState extends State<OTP_UI> {
                         },
                       text: "Privacy Policy",
                       style: TextStyle(
-                        fontVariations: [FontVariation.weight(700)],
+                        fontVariations: [FontVariation.weight(800)],
                         color: kScheme.primary,
                       ),
                     ),
@@ -126,7 +125,11 @@ class _OTP_UIState extends State<OTP_UI> {
                   fontSize: 20,
                   letterSpacing: 1,
                 ),
-                label: Label("One Time Password (OTP)").regular,
+                label: Label(
+                  "One Time Password (OTP)",
+                  color: LColor.fadeText,
+                  weight: 600,
+                ).regular,
                 border: InputBorder.none,
               ),
             ),
@@ -135,11 +138,12 @@ class _OTP_UIState extends State<OTP_UI> {
             onPressed: () {},
             icon: Icon(
               Icons.sync_sharp,
-              size: 30,
+              size: 25,
+              color: LColor.fadeText,
             ),
             visualDensity: VisualDensity.compact,
           ),
-          Label("25s", fontSize: 20, weight: 700).subtitle,
+          Label("25s", fontSize: 17, weight: 600).subtitle,
         ],
       ),
     );

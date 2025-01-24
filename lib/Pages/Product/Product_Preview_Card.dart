@@ -4,6 +4,7 @@ import 'package:flutter_bamboo/Models/Product_Model.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_bamboo/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../Components/Label.dart';
 import '../../Models/Cart_Item_Model.dart';
@@ -25,7 +26,7 @@ class ProductPreviewCard extends ConsumerWidget {
     final cartData = ref.watch(cartProvider);
     final inCart = cartData.any((item) => item.productId == product.id);
     return InkWell(
-      onTap: () => context.push("/product/${product.id}"),
+      onTap: () => context.push("/product/abcd/${product.id}"),
       child: KCard(
         padding: EdgeInsets.all(0),
         width: cardWidth,
@@ -64,11 +65,14 @@ class ProductPreviewCard extends ConsumerWidget {
                   icon: CircleAvatar(
                     backgroundColor: inCart ? kScheme.primary : Colors.white,
                     radius: 15,
-                    child: Icon(
-                      inCart ? Icons.favorite : Icons.favorite_border,
-                      size: 15,
-                      color:
-                          inCart ? kScheme.primaryContainer : LColor.secondary,
+                    child: SvgPicture.asset(
+                      inCart
+                          ? "$kIconPath/shopping-bag-filled.svg"
+                          : "$kIconPath/shopping-bag.svg",
+                      height: 15,
+                      colorFilter: kSvgColor(
+                        inCart ? kScheme.primaryContainer : LColor.secondary,
+                      ),
                     ),
                   ),
                 )
