@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_bamboo/Components/kCarousel.dart';
 import 'package:flutter_bamboo/Components/kWidgets.dart';
 import 'package:flutter_bamboo/Helper/data.dart';
 import 'package:flutter_bamboo/Helper/share_product.dart';
-import 'package:flutter_bamboo/Models/Cart_Item_Model.dart';
+import 'package:flutter_bamboo/Models/Cart/Cart_Item_Model.dart';
 import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_bamboo/Repository/cart_repo.dart';
@@ -43,16 +45,40 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   int selectedVariant = -1;
   bool showLess = false;
   final isLoading = ValueNotifier(false);
+  int selectedQty = 1;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback(
-  //     (timeStamp) {
-  //       if (widget.sku != null) selectedSku = widget.sku!;
-  //     },
-  //   );
-  // }
+  addToCart(int variantId) async {
+    try {
+      log("$variantId");
+      isLoading.value = true;
+      final res = await ref.read(cartRepo).updateCart({
+        "productVariantId": variantId,
+        "qty": selectedQty,
+      });
+
+      if (!res.error) {
+        final cartData = ref.read(cartProvider);
+        final inCart = cartData.any((item) => item.productId == variantId);
+        if (!inCart) {
+          ref.read(cartProvider.notifier).addItem(CartItemModel(
+                quantity: selectedQty,
+                productId: variantId,
+              ));
+        } else {
+          context.push("/cart");
+        }
+      }
+      KSnackbar(
+        context,
+        message: res.message,
+        error: res.error,
+      );
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   _signInWithGoogle() async {
     try {
@@ -209,29 +235,66 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             ),
                             height20,
                             Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Label("₹", fontSize: 20, height: 1.2).regular,
-                                Flexible(
-                                  child: Label(
-                                    kCurrencyFormat(
-                                      data.product_variants[selectedVariant]
-                                          ["salePrice"],
-                                      symbol: "",
-                                    ),
-                                    fontSize: 30,
-                                    height: 1,
-                                    weight: 600,
-                                  ).title,
+                                Expanded(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Label("₹", fontSize: 20, height: 1.2)
+                                          .regular,
+                                      Flexible(
+                                        child: Label(
+                                          kCurrencyFormat(
+                                            data.product_variants[
+                                                selectedVariant]["salePrice"],
+                                            symbol: "",
+                                          ),
+                                          fontSize: 30,
+                                          height: 1,
+                                          weight: 600,
+                                        ).title,
+                                      ),
+                                      width10,
+                                      Label(
+                                        "-${calculateDiscount(data.product_variants[selectedVariant]["mrp"], data.product_variants[selectedVariant]["salePrice"])}%",
+                                        fontSize: 20,
+                                        height: 1,
+                                        weight: 500,
+                                        color: kScheme.error,
+                                      ).title,
+                                    ],
+                                  ),
                                 ),
-                                width10,
-                                Label(
-                                  "-${calculateDiscount(data.product_variants[selectedVariant]["mrp"], data.product_variants[selectedVariant]["salePrice"])}%",
-                                  fontSize: 20,
-                                  height: 1,
-                                  weight: 500,
-                                  color: kScheme.error,
-                                ).title,
+                                KCard(
+                                  borderWidth: 1,
+                                  radius: 10,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 5),
+                                  child: DropdownButton(
+                                    isDense: true,
+                                    value: selectedQty,
+                                    icon: Icon(
+                                      Icons.inventory,
+                                      size: 15,
+                                    ),
+                                    menuMaxHeight: 300,
+                                    borderRadius: kRadius(10),
+                                    elevation: 1,
+                                    underline: SizedBox(),
+                                    items: List.generate(
+                                      9,
+                                      (index) => DropdownMenuItem(
+                                          value: index + 1,
+                                          child: Label("${index + 1}").regular),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedQty = value!;
+                                      });
+                                    },
+                                  ),
+                                )
                               ],
                             ),
                             height5,
@@ -454,20 +517,8 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    if (!inCart) {
-                      KSnackbar(
-                        context,
-                        message: "Product added to cart.",
-                      );
-                      ref.read(cartProvider.notifier).addItem(CartItemModel(
-                            quantity: 1,
-                            productId: product.id,
-                          ));
-                    } else {
-                      context.push("/cart");
-                    }
-                  },
+                  onTap: () => addToCart(
+                      product.product_variants[selectedVariant]["id"]),
                   child: Container(
                     height: 55,
                     alignment: Alignment.center,

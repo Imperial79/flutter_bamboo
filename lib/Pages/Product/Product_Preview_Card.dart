@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../Components/Label.dart';
-import '../../Models/Cart_Item_Model.dart';
+import '../../Models/Cart/Cart_Item_Model.dart';
 import '../../Repository/cart_repo.dart';
 import '../../Resources/colors.dart';
 import '../../Resources/commons.dart';

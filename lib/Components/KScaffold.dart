@@ -81,7 +81,7 @@ class KScaffold extends StatelessWidget {
                           color: KColor.primary,
                         ),
                       ),
-                      Label("Please Wait", fontSize: 17, weight: 400).title,
+                      Label("Please Wait", fontSize: 17, weight: 600).title,
                     ],
                   ),
                 ),

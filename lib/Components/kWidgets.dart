@@ -8,7 +8,8 @@ import '../Resources/commons.dart';
 import 'Label.dart';
 import 'kButton.dart';
 
-Widget kNoData(BuildContext context) => Column(
+Widget kNoData(BuildContext context, {String? title, String? subtitle}) =>
+    Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SvgPicture.asset(
@@ -16,8 +17,8 @@ Widget kNoData(BuildContext context) => Column(
           height: 200,
         ),
         height10,
-        Label("Sorry!", fontSize: 30).title,
-        Label("No data found.", fontSize: 22, weight: 500).regular,
+        Label(title ?? "Sorry!", fontSize: 30).title,
+        Label(subtitle ?? "No data found.", fontSize: 22, weight: 500).regular,
         height20,
         KButton(
           onPressed: () {

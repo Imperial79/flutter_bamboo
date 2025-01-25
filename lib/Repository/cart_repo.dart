@@ -1,5 +1,42 @@
+import 'package:flutter_bamboo/Helper/api_config.dart';
+import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../Models/Cart_Item_Model.dart';
+import '../Models/Cart/Cart_Item_Model.dart';
+
+final cartFuture = FutureProvider.autoDispose<List>((ref) async {
+  final res = await apiCallBack(path: "/cart/fetch-details");
+
+  if (!res.error) {
+    return res.data;
+  }
+  return [];
+});
+
+final cartRepo = Provider(
+  (ref) => CartRepo(),
+);
+
+class CartRepo {
+  Future<ResponseModel> updateCart(Map<String, dynamic> body) async {
+    try {
+      final res = await apiCallBack(path: "/cart/update", body: body);
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ResponseModel> deleteCartItem(int productVariantId) async {
+    try {
+      final res = await apiCallBack(path: "/cart/delete", body: {
+        "productVariantId": productVariantId,
+      });
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+}
 
 class CartNotifier extends StateNotifier<List<CartItemModel>> {
   CartNotifier() : super([]);
