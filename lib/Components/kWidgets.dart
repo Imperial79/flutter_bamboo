@@ -9,29 +9,32 @@ import 'Label.dart';
 import 'kButton.dart';
 
 Widget kNoData(BuildContext context, {String? title, String? subtitle}) =>
-    Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(
-          "$kIconPath/panda.svg",
-          height: 200,
-        ),
-        height10,
-        Label(title ?? "Sorry!", fontSize: 30).title,
-        Label(subtitle ?? "No data found.", fontSize: 22, weight: 500).regular,
-        height20,
-        KButton(
-          onPressed: () {
-            context.go("/");
-          },
-          label: "Go Home",
-          style: KButtonStyle.regular,
-          radius: 100,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          backgroundColor: kScheme.secondaryContainer,
-          foregroundColor: kScheme.secondary,
-        )
-      ],
+    Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "$kIconPath/panda.svg",
+            height: 200,
+          ),
+          height10,
+          Label(title ?? "Sorry!", fontSize: 20).title,
+          Label(subtitle ?? "No data found.", fontSize: 17, weight: 500)
+              .regular,
+          height20,
+          KButton(
+            onPressed: () {
+              context.go("/");
+            },
+            label: "Go Home",
+            style: KButtonStyle.regular,
+            radius: 100,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            backgroundColor: kScheme.tertiaryContainer,
+            foregroundColor: kScheme.tertiary,
+          )
+        ],
+      ),
     );
 
 Widget kLoginRequired(BuildContext context) {

@@ -216,7 +216,6 @@ class KButton extends StatelessWidget {
             style: TextStyle(
               fontSize: fontSize,
               fontWeight: FontWeight.w500,
-              color: Colors.white,
             ),
           ),
         ],

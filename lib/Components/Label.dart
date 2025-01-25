@@ -8,7 +8,6 @@ class Label {
   final Color? color;
   final double? fontSize;
   final double? weight;
-  final FontWeight? fontWeight;
   final int? maxLines;
   final FontStyle? fontStyle;
   final double? height;
@@ -17,7 +16,6 @@ class Label {
 
   Label(
     this.text, {
-    this.fontWeight,
     this.color,
     this.fontSize,
     this.weight,

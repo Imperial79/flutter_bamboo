@@ -318,16 +318,14 @@ class KTextfield {
                   ),
                 kLabel,
                 if (validator != null && showRequired)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 3.0),
-                    child: Text(
+                    child: Label(
                       "(Required)",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: StatusText.danger,
-                          fontSize: 10,
-                          height: 1),
-                    ),
+                      weight: 600,
+                      color: StatusText.danger,
+                      fontSize: 10,
+                    ).regular,
                   ),
               ],
             ),

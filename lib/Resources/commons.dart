@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -55,15 +56,23 @@ Future<T?> navPopUntilPush<T extends Object?>(
   return navPush(context, screen);
 }
 
-KSnackbar(context,
-    {required dynamic message, bool error = false, SnackBarAction? action}) {
+KSnackbar(
+  context, {
+  dynamic message,
+  bool error = false,
+  SnackBarAction? action,
+  ResponseModel? res,
+}) {
+  final error0 = res != null ? res.error : error;
+  final message0 = res != null ? res.message : message;
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor:
-          error ? kScheme.errorContainer : kScheme.primaryContainer,
-      content: Label("$message",
-              color:
-                  error ? kScheme.onErrorContainer : kScheme.onPrimaryContainer)
+          error0 ? kScheme.errorContainer : kScheme.primaryContainer,
+      content: Label("$message0",
+              color: error0
+                  ? kScheme.onErrorContainer
+                  : kScheme.onPrimaryContainer)
           .regular,
       action: action,
       behavior: SnackBarBehavior.floating,
