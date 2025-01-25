@@ -1,14 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Models/Product_Model.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
-import 'package:flutter_bamboo/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../../Components/Label.dart';
-import '../../Models/Cart/Cart_Item_Model.dart';
-import '../../Repository/cart_repo.dart';
 import '../../Resources/colors.dart';
 import '../../Resources/commons.dart';
 
@@ -23,8 +20,9 @@ class ProductPreviewCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final cartData = ref.watch(cartProvider);
-    final inCart = cartData.any((item) => item.productId == product.id);
+    // final cartData = ref.watch(cartProvider);
+    // final inCart = cartData.any((item) => item.productId == product.id);
+
     return InkWell(
       onTap: () => context.push("/product/abcd/${product.id}"),
       child: KCard(
@@ -33,50 +31,30 @@ class ProductPreviewCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              alignment: Alignment.topRight,
-              children: [
-                Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                    borderRadius: kRadius(15),
-                    color: kOpacity(KColor.fadeText, .5),
-                    image: DecorationImage(
-                      image: NetworkImage(
-                        product.images[0],
-                      ),
-                      fit: BoxFit.cover,
-                    ),
+            CachedNetworkImage(
+              imageUrl: product.images[0],
+              imageBuilder: (context, imageProvider) => Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  borderRadius: kRadius(15),
+                  color: kOpacity(KColor.fadeText, .5),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    if (!inCart) {
-                      ref.read(cartProvider.notifier).addItem(
-                            CartItemModel(
-                              quantity: 1,
-                              productId: product.id,
-                            ),
-                          );
-                    } else {
-                      ref.read(cartProvider.notifier).removeItem(product.id);
-                    }
-                  },
-                  icon: CircleAvatar(
-                    backgroundColor: inCart ? kScheme.primary : Colors.white,
-                    radius: 15,
-                    child: SvgPicture.asset(
-                      inCart
-                          ? "$kIconPath/shopping-bag-filled.svg"
-                          : "$kIconPath/shopping-bag.svg",
-                      height: 15,
-                      colorFilter: kSvgColor(
-                        inCart ? kScheme.primaryContainer : KColor.secondary,
-                      ),
-                    ),
+              ),
+              errorWidget: (context, url, error) => KCard(
+                color: KColor.scaffold,
+                height: 150,
+                child: Center(
+                  child: Icon(
+                    Icons.info_outline_rounded,
+                    color: KColor.fadeText,
+                    size: 30,
                   ),
-                )
-              ],
+                ),
+              ),
             ),
             Expanded(
               child: Padding(

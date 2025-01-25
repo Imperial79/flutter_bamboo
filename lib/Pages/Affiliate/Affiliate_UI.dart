@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_bamboo/Resources/theme.dart';
+
+import '../../Resources/colors.dart';
 
 class Affiliate_UI extends StatefulWidget {
   const Affiliate_UI({super.key});
@@ -56,6 +59,44 @@ class _Affiliate_UIState extends State<Affiliate_UI> {
                     Label("1. Earn a percent of every product bought by the user you've referred to.",
                             weight: 500)
                         .regular,
+                  ],
+                ),
+              ),
+              height20,
+              Text.rich(
+                TextSpan(
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: KColor.fadeText,
+                    fontVariations: [FontVariation.weight(600)],
+                  ),
+                  children: [
+                    const TextSpan(text: "By proceeding you agree to our "),
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          // await launchUrlString(
+                          //     "https://mypostmates.in/terms-conditions");
+                        },
+                      text: "Terms & Conditions",
+                      style: TextStyle(
+                        fontVariations: [FontVariation.weight(800)],
+                        color: kScheme.primary,
+                      ),
+                    ),
+                    const TextSpan(text: " and "),
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          // await launchUrlString(
+                          //     "https://mypostmates.in/terms-conditions");
+                        },
+                      text: "Privacy Policy",
+                      style: TextStyle(
+                        fontVariations: [FontVariation.weight(800)],
+                        color: kScheme.primary,
+                      ),
+                    ),
                   ],
                 ),
               ),

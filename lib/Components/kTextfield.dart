@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import '../Resources/commons.dart';
 import 'Label.dart';
@@ -112,8 +111,8 @@ class KTextfield {
 
   Widget get kLabel => Label(
         label!,
-        weight: 400,
-        fontSize: 15,
+        weight: 600,
+        fontSize: 13,
       ).regular;
 
   InputBorder borderStyle(Color? customBorder) => OutlineInputBorder(
@@ -134,90 +133,78 @@ class KTextfield {
                   if (labelIcon != null) labelIcon!,
                   kLabel,
                   if (validator != null && showRequired)
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(left: 3.0),
-                      child: Text(
+                      child: Label(
                         "(Required)",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: StatusText.danger,
-                          fontSize: 10,
-                          height: 1,
-                        ),
-                      ),
+                        color: StatusText.danger,
+                        fontSize: 10,
+                        height: 1,
+                      ).regular,
                     ),
                 ],
               ),
             ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 5,
-            children: [
-              if (prefixText != null)
-                KCard(
-                  padding: const EdgeInsets.all(12),
-                  color: KColor.scaffold,
-                  radius: 10,
-                  borderColor: KColor.border,
-                  borderWidth: 1,
-                  child: Label(prefixText ?? "",
-                          height: kTextHeight, fontSize: fontSize)
-                      .regular,
-                ),
-              Flexible(
-                child: TextFormField(
-                  autofocus: autoFocus,
-                  onTap: onTap,
-                  focusNode: focusNode,
-                  autofillHints: autofillHints,
-                  controller: controller,
-                  textCapitalization: textCapitalization,
-                  style: kFieldTextstyle.copyWith(
-                      fontSize: fontSize, color: textColor),
-                  cursorColor: cursorColor,
-                  readOnly: readOnly ?? false,
-                  obscureText: obscureText ?? false,
-                  keyboardType: keyboardType,
-                  maxLength: maxLength,
-                  maxLines: maxLines,
-                  minLines: minLines,
-                  inputFormatters: inputFormatters,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: fieldColor ?? Colors.white,
-                    counterText: '',
-                    prefixIconConstraints:
-                        const BoxConstraints(minHeight: 0, minWidth: 0),
-                    suffixIconConstraints:
-                        const BoxConstraints(minHeight: 0, minWidth: 0),
-                    prefixIcon: prefix != null
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 12, right: 10),
-                            child: prefix!,
-                          )
-                        : const SizedBox(width: 12),
-                    suffixIcon: suffix != null
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 5, right: 12),
-                            child: suffix!,
-                          )
-                        : const SizedBox(width: 12),
-                    isDense: true,
-                    border: borderStyle(null),
-                    errorBorder: borderStyle(StatusText.danger),
-                    focusedBorder: borderStyle(KColor.border),
-                    enabledBorder: borderStyle(null),
-                    errorStyle: const TextStyle(color: StatusText.danger),
-                    hintText: hintText,
-                    hintStyle: kHintTextstyle.copyWith(
-                        fontSize: fontSize, color: hintTextColor),
-                  ),
-                  onChanged: onChanged,
-                  validator: validator,
-                  onFieldSubmitted: onFieldSubmitted,
-                ),
-              ),
-            ],
+          TextFormField(
+            autofocus: autoFocus,
+            onTap: onTap,
+            focusNode: focusNode,
+            autofillHints: autofillHints,
+            controller: controller,
+            textCapitalization: textCapitalization,
+            style:
+                kFieldTextstyle.copyWith(fontSize: fontSize, color: textColor),
+            cursorColor: cursorColor,
+            readOnly: readOnly ?? false,
+            obscureText: obscureText ?? false,
+            keyboardType: keyboardType,
+            maxLength: maxLength,
+            maxLines: maxLines,
+            minLines: minLines,
+            inputFormatters: inputFormatters,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: fieldColor ?? Colors.white,
+              counterText: '',
+              prefixIconConstraints:
+                  const BoxConstraints(minHeight: 0, minWidth: 0),
+              suffixIconConstraints:
+                  const BoxConstraints(minHeight: 0, minWidth: 0),
+              prefixIcon: prefix != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 12, right: 10),
+                      child: prefix!,
+                    )
+                  : prefixText != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(left: 12, right: 10),
+                          child: Label(
+                            prefixText!,
+                            fontSize: fontSize,
+                            height: kTextHeight,
+                            weight: 700,
+                          ).regular,
+                        )
+                      : const SizedBox(width: 12),
+              suffixIcon: suffix != null
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 5, right: 12),
+                      child: suffix!,
+                    )
+                  : const SizedBox(width: 12),
+              isDense: true,
+              border: borderStyle(null),
+              errorBorder: borderStyle(StatusText.danger),
+              focusedBorder: borderStyle(KColor.border),
+              enabledBorder: borderStyle(null),
+              errorStyle: const TextStyle(color: StatusText.danger),
+              hintText: hintText,
+              hintStyle: kHintTextstyle.copyWith(
+                  fontSize: fontSize, color: hintTextColor),
+            ),
+            onChanged: onChanged,
+            validator: validator,
+            onFieldSubmitted: onFieldSubmitted,
           ),
         ],
       );

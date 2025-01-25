@@ -25,7 +25,6 @@ class Cart_UI extends ConsumerStatefulWidget {
 }
 
 class _Cart_UIState extends ConsumerState<Cart_UI> {
-  List<int> productQtys = [];
   final isLoading = ValueNotifier(false);
 
   updateCart(int variantId, int qty, int index) async {
@@ -37,15 +36,9 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
       });
 
       if (!res.error) {
-        final cartData = ref.read(cartProvider);
-        final inCart = cartData.any((item) => item.productId == variantId);
-        if (!inCart) {
-          setState(() {
-            productQtys[index] = qty;
-          });
-        }
-        KSnackbar(context, message: res.message, error: res.error);
+        await ref.refresh(cartFuture.future);
       }
+      KSnackbar(context, message: res.message, error: res.error);
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);
     } finally {
@@ -58,12 +51,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
       isLoading.value = true;
       final res = await ref.read(cartRepo).deleteCartItem(productVariantId);
       if (!res.error) {
-        ref.read(cartProvider.notifier).removeItem(productVariantId);
-        if (ref.read(cartProvider).isEmpty) {
-          context.pop();
-        } else {
-          await ref.refresh(cartFuture.future);
-        }
+        await ref.refresh(cartFuture.future);
       }
       KSnackbar(context, message: res.message, error: res.error);
     } catch (e) {
@@ -76,18 +64,6 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
   @override
   Widget build(BuildContext context) {
     final cartData = ref.watch(cartFuture);
-    final cartList = ref.watch(cartProvider);
-    if (productQtys.isEmpty) {
-      cartData.whenData(
-        (value) {
-          if (value.isNotEmpty) {
-            for (var e in value) {
-              productQtys.add(e["qty"]);
-            }
-          }
-        },
-      );
-    }
     return KScaffold(
       isLoading: isLoading,
       appBar: AppBar(
@@ -95,7 +71,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: cartList.isNotEmpty
+          child: cartData.when(
+        data: (data) => data.isNotEmpty
             ? SingleChildScrollView(
                 padding: EdgeInsets.all(kPadding),
                 child: Column(
@@ -190,8 +167,10 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                       subtitle: "Add products to cart."),
                 ],
               ),
-      ),
-      bottomNavigationBar: cartList.isNotEmpty
+        error: (error, stackTrace) => kNoData(context),
+        loading: () => CircularProgressIndicator(),
+      )),
+      bottomNavigationBar: cartData.hasValue && cartData.value!.isNotEmpty
           ? Container(
               padding: EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -356,7 +335,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                             EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                         child: DropdownButton(
                           isDense: true,
-                          value: productQtys[index],
+                          value: int.parse("${data["qty"]}"),
                           icon: Icon(
                             Icons.inventory,
                             size: 15,
@@ -372,8 +351,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                 child: Label("${index + 1}").regular),
                           ),
                           onChanged: (value) {
-                            updateCart(data["productVariantId"],
-                                value ?? productQtys[index], index);
+                            updateCart(data["productVariantId"], value!, index);
                           },
                         ),
                       ),

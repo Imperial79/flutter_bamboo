@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:developer';
 
 import 'package:flutter/gestures.dart';
@@ -9,8 +11,8 @@ import 'package:flutter_bamboo/Components/kCarousel.dart';
 import 'package:flutter_bamboo/Components/kWidgets.dart';
 import 'package:flutter_bamboo/Helper/data.dart';
 import 'package:flutter_bamboo/Helper/share_product.dart';
-import 'package:flutter_bamboo/Models/Cart/Cart_Item_Model.dart';
 import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
+import 'package:flutter_bamboo/Models/Product_Variant_Model.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_bamboo/Repository/cart_repo.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
@@ -42,31 +44,22 @@ class Product_Detail_UI extends ConsumerStatefulWidget {
 
 class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   String selectedDescriptionType = "About Item";
-  int selectedVariant = -1;
+  // int selectedVariant = -1;
   bool showLess = false;
   final isLoading = ValueNotifier(false);
   int selectedQty = 1;
 
+  ProductVariantModel variant = ProductVariantModel.fromMap({});
+
   addToCart(int variantId) async {
     try {
-      log("$variantId");
       isLoading.value = true;
       final res = await ref.read(cartRepo).updateCart({
         "productVariantId": variantId,
         "qty": selectedQty,
       });
-
       if (!res.error) {
-        final cartData = ref.read(cartProvider);
-        final inCart = cartData.any((item) => item.productId == variantId);
-        if (!inCart) {
-          ref.read(cartProvider.notifier).addItem(CartItemModel(
-                quantity: selectedQty,
-                productId: variantId,
-              ));
-        } else {
-          context.push("/cart");
-        }
+        await ref.refresh(cartFuture.future);
       }
       KSnackbar(
         context,
@@ -115,7 +108,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
       isLoading.value = true;
       await ProductHelper().shareProduct(
         product,
-        selectedVariant: selectedVariant,
+        variantId: variant.id,
       );
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);
@@ -127,16 +120,18 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   @override
   Widget build(BuildContext context) {
     final productData = ref.watch(productDetailsFuture(widget.id));
-    final cartData = ref.watch(cartProvider);
+    // final cartData = ref.watch(cartProvider);
+    final cartData = ref.watch(cartFuture);
 
     productData.whenData(
       (value) {
-        if (value != null && selectedVariant == -1) {
-          selectedVariant = value.product_variants
-              .indexWhere((item) => item["sku"] == widget.sku);
-          if (selectedVariant == -1) {
-            selectedVariant = 0;
-          }
+        if (value != null && variant.id == -1) {
+          variant = ProductVariantModel.fromMap(value.product_variants[0]);
+          // selectedVariant = value.product_variants
+          //     .indexWhere((item) => item["sku"] == widget.sku);
+          // if (selectedVariant == -1) {
+          //   selectedVariant = 0;
+          // }
         }
       },
     );
@@ -156,20 +151,36 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   ),
                 ),
                 width10,
-                Badge(
-                  offset: Offset(-1, 20),
-                  isLabelVisible: cartData.isNotEmpty,
-                  label: Label("${cartData.length}").regular,
-                  child: IconButton(
+                cartData.when(
+                  data: (data) => Badge(
+                    offset: Offset(-1, 20),
+                    isLabelVisible: data.isNotEmpty,
+                    label: Label("${data.length}").regular,
+                    child: IconButton(
+                      onPressed: () => context.push("/cart"),
+                      icon: SvgPicture.asset(
+                        data.isNotEmpty
+                            ? "$kIconPath/shopping-bag-filled.svg"
+                            : "$kIconPath/shopping-bag.svg",
+                        height: 22,
+                        colorFilter: kSvgColor(
+                          data.isNotEmpty ? KColor.primary : Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                  error: (error, stackTrace) => IconButton(
                     onPressed: () => context.push("/cart"),
                     icon: SvgPicture.asset(
-                      cartData.isNotEmpty
-                          ? "$kIconPath/shopping-bag-filled.svg"
-                          : "$kIconPath/shopping-bag.svg",
+                      "$kIconPath/shopping-bag.svg",
                       height: 22,
-                      colorFilter: kSvgColor(
-                        cartData.isNotEmpty ? KColor.primary : Colors.black,
-                      ),
+                    ),
+                  ),
+                  loading: () => IconButton(
+                    onPressed: () => context.push("/cart"),
+                    icon: SvgPicture.asset(
+                      "$kIconPath/shopping-bag.svg",
+                      height: 22,
                     ),
                   ),
                 ),
@@ -246,8 +257,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                       Flexible(
                                         child: Label(
                                           kCurrencyFormat(
-                                            data.product_variants[
-                                                selectedVariant]["salePrice"],
+                                            variant.salePrice,
                                             symbol: "",
                                           ),
                                           fontSize: 30,
@@ -257,7 +267,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                       ),
                                       width10,
                                       Label(
-                                        "-${calculateDiscount(data.product_variants[selectedVariant]["mrp"], data.product_variants[selectedVariant]["salePrice"])}%",
+                                        "-${calculateDiscount(variant.mrp, variant.salePrice)}%",
                                         fontSize: 20,
                                         height: 1,
                                         weight: 500,
@@ -299,7 +309,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             ),
                             height5,
                             Label(
-                              "MRP ${kCurrencyFormat(data.product_variants[selectedVariant]["mrp"])}",
+                              "MRP ${kCurrencyFormat(variant.mrp)}",
                               weight: 600,
                               color: KColor.fadeText,
                               decoration: TextDecoration.lineThrough,
@@ -314,12 +324,18 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                 Label("Variant:", fontSize: 16, weight: 600)
                                     .regular,
                                 Flexible(
-                                  child: Label(
-                                    data.product_variants[selectedVariant]
-                                        ["attributeValue"],
-                                    fontSize: 16,
-                                    weight: 700,
-                                  ).regular,
+                                  child: variant.attributeType == "Color"
+                                      ? CircleAvatar(
+                                          radius: 10,
+                                          backgroundColor: Color(int.parse(
+                                              variant.attributeValue
+                                                  .replaceFirst('#', '0xff'))),
+                                        )
+                                      : Label(
+                                          variant.attributeValue,
+                                          fontSize: 16,
+                                          weight: 700,
+                                        ).regular,
                                 ),
                               ],
                             ),
@@ -332,21 +348,26 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           spacing: 8,
-                          children: List.generate(
-                            data.product_variants.length,
-                            (index) => _variantCard(
-                              index: index,
-                              label: data.product_variants[index]
-                                  ["attributeValue"],
-                              amount: kCurrencyFormat(
-                                data.product_variants[index]["salePrice"],
-                              ),
-                              mrp: kCurrencyFormat(
-                                data.product_variants[index]["mrp"],
-                                symbol: "MRP ",
-                              ),
-                            ),
-                          ),
+                          children: List.generate(data.product_variants.length,
+                              (index) {
+                            log("${data.product_variants[index]}");
+                            return _variantCard(
+                              ProductVariantModel.fromMap(
+                                  data.product_variants[index]),
+                              // index: index,
+                              // label: data.product_variants[index]
+                              //     ["attributeValue"],
+                              // amount: kCurrencyFormat(
+                              //   data.product_variants[index]["salePrice"],
+                              // ),
+                              // mrp: kCurrencyFormat(
+                              //   data.product_variants[index]["mrp"],
+                              //   symbol: "MRP ",
+                              // ),
+                              // type: data.product_variants[index]
+                              //     ["attributeType"],
+                            );
+                          }),
                         ),
                       ),
 
@@ -406,7 +427,17 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         ),
       ),
       bottomNavigationBar: productData.hasValue && productData.value != null
-          ? footer(productData.value!)
+          ? variant.stock == 0
+              ? KCard(
+                  width: double.infinity,
+                  child: SafeArea(
+                      child: Label(
+                    "Out Of Stock",
+                    textAlign: TextAlign.center,
+                    color: StatusText.danger,
+                  ).regular),
+                )
+              : footer(productData.value!, cartData.value ?? [])
           : null,
     );
   }
@@ -475,11 +506,11 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     });
   }
 
-  Widget footer(ProductDetailModel product) {
+  Widget footer(ProductDetailModel product, List cart) {
     return Consumer(
       builder: (context, ref, child) {
-        final cartData = ref.watch(cartProvider);
-        final inCart = cartData.any((item) => item.productId == product.id);
+        final inCart =
+            cart.any((item) => item["productVariantId"] == product.id);
         final user = ref.watch(userProvider);
         return Container(
           padding: EdgeInsets.all(kPadding),
@@ -505,8 +536,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                       Label("Total Price").regular,
                       Label(
                         kCurrencyFormat(
-                          product.product_variants[selectedVariant]
-                              ["salePrice"],
+                          variant.salePrice,
                           symbol: "INR ",
                         ),
                         weight: 700,
@@ -517,8 +547,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => addToCart(
-                      product.product_variants[selectedVariant]["id"]),
+                  onTap: () {
+                    if (!inCart) {
+                      addToCart(variant.id);
+                    } else {
+                      context.push("/cart");
+                    }
+                  },
                   child: Container(
                     height: 55,
                     alignment: Alignment.center,
@@ -540,9 +575,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             height: 20,
                             colorFilter: kSvgColor(Colors.white),
                           ),
-                        if (cartData.isNotEmpty && !inCart)
+                        if (cart.isNotEmpty && !inCart)
                           Label(
-                            "${cartData.length}",
+                            "${cart.length}",
                             fontSize: 20,
                             weight: 700,
                             height: 1,
@@ -583,16 +618,19 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     );
   }
 
-  Widget _variantCard({
-    required int index,
-    required String label,
-    required String amount,
-    required String mrp,
-  }) {
-    bool selected = selectedVariant == index;
+  Widget _variantCard(ProductVariantModel data
+      // required int index,
+      // required String label,
+      // required String amount,
+      // required String mrp,
+      // required String type,
+
+      ) {
+    bool selected = variant == data;
+    bool isColor = data.attributeType == "Color";
     return KCard(
       onTap: () => setState(() {
-        selectedVariant = index;
+        variant = data;
       }),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       borderColor: selected ? kScheme.primary : KColor.card,
@@ -604,11 +642,19 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             spacing: 10,
             children: [
-              Expanded(
-                child: Label(label, fontSize: 17, weight: 700, maxLines: 1)
-                    .regular,
+              Flexible(
+                child: isColor
+                    ? CircleAvatar(
+                        radius: 10,
+                        backgroundColor: Color(int.parse(
+                            data.attributeValue.replaceFirst('#', '0xff'))),
+                      )
+                    : Label(data.attributeValue,
+                            fontSize: 17, weight: 700, maxLines: 1)
+                        .regular,
               ),
               KCard(
                 borderWidth: 2,
@@ -616,14 +662,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 radius: 5,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                 child: Label(
-                  amount,
-                  fontSize: 15,
-                  weight: 700,
+                  kCurrencyFormat(data.salePrice),
+                  fontSize: 12,
                 ).regular,
               ),
             ],
           ),
-          Label(mrp,
+          Label(kCurrencyFormat(data.mrp),
                   decoration: TextDecoration.lineThrough,
                   color: KColor.fadeText)
               .regular,

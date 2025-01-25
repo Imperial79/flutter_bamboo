@@ -46,7 +46,19 @@ class _Home_UIState extends ConsumerState<Home_UI> {
     ));
 
     final products = ref.watch(productsList);
-    final cartLength = ref.watch(cartProvider).length;
+    // final localCart = ref.watch(cartProvider);
+    final cartData = ref.watch(cartFuture);
+    // cartData.whenData((value) {
+    //   if (value.isNotEmpty) {
+    //     for (Map e in value) {
+    //       if (localCart
+    //           .any((element) => element.productId != e["productVariantId"])) {
+    //         ref.read(cartProvider.notifier).addItem(CartItemModel(
+    //             productId: e["productVariantId"], quantity: e["qty"]));
+    //       }
+    //     }
+    //   }
+    // });
     return KScaffold(
       body: SafeArea(
         child: Column(
@@ -87,23 +99,39 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                       ),
                     ),
                   ),
-                  Badge(
-                    offset: Offset(-1, 20),
-                    isLabelVisible: cartLength > 0,
-                    label: Label("$cartLength").regular,
-                    child: IconButton(
-                      onPressed: () => context.push("/cart"),
-                      icon: SvgPicture.asset(
-                        cartLength > 0
-                            ? "$kIconPath/shopping-bag-filled.svg"
-                            : "$kIconPath/shopping-bag.svg",
-                        height: 22,
-                        colorFilter: kSvgColor(
-                          cartLength > 0 ? KColor.primary : Colors.black,
+                  cartData.when(
+                    data: (data) => Badge(
+                      offset: Offset(-1, 20),
+                      isLabelVisible: data.isNotEmpty,
+                      label: Label("${data.length}").regular,
+                      child: IconButton(
+                        onPressed: () => context.push("/cart"),
+                        icon: SvgPicture.asset(
+                          data.isNotEmpty
+                              ? "$kIconPath/shopping-bag-filled.svg"
+                              : "$kIconPath/shopping-bag.svg",
+                          height: 22,
+                          colorFilter: kSvgColor(
+                            data.isNotEmpty ? KColor.primary : Colors.black,
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    error: (error, stackTrace) => IconButton(
+                      onPressed: () => context.push("/cart"),
+                      icon: SvgPicture.asset(
+                        "$kIconPath/shopping-bag.svg",
+                        height: 22,
+                      ),
+                    ),
+                    loading: () => IconButton(
+                      onPressed: () => context.push("/cart"),
+                      icon: SvgPicture.asset(
+                        "$kIconPath/shopping-bag.svg",
+                        height: 22,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

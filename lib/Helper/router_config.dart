@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Cart_UI.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/Login_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Search_Products_UI.dart';
+import 'package:flutter_bamboo/Pages/Profile/Edit_Profile_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Orders_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Saved_Address_UI.dart';
@@ -28,7 +27,6 @@ final goRouterProvider = Provider<GoRouter>(
 
     return GoRouter(
       redirect: (context, state) {
-        log("${state.fullPath}");
         if (authState.isLoading) return "/splash";
         return null;
       },
@@ -101,6 +99,12 @@ final goRouterProvider = Provider<GoRouter>(
             return const Profile_UI();
           },
           routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (context, state) {
+                return const Edit_Profile_UI();
+              },
+            ),
             GoRoute(
               path: 'saved-address',
               builder: (context, state) {

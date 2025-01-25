@@ -29,7 +29,7 @@ class ProductHelper {
 
   Future<void> shareProduct(
     ProductDetailModel product, {
-    required int selectedVariant,
+    required int variantId,
     String? referCode,
   }) async {
     try {
@@ -44,7 +44,7 @@ class ProductHelper {
         await file.writeAsBytes(response.bodyBytes);
         String productLink = createProductPath(
           name: product.name,
-          sku: product.product_variants[selectedVariant]["sku"],
+          sku: product.product_variants[variantId]["sku"],
           productId: product.id,
           referCode: referCode,
         );
@@ -54,9 +54,28 @@ class ProductHelper {
           text: 'Check out this product: ${Uri.parse(productLink)}',
         );
       } else {
-        throw Exception('Failed to download image.');
+        // If image download fails, share only the text
+        String productLink = createProductPath(
+          name: product.name,
+          sku: product.product_variants[variantId]["sku"],
+          productId: product.id,
+          referCode: referCode,
+        );
+        await Share.share(
+          'Check out this product: ${Uri.parse(productLink)}',
+        );
       }
     } catch (e) {
+      // If any error occurs, share only the text
+      String productLink = createProductPath(
+        name: product.name,
+        sku: product.product_variants[variantId]["sku"],
+        productId: product.id,
+        referCode: referCode,
+      );
+      await Share.share(
+        'Check out this product: ${Uri.parse(productLink)}',
+      );
       debugPrint('Error sharing product: $e');
     }
   }

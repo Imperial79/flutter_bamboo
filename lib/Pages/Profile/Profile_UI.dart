@@ -103,7 +103,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                     else
                       Center(
                         child: InkWell(
-                          onTap: () => context.push("/edit-profile"),
+                          onTap: () => context.push("/profile/edit"),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             spacing: 5,

@@ -64,7 +64,7 @@ class KNavigationBar extends StatelessWidget {
                 ),
                 Label(
                   label,
-                  weight: selected ? 600 : 500,
+                  weight: selected ? 700 : 600,
                   color: selected ? null : KColor.fadeText,
                   fontSize: 13,
                 ).regular,

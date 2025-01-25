@@ -69,7 +69,6 @@ class _KCarouselState extends State<KCarousel> {
   Widget build(BuildContext context) {
     return Column(
       spacing: widget.indicatorSpace,
-      // alignment: Alignment.topRight,
       children: [
         FlutterCarousel(
           options: FlutterCarouselOptions(
