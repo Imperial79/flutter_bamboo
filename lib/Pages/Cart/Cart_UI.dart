@@ -16,7 +16,6 @@ import 'package:flutter_bamboo/Repository/coupon_repo.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
-import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -157,9 +156,15 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
 
       final res =
           await ref.read(cartRepo).checkout(shippingState, discountCoupon);
-      log("$res");
+
       if (!res.error) {
-        // context.push("/cart/checkout");
+        context.push(
+          "/cart/checkout",
+          extra: {
+            "checkoutData": res,
+            "discountCoupon": discountCoupon,
+          },
+        );
       }
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);

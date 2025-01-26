@@ -79,7 +79,7 @@ Widget kLoginRequired(BuildContext context) {
   );
 }
 
-Widget kAmount(dynamic amount) {
+Widget kAmount(dynamic amount, {double? fontSize = 25}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -90,7 +90,7 @@ Widget kAmount(dynamic amount) {
             parseToDouble(amount),
             symbol: "",
           ),
-          fontSize: 25,
+          fontSize: fontSize,
           height: 1,
           weight: 600,
         ).title,

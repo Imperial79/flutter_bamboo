@@ -68,6 +68,8 @@ KSnackbar(
   ScaffoldMessenger.of(context).removeCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
+      elevation: 0,
+      shape: RoundedRectangleBorder(borderRadius: kRadius(10)),
       backgroundColor:
           error0 ? kScheme.errorContainer : kScheme.primaryContainer,
       content: Label("$message0",

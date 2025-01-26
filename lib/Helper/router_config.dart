@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Cart_UI.dart';
@@ -99,7 +99,11 @@ final goRouterProvider = Provider<GoRouter>(
             GoRoute(
               path: 'checkout',
               builder: (context, state) {
-                return Checkout_UI();
+                final data = state.extra as Map;
+                return Checkout_UI(
+                  checkoutData: data["checkoutData"] as ResponseModel,
+                  discountCoupon: data["discountCoupon"],
+                );
               },
             ),
           ],
