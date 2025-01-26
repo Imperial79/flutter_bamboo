@@ -65,6 +65,7 @@ KSnackbar(
 }) {
   final error0 = res != null ? res.error : error;
   final message0 = res != null ? res.message : message;
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       backgroundColor:

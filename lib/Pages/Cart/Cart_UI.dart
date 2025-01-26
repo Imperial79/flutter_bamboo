@@ -127,6 +127,12 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
           if (couponDiscount > coupon.uptoAmount) {
             couponDiscount = coupon.uptoAmount;
           }
+        } else {
+          KSnackbar(context,
+              message:
+                  "Coupon Removed! Min. purchase must be ${kCurrencyFormat(coupon.minPurchase)}",
+              error: true);
+          ref.read(selectedCouponProvider.notifier).state = null;
         }
       }
 
@@ -244,7 +250,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                 KSnackbar(
                                   context,
                                   message:
-                                      "Oops Offer not Applied! Min. purchase must be ₹${coupon.minPurchase}",
+                                      "Oops Offer not Applied! Min. purchase must be ${kCurrencyFormat(coupon.minPurchase)}",
                                   error: true,
                                 );
                               }
