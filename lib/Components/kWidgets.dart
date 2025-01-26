@@ -78,3 +78,23 @@ Widget kLoginRequired(BuildContext context) {
     ),
   );
 }
+
+Widget kAmount(dynamic amount) {
+  return Row(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Label("₹", fontSize: 15, height: 1.2).regular,
+      Expanded(
+        child: Label(
+          kCurrencyFormat(
+            parseToDouble(amount),
+            symbol: "",
+          ),
+          fontSize: 25,
+          height: 1,
+          weight: 600,
+        ).title,
+      ),
+    ],
+  );
+}

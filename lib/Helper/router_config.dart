@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Cart_UI.dart';
+import 'package:flutter_bamboo/Pages/Cart/Checkout_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Coupons_UI.dart';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/Login_UI.dart';
@@ -83,18 +85,25 @@ final goRouterProvider = Provider<GoRouter>(
           },
         ),
         GoRoute(
-            path: '/cart',
-            builder: (context, state) {
-              return const Cart_UI();
-            },
-            routes: [
-              GoRoute(
-                path: 'coupons',
-                builder: (context, state) {
-                  return Coupons_UI();
-                },
-              ),
-            ]),
+          path: '/cart',
+          builder: (context, state) {
+            return const Cart_UI();
+          },
+          routes: [
+            GoRoute(
+              path: 'coupons',
+              builder: (context, state) {
+                return Coupons_UI();
+              },
+            ),
+            GoRoute(
+              path: 'checkout',
+              builder: (context, state) {
+                return Checkout_UI();
+              },
+            ),
+          ],
+        ),
         GoRoute(
           path: "/affiliate",
           builder: (context, state) => Affiliate_UI(),

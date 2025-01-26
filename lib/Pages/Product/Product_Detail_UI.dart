@@ -192,6 +192,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         child: productData.when(
           data: (data) => data != null
               ? SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -390,8 +391,8 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                               ...reviewsTab(),
                           ],
                         ),
-                      )
-                      // height20,
+                      ),
+                      height20,
                       // Label(
                       //   "Products you may like",
                       // ).regular,

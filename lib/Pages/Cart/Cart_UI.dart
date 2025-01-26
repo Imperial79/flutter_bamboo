@@ -1,7 +1,6 @@
 // ignore_for_file: unused_result
 
 import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -103,18 +102,19 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
 
   calculatePriceBreakdown() async {
     try {
-      // if (totalMrp == 0 || totalSalePrice == 0) {
       totalMrp = 0;
       totalSalePrice = 0;
       totalItems = 0;
       final cartData = await ref.read(cartFuture.future);
       for (var element in cartData) {
-        totalMrp +=
-            (parseToDouble(element["mrp"]) * int.parse("${element["qty"]}"));
-        totalSalePrice += (parseToDouble(element["salePrice"]) *
-            int.parse("${element["qty"]}"));
+        if (int.parse("${element["stock"]}") > 0) {
+          totalMrp +=
+              (parseToDouble(element["mrp"]) * int.parse("${element["qty"]}"));
+          totalSalePrice += (parseToDouble(element["salePrice"]) *
+              int.parse("${element["qty"]}"));
 
-        totalItems += int.parse("${element["qty"]}");
+          totalItems += int.parse("${element["qty"]}");
+        }
       }
       final discount = totalMrp - totalSalePrice;
       double couponDiscount = 0;
@@ -145,6 +145,26 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
       setState(() {});
     } catch (e) {
       log("$e");
+    }
+  }
+
+  checkout({
+    required String shippingState,
+    required String? discountCoupon,
+  }) async {
+    try {
+      isLoading.value = true;
+
+      final res =
+          await ref.read(cartRepo).checkout(shippingState, discountCoupon);
+      log("$res");
+      if (!res.error) {
+        // context.push("/cart/checkout");
+      }
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -218,17 +238,24 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                         ),
                       height10,
                       Label("Products Summary", fontSize: 17).title,
-                      cartData.when(
-                        data: (data) => Column(
-                          spacing: 15,
-                          children: data
-                              .map(
-                                (e) => buildCartItem(data.indexOf(e), e),
-                              )
-                              .toList(),
+                      KCard(
+                        borderWidth: 1,
+                        color: KColor.scaffold,
+                        child: cartData.when(
+                          data: (data) => ListView.separated(
+                            separatorBuilder: (context, index) => Divider(
+                              height: 30,
+                              color: KColor.border,
+                            ),
+                            itemCount: data.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) =>
+                                buildCartItem(index, data[index]),
+                          ),
+                          error: (error, stackTrace) => kNoData(context),
+                          loading: () => CircularProgressIndicator(),
                         ),
-                        error: (error, stackTrace) => kNoData(context),
-                        loading: () => CircularProgressIndicator(),
                       ),
                       height10,
                       Label("Coupons & Promotional", fontSize: 17).title,
@@ -284,7 +311,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                         child: Column(
                           spacing: 5,
                           children: [
-                            _row("Price (2 Items)",
+                            _row("Price (${breakdown["totalQty"]} Items)",
                                 kCurrencyFormat(breakdown["price"])),
                             _row("Discount",
                                 kCurrencyFormat(breakdown["discount"]),
@@ -330,27 +357,17 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                           children: [
                             Label("Sub-Total", weight: 600).regular,
                             height5,
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Label("₹", fontSize: 20, height: 1.2).regular,
-                                Expanded(
-                                  child: Label(
-                                    "230.00",
-                                    fontSize: 25,
-                                    height: 1,
-                                    weight: 600,
-                                  ).title,
-                                ),
-                              ],
-                            )
+                            kAmount(breakdown["subTotal"]),
                           ],
                         ),
                       ),
                       KButton(
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                        onPressed: () {},
+                        onPressed: () => checkout(
+                          shippingState: selectedAddress!.state!,
+                          discountCoupon: selectedCoupon?.coupon,
+                        ),
                         label: "Proceed",
                         radius: 7,
                       ),
@@ -556,17 +573,11 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Label("₹", fontSize: 12, height: 1.2).regular,
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Label(
-                            kCurrencyFormat(data["salePrice"], symbol: ""),
-                            height: 1,
-                            weight: 600,
-                          ).title,
-                          height5,
+                          kAmount(data["salePrice"]),
                           Label("MRP ${kCurrencyFormat(data["mrp"])}",
                                   height: 1,
                                   weight: 600,
@@ -577,20 +588,15 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                       ),
                     ),
                     Row(
-                      spacing: 5,
                       children: [
-                        StarRating(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          rating: parseToDouble(data["totalRatings"]),
-                          size: 15,
+                        Icon(
+                          Icons.star,
                           color: Colors.amber.shade800,
+                          size: 17,
                         ),
-                        Label(
-                          "(${thoundsandToK(data["totalReviews"])})",
-                          weight: 500,
-                        ).regular
+                        Label(data["totalRatings"]).regular,
                       ],
-                    )
+                    ),
                   ],
                 ),
                 height5,
@@ -598,33 +604,43 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   spacing: 10,
                   children: [
-                    KCard(
-                      borderWidth: 1,
-                      radius: 7,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                      child: DropdownButton(
-                        isDense: true,
-                        value: int.parse("${data["qty"]}"),
-                        icon: Icon(
-                          Icons.inventory,
-                          size: 15,
+                    if (int.parse("${data["stock"]}") > 0)
+                      KCard(
+                        borderWidth: 1,
+                        radius: 7,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                        child: DropdownButton(
+                          isDense: true,
+                          value: int.parse("${data["qty"]}"),
+                          icon: Icon(
+                            Icons.inventory,
+                            size: 15,
+                          ),
+                          menuMaxHeight: 300,
+                          borderRadius: kRadius(10),
+                          elevation: 1,
+                          underline: SizedBox(),
+                          items: List.generate(
+                            9,
+                            (index) => DropdownMenuItem(
+                                value: index + 1,
+                                child: Label("${index + 1}").regular),
+                          ),
+                          onChanged: (value) {
+                            updateCart(data["productVariantId"], value!, index);
+                          },
                         ),
-                        menuMaxHeight: 300,
-                        borderRadius: kRadius(10),
-                        elevation: 1,
-                        underline: SizedBox(),
-                        items: List.generate(
-                          9,
-                          (index) => DropdownMenuItem(
-                              value: index + 1,
-                              child: Label("${index + 1}").regular),
-                        ),
-                        onChanged: (value) {
-                          updateCart(data["productVariantId"], value!, index);
-                        },
-                      ),
-                    ),
+                      )
+                    else
+                      KCard(
+                          radius: 100,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                          color: kScheme.errorContainer,
+                          child: Label("Out of stock",
+                                  color: kScheme.error, fontSize: 12)
+                              .regular),
                     KCard(
                       onTap: () => deleteItem(data["productVariantId"]),
                       padding:

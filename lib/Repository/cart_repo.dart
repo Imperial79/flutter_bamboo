@@ -34,6 +34,21 @@ class CartRepo {
       rethrow;
     }
   }
+
+  Future<ResponseModel> checkout(
+    String shippingState,
+    String? discountCoupon,
+  ) async {
+    try {
+      final res = await apiCallBack(path: "/shopping/checkout", body: {
+        "shippingState": shippingState,
+        "discountCoupon": discountCoupon,
+      });
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 // class CartNotifier extends StateNotifier<List<CartItemModel>> {
