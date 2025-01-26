@@ -106,6 +106,16 @@ final goRouterProvider = Provider<GoRouter>(
                 );
               },
             ),
+            GoRoute(
+              path: 'confirmation',
+              builder: (context, state) {
+                final data = state.extra as Map;
+                return Checkout_UI(
+                  checkoutData: data["orderId"],
+                  discountCoupon: data["deliveryDays"],
+                );
+              },
+            ),
           ],
         ),
         GoRoute(

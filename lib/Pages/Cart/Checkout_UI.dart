@@ -9,14 +9,17 @@ import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_bamboo/Repository/address_repo.dart';
 import 'package:flutter_bamboo/Repository/cart_repo.dart';
+import 'package:flutter_bamboo/Repository/coupon_repo.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../Components/kCard.dart';
 import '../../Components/kWidgets.dart';
 import '../../Resources/theme.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class Checkout_UI extends ConsumerStatefulWidget {
   final ResponseModel checkoutData;
@@ -30,6 +33,61 @@ class Checkout_UI extends ConsumerStatefulWidget {
 
 class _Checkout_UIState extends ConsumerState<Checkout_UI> {
   final isLoading = ValueNotifier(false);
+  late Razorpay _razorpay;
+
+  @override
+  void initState() {
+    super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    _razorpay.clear();
+    super.dispose();
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Handle payment success
+    log("Payment Success: ${response.paymentId}");
+    KSnackbar(context, message: "Payment Successful!");
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Handle payment error
+    log("Payment Error: ${response.code} - ${response.message}");
+    KSnackbar(context, message: "Payment Failed!", error: true);
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    // Handle external wallet
+    log("External Wallet: ${response.walletName}");
+    KSnackbar(context, message: "External Wallet Selected!");
+  }
+
+  void openCheckout(String orderId, int amount) {
+    final selectedAddress = ref.read(selectedAddressProvider);
+    var options = {
+      'key': dotenv.get('RAZORPAY_KEY'),
+      'amount': amount,
+      'name': 'NGF Organic',
+      'description': 'Payment for Order $orderId',
+      'order_id': orderId,
+      'prefill': {'contact': selectedAddress!.phone},
+      'external': {
+        'wallets': ['paytm', 'phonepe']
+      }
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      log("Error: $e");
+    }
+  }
 
   generatePaymentOrder() async {
     try {
@@ -47,7 +105,11 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
 
       log("$res");
       KSnackbar(context, res: res);
-      if (!res.error) {}
+      if (!res.error) {
+        final orderId = res.data["paymentOrderId"];
+        int amountInPaise = int.parse("${res.data["amountInPaise"]}");
+        openCheckout(orderId, amountInPaise);
+      }
     } catch (error) {
       KSnackbar(context, message: "$error", error: true);
     } finally {
