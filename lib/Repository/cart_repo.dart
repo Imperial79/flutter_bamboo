@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter_bamboo/Helper/api_config.dart';
 import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final cartFuture = FutureProvider.autoDispose<List>((ref) async {
   final res = await apiCallBack(path: "/cart/fetch-details");
-
   if (!res.error) {
+    log("${res.data}");
     return res.data;
   }
   return [];

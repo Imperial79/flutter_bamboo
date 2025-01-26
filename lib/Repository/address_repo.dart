@@ -3,6 +3,10 @@ import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_bamboo/Models/address_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+final selectedAddressProvider = StateProvider<AddressModel?>(
+  (ref) => null,
+);
+
 final addressFuture = FutureProvider<List<AddressModel>>((ref) async {
   final res = await apiCallBack(path: "/address/fetch");
 
@@ -22,6 +26,32 @@ class AddressRepo {
       final res = await apiCallBack(
         path: "/address/save",
         body: address.toMap(),
+      );
+      if (res.error) throw res.message;
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ResponseModel> makePrimary(int addressId) async {
+    try {
+      final res = await apiCallBack(
+        path: "/address/make-primary",
+        body: {"addressId": addressId},
+      );
+      if (res.error) throw res.message;
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<ResponseModel> delete(int addressId) async {
+    try {
+      final res = await apiCallBack(
+        path: "/address/delete",
+        body: {"addressId": addressId},
       );
       if (res.error) throw res.message;
       return res;

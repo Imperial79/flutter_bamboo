@@ -8,7 +8,12 @@ import '../Resources/commons.dart';
 import 'Label.dart';
 import 'kButton.dart';
 
-Widget kNoData(BuildContext context, {String? title, String? subtitle}) =>
+Widget kNoData(
+  BuildContext context, {
+  String? title,
+  String? subtitle,
+  bool? showHome = true,
+}) =>
     Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -22,17 +27,18 @@ Widget kNoData(BuildContext context, {String? title, String? subtitle}) =>
           Label(subtitle ?? "No data found.", fontSize: 17, weight: 500)
               .regular,
           height20,
-          KButton(
-            onPressed: () {
-              context.go("/");
-            },
-            label: "Go Home",
-            style: KButtonStyle.regular,
-            radius: 100,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            backgroundColor: kScheme.tertiaryContainer,
-            foregroundColor: kScheme.tertiary,
-          )
+          if (showHome!)
+            KButton(
+              onPressed: () {
+                context.go("/");
+              },
+              label: "Go Home",
+              style: KButtonStyle.regular,
+              radius: 100,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              backgroundColor: kScheme.tertiaryContainer,
+              foregroundColor: kScheme.tertiary,
+            )
         ],
       ),
     );

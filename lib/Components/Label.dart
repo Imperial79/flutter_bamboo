@@ -42,12 +42,12 @@ class Label {
   Widget get subtitle => Text(
         text,
         style: TextStyle(
-          fontSize: fontSize ?? 14,
-          color: color ?? KColor.fadeText,
-          fontVariations: [FontVariation.weight(weight ?? 500)],
-          fontStyle: fontStyle,
-          height: height,
-        ),
+            fontSize: fontSize ?? 14,
+            color: color ?? KColor.fadeText,
+            fontVariations: [FontVariation.weight(weight ?? 500)],
+            fontStyle: fontStyle,
+            height: height,
+            decoration: decoration),
         textAlign: textAlign,
         maxLines: maxLines,
         overflow: maxLines != null ? TextOverflow.ellipsis : null,

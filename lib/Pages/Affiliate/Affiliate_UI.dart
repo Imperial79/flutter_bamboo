@@ -68,7 +68,7 @@ class _Affiliate_UIState extends State<Affiliate_UI> {
                   style: TextStyle(
                     fontSize: 15,
                     color: KColor.fadeText,
-                    fontVariations: [FontVariation.weight(600)],
+                    fontVariations: [FontVariation.weight(500)],
                   ),
                   children: [
                     const TextSpan(text: "By proceeding you agree to our "),
@@ -80,7 +80,7 @@ class _Affiliate_UIState extends State<Affiliate_UI> {
                         },
                       text: "Terms & Conditions",
                       style: TextStyle(
-                        fontVariations: [FontVariation.weight(800)],
+                        fontVariations: [FontVariation.weight(700)],
                         color: kScheme.primary,
                       ),
                     ),
@@ -93,7 +93,7 @@ class _Affiliate_UIState extends State<Affiliate_UI> {
                         },
                       text: "Privacy Policy",
                       style: TextStyle(
-                        fontVariations: [FontVariation.weight(800)],
+                        fontVariations: [FontVariation.weight(700)],
                         color: kScheme.primary,
                       ),
                     ),

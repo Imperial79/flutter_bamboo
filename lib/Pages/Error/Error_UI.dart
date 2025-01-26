@@ -7,30 +7,32 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 class Error_UI extends StatelessWidget {
-  final String path;
-  const Error_UI({super.key, required this.path});
+  const Error_UI({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                "$kIconPath/error-404.svg",
-                height: 200,
-              ),
-              height20,
-              Label("Page Not Found!", fontSize: 30, weight: 700).title,
-              Label(
-                "Sorry we cannot find the requested path $path!",
-                fontSize: 20,
-                weight: 500,
-                textAlign: TextAlign.center,
-              ).subtitle,
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(kPadding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  "$kIconPath/error-404.svg",
+                  height: 200,
+                ),
+                height20,
+                Label("Page Not Found!", fontSize: 30, weight: 700).title,
+                Label(
+                  "Sorry we cannot find the requested page!",
+                  fontSize: 17,
+                  weight: 500,
+                  textAlign: TextAlign.center,
+                ).subtitle,
+              ],
+            ),
           ),
         ),
       ),

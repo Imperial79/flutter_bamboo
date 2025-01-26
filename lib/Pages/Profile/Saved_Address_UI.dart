@@ -3,9 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
-import 'package:flutter_bamboo/Components/KSearchbar.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
-import 'package:flutter_bamboo/Components/Pill.dart';
 import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kWidgets.dart';
@@ -72,6 +70,42 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
     }
   }
 
+  makePrimary(int addressId) async {
+    try {
+      isLoading.value = true;
+
+      final res = await ref.read(addressRepo).makePrimary(addressId);
+      if (!res.error) {
+        _refresh();
+        KSnackbar(context, res: res);
+      }
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  deleteAddress(int addressId) async {
+    try {
+      isLoading.value = true;
+
+      final res = await ref.read(addressRepo).delete(addressId);
+      if (!res.error) {
+        _refresh();
+        KSnackbar(context, res: res);
+      }
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  _refresh() async {
+    await ref.refresh(addressFuture.future);
+  }
+
   @override
   void dispose() {
     searchKey.dispose();
@@ -88,8 +122,9 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
   Widget build(BuildContext context) {
     final addressData = ref.watch(addressFuture);
     return RefreshIndicator(
-      onRefresh: () => ref.refresh(addressFuture.future),
+      onRefresh: () => _refresh(),
       child: KScaffold(
+        isLoading: isLoading,
         appBar: AppBar(
           title: Label("Saved Address").regular,
           centerTitle: true,
@@ -102,33 +137,24 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
               spacing: 10,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  spacing: 10,
-                  children: [
-                    Flexible(
-                      child: KSearchbar(
-                        controller: searchKey,
-                        hintText: "Search the address here",
-                      ),
-                    ),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: isLoading,
-                      builder: (context, loading, _) {
-                        return KButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              barrierDismissible: !loading,
-                              builder: (context) => addAddressDialog(),
-                            );
-                          },
-                          label: "Add",
-                          radius: 7,
-                          padding: EdgeInsets.all(12),
+                ValueListenableBuilder<bool>(
+                  valueListenable: isLoading,
+                  builder: (context, loading, _) {
+                    return KButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          barrierDismissible: !loading,
+                          builder: (context) => addAddressDialog(),
                         );
                       },
-                    ),
-                  ],
+                      label: "Add Address",
+                      icon: Icon(Icons.add),
+                      style: KButtonStyle.outlined,
+                      backgroundColor: kScheme.primaryContainer,
+                      foregroundColor: KColor.secondary,
+                    );
+                  },
                 ),
                 height10,
                 ...addressData.when(
@@ -141,56 +167,8 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
                           itemCount: data.length,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) => KCard(
-                            color: KColor.scaffold,
-                            borderWidth: 1,
-                            width: double.infinity,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: 20,
-                              children: [
-                                SvgPicture.asset(
-                                  "$kIconPath/location.svg",
-                                  height: 60,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Pill(
-                                            label: "Primary",
-                                            backgroundColor:
-                                                kScheme.tertiaryContainer,
-                                            textColor: kScheme.tertiary,
-                                          ).text,
-                                          Icon(
-                                            Icons.check_circle_outline_outlined,
-                                            color: KColor.primary,
-                                          ),
-                                        ],
-                                      ),
-                                      height10,
-                                      Label(data[index].name!).title,
-                                      Label("+91 ${data[index].phone}").regular,
-                                      Label(
-                                        "${data[index].address!} - ${data[index].pincode}",
-                                        weight: 500,
-                                      ).subtitle,
-                                      Label(
-                                        "${data[index].city!}, ${data[index].state}",
-                                        weight: 500,
-                                      ).subtitle,
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          itemBuilder: (context, index) =>
+                              _addressCard(data[index]),
                         )
                       ];
                     }
@@ -201,8 +179,8 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
                     ];
                   },
                   error: (error, stackTrace) => [kNoData(context)],
-                  loading: () => [CircularProgressIndicator()],
-                )
+                  loading: () => [Center(child: CircularProgressIndicator())],
+                ),
               ],
             ),
           ),
@@ -326,6 +304,80 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
           },
         );
       },
+    );
+  }
+
+  Widget _addressCard(AddressModel address) {
+    return KCard(
+      onTap: () {
+        if (!address.isPrimary!) {
+          makePrimary(address.id!);
+        }
+      },
+      color: KColor.scaffold,
+      borderWidth: 1,
+      width: double.infinity,
+      child: Column(
+        spacing: 10,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 20,
+            children: [
+              SvgPicture.asset(
+                "$kIconPath/location.svg",
+                height: 60,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (address.isPrimary!) ...[
+                      KCard(
+                        radius: 100,
+                        color: kScheme.primaryContainer,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                        child: Label("Primary", fontSize: 12).regular,
+                      ),
+                      height5,
+                    ],
+                    Label(address.name!).title,
+                    Label("+91 ${address.phone}").regular,
+                    Label(
+                      "${address.address!} - ${address.pincode}",
+                      weight: 500,
+                    ).subtitle,
+                    Label(
+                      "${address.city!}, ${address.state}",
+                      weight: 500,
+                    ).subtitle,
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            spacing: 10,
+            children: [
+              GestureDetector(
+                onTap: () => deleteAddress(address.id!),
+                child: Chip(
+                  label: Label("Delete").regular,
+                ),
+              ),
+              if (!address.isPrimary!)
+                GestureDetector(
+                  onTap: () => makePrimary(address.id!),
+                  child: Chip(
+                    label: Label("Make Primary").regular,
+                  ),
+                ),
+            ],
+          )
+        ],
+      ),
     );
   }
 }

@@ -10,6 +10,7 @@ class KButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final double fontSize;
+  final double weight;
   final Widget? icon;
   final double? radius;
   final EdgeInsetsGeometry? padding;
@@ -25,6 +26,7 @@ class KButton extends StatelessWidget {
     this.backgroundColor,
     this.foregroundColor = Colors.white,
     this.fontSize = 15,
+    this.weight = 600,
     this.icon,
     this.radius = 15,
     this.padding,
@@ -63,7 +65,7 @@ class KButton extends StatelessWidget {
           textStyle: TextStyle(
             fontSize: fontSize,
             letterSpacing: .7,
-            fontVariations: const [FontVariation.weight(500)],
+            fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
         );
@@ -95,7 +97,7 @@ class KButton extends StatelessWidget {
           textStyle: TextStyle(
             fontSize: fontSize,
             letterSpacing: .7,
-            fontVariations: const [FontVariation.weight(500)],
+            fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
         );
@@ -116,7 +118,7 @@ class KButton extends StatelessWidget {
           textStyle: TextStyle(
             fontSize: fontSize,
             letterSpacing: .7,
-            fontVariations: const [FontVariation.weight(500)],
+            fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
         );
@@ -137,7 +139,7 @@ class KButton extends StatelessWidget {
           textStyle: TextStyle(
             fontSize: fontSize,
             letterSpacing: .7,
-            fontVariations: const [FontVariation.weight(500)],
+            fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
           minimumSize: const Size.fromHeight(50), // Full width
@@ -155,10 +157,11 @@ class KButton extends StatelessWidget {
         return Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            Label(
               label,
-              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w500),
-            ),
+              weight: weight,
+              fontSize: fontSize,
+            ).regular,
             if (icon != null) ...[
               const Spacer(),
               Padding(
@@ -188,7 +191,7 @@ class KButton extends StatelessWidget {
           children: [
             Label(
               label,
-              weight: 700,
+              weight: weight,
               fontSize: fontSize,
               textAlign: TextAlign.center,
             ).regular,
@@ -215,7 +218,7 @@ class KButton extends StatelessWidget {
             "Loading...",
             style: TextStyle(
               fontSize: fontSize,
-              fontWeight: FontWeight.w500,
+              fontVariations: [FontVariation.weight(weight)],
             ),
           ),
         ],

@@ -9,6 +9,7 @@ class AddressModel {
   String? city = "";
   String? pincode = "";
   String? state = "";
+  bool? isPrimary = false;
   AddressModel({
     this.id,
     this.customerId,
@@ -18,6 +19,7 @@ class AddressModel {
     this.city,
     this.pincode,
     this.state,
+    this.isPrimary,
   });
 
   AddressModel copyWith({
@@ -29,6 +31,7 @@ class AddressModel {
     String? city,
     String? pincode,
     String? state,
+    bool? isPrimary,
   }) {
     return AddressModel(
       id: id ?? this.id,
@@ -39,6 +42,7 @@ class AddressModel {
       city: city ?? this.city,
       pincode: pincode ?? this.pincode,
       state: state ?? this.state,
+      isPrimary: isPrimary ?? this.isPrimary,
     );
   }
 
@@ -52,6 +56,7 @@ class AddressModel {
       'city': city,
       'pincode': pincode,
       'state': state,
+      'isPrimary': isPrimary,
     };
   }
 
@@ -65,6 +70,7 @@ class AddressModel {
       city: map['city'],
       pincode: map['pincode'],
       state: map['state'],
+      isPrimary: map['isPrimary'] == "Y",
     );
   }
 
@@ -75,7 +81,7 @@ class AddressModel {
 
   @override
   String toString() {
-    return 'AddressModel(id: $id, customerId: $customerId, name: $name, phone: $phone, address: $address, city: $city, pincode: $pincode, state: $state)';
+    return 'AddressModel(id: $id, customerId: $customerId, name: $name, phone: $phone, address: $address, city: $city, pincode: $pincode, state: $state, isPrimary: $isPrimary)';
   }
 
   @override
@@ -90,7 +96,8 @@ class AddressModel {
         other.address == address &&
         other.city == city &&
         other.pincode == pincode &&
-        other.state == state;
+        other.state == state &&
+        other.isPrimary == isPrimary;
   }
 
   @override
@@ -102,6 +109,7 @@ class AddressModel {
         address.hashCode ^
         city.hashCode ^
         pincode.hashCode ^
-        state.hashCode;
+        state.hashCode ^
+        isPrimary.hashCode;
   }
 }
