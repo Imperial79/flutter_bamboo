@@ -50,19 +50,28 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
 
   addToCart(int variantId) async {
     try {
-      isLoading.value = true;
-      final res = await ref.read(cartRepo).updateCart({
-        "productVariantId": variantId,
-        "qty": selectedQty,
-      });
-      if (!res.error) {
-        await ref.refresh(cartFuture.future);
+      final isLoggedIn = ref.read(userProvider) != null;
+      if (isLoggedIn) {
+        isLoading.value = true;
+        final res = await ref.read(cartRepo).updateCart({
+          "productVariantId": variantId,
+          "qty": selectedQty,
+        });
+        if (!res.error) {
+          await ref.refresh(cartFuture.future);
+        }
+        KSnackbar(
+          context,
+          message: res.message,
+          error: res.error,
+        );
+      } else {
+        showModalBottomSheet(
+          context: context,
+          isDismissible: !isLoading.value,
+          builder: (context) => loginModal(),
+        );
       }
-      KSnackbar(
-        context,
-        message: res.message,
-        error: res.error,
-      );
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);
     } finally {
@@ -459,7 +468,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                 height: 7,
                                 width: 50,
                                 radius: 100,
-                                color: KColor.fadeText,
+                                color: Colors.grey.shade300,
                               ),
                             ),
                             height20,

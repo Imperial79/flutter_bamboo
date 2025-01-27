@@ -86,8 +86,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
   }
 
   setAddress() async {
-    final addressData = await ref.watch(addressFuture.future);
     if (ref.read(selectedAddressProvider) == null) {
+      final addressData = await ref.watch(addressFuture.future);
       if (addressData.isNotEmpty) {
         for (AddressModel e in addressData) {
           if (e.isPrimary!) {
@@ -181,6 +181,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
   Widget build(BuildContext context) {
     final cartData = ref.watch(cartFuture);
     final selectedAddress = ref.watch(selectedAddressProvider);
+
     final selectedCoupon = ref.watch(selectedCouponProvider);
     setAddress();
 
