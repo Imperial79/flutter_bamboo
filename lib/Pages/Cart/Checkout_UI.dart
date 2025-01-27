@@ -9,12 +9,12 @@ import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_bamboo/Repository/address_repo.dart';
 import 'package:flutter_bamboo/Repository/cart_repo.dart';
-import 'package:flutter_bamboo/Repository/coupon_repo.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../Components/kCard.dart';
 import '../../Components/kWidgets.dart';
@@ -34,6 +34,7 @@ class Checkout_UI extends ConsumerStatefulWidget {
 class _Checkout_UIState extends ConsumerState<Checkout_UI> {
   final isLoading = ValueNotifier(false);
   late Razorpay _razorpay;
+  String? shoppingOrderId;
 
   @override
   void initState() {
@@ -53,7 +54,12 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Handle payment success
     log("Payment Success: ${response.paymentId}");
-    KSnackbar(context, message: "Payment Successful!");
+    if (response.paymentId != null) {
+      verifyPayment(response.paymentId!);
+    } else {
+      KSnackbar(context,
+          message: 'Payment Error! Please try again.', error: true);
+    }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -103,15 +109,44 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
         "shippingState": selectedAddress.state
       });
 
-      log("$res");
-      KSnackbar(context, res: res);
       if (!res.error) {
-        final orderId = res.data["paymentOrderId"];
-        int amountInPaise = int.parse("${res.data["amountInPaise"]}");
-        openCheckout(orderId, amountInPaise);
+        setState(() {
+          final orderId = res.data["paymentOrderId"];
+          int amountInPaise = int.parse("${res.data["amountInPaise"]}");
+          shoppingOrderId = "${res.data["shoppingOrderId"]}";
+          openCheckout(orderId, amountInPaise);
+        });
       }
     } catch (error) {
       KSnackbar(context, message: "$error", error: true);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  verifyPayment(String paymentId) async {
+    try {
+      isLoading.value = true;
+
+      final res = await ref.read(cartRepo).verifyPayment(
+            paymentId: paymentId,
+          );
+
+      KSnackbar(context, message: "Payment Successful!");
+
+      if (!res.error) {
+        final masterdata = widget.checkoutData.data as Map<String, dynamic>;
+        context.go(
+          "/cart/confirmation",
+          extra: {
+            "orderId": "${res.data}",
+            "deliveryDays": masterdata["paymentBreakdown"]["deliveryDays"],
+            "totalItems": masterdata.length
+          },
+        );
+      }
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
     } finally {
       isLoading.value = false;
     }
@@ -252,35 +287,64 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
           ),
         ),
       ),
-      bottomNavigationBar: KCard(
-        color: KColor.card,
-        radius: 0,
-        child: SafeArea(
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Label(kCurrencyFormat(2000),
-                            decoration: TextDecoration.lineThrough)
-                        .subtitle,
-                    Label(
-                      kCurrencyFormat(2000),
-                    ).title
-                  ],
-                ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (paymentBreakdown["couponDiscount"] +
+                  paymentBreakdown["discount"] >
+              0)
+            KCard(
+              color: const Color(0xFFDAEEFF),
+              radius: 0,
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: kPadding, vertical: 5),
+              child: Row(
+                spacing: 10,
+                children: [
+                  Label(
+                    '🎉',
+                    color: Colors.blue.shade900,
+                  ).regular,
+                  Expanded(
+                    child: Label(
+                      "You save a total of ${kCurrencyFormat(paymentBreakdown["couponDiscount"] + paymentBreakdown["discount"])} on this order!",
+                      color: Colors.blue.shade900,
+                    ).regular,
+                  ),
+                ],
               ),
-              KButton(
-                onPressed: generatePaymentOrder,
-                label: "Proceed",
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-                radius: 5,
-              )
-            ],
+            ),
+          KCard(
+            color: KColor.card,
+            radius: 0,
+            child: SafeArea(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Label(kCurrencyFormat(paymentBreakdown["totalMrp"]),
+                                decoration: TextDecoration.lineThrough)
+                            .subtitle,
+                        Label(
+                          kCurrencyFormat(paymentBreakdown["netPayable"]),
+                        ).title
+                      ],
+                    ),
+                  ),
+                  KButton(
+                    onPressed: generatePaymentOrder,
+                    label: "Proceed",
+                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
+                    radius: 5,
+                  )
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

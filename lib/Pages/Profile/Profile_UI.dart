@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KNavigationBar.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -44,7 +42,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
-    log("$user");
+
     return KScaffold(
       isLoading: isLoading,
       appBar: AppBar(

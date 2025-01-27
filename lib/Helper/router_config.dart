@@ -3,6 +3,7 @@ import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Cart_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Checkout_UI.dart';
+import 'package:flutter_bamboo/Pages/Cart/Confirmation_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Coupons_UI.dart';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/Login_UI.dart';
@@ -110,9 +111,10 @@ final goRouterProvider = Provider<GoRouter>(
               path: 'confirmation',
               builder: (context, state) {
                 final data = state.extra as Map;
-                return Checkout_UI(
-                  checkoutData: data["orderId"],
-                  discountCoupon: data["deliveryDays"],
+                return Confirmation_UI(
+                  deliveryDays: int.parse("${data["deliveryDays"]}"),
+                  orderId: data["orderId"],
+                  totalItems: int.parse("${data["totalItems"]}"),
                 );
               },
             ),

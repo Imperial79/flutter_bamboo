@@ -1,7 +1,4 @@
 // ignore_for_file: unused_result
-
-import 'dart:developer';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -351,7 +348,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           spacing: 8,
                           children: List.generate(data.product_variants.length,
                               (index) {
-                            log("${data.product_variants[index]}");
                             return _variantCard(
                               ProductVariantModel.fromMap(
                                   data.product_variants[index]),

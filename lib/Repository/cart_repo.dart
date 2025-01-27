@@ -75,4 +75,23 @@ class CartRepo {
       rethrow;
     }
   }
+
+  Future<ResponseModel> verifyPayment({
+    required String paymentId,
+  }) async {
+    try {
+      final res = await apiCallBack(
+        path: "/shopping/verify-payment",
+        body: {
+          "paymentId": paymentId,
+        },
+      );
+      if (res.error) {
+        throw res.message;
+      }
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
