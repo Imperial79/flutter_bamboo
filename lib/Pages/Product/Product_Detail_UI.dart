@@ -41,12 +41,11 @@ class Product_Detail_UI extends ConsumerStatefulWidget {
 
 class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   String selectedDescriptionType = "About Item";
-  // int selectedVariant = -1;
   bool showLess = false;
   final isLoading = ValueNotifier(false);
   int selectedQty = 1;
 
-  ProductVariantModel variant = ProductVariantModel.fromMap({});
+  ProductVariantModel selectedVariant = ProductVariantModel.fromMap({});
 
   addToCart(int variantId) async {
     try {
@@ -112,10 +111,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   shareProduct(ProductDetailModel product) async {
     try {
       isLoading.value = true;
-      await ProductHelper().shareProduct(
-        product,
-        variantId: variant.id,
-      );
+      await ProductHelper().shareProduct(product, sku: selectedVariant.sku);
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);
     } finally {
@@ -131,8 +127,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
 
     productData.whenData(
       (value) {
-        if (value != null && variant.id == -1) {
-          variant = ProductVariantModel.fromMap(value.product_variants[0]);
+        if (value != null && selectedVariant.id == -1) {
+          selectedVariant =
+              ProductVariantModel.fromMap(value.product_variants[0]);
           // selectedVariant = value.product_variants
           //     .indexWhere((item) => item["sku"] == widget.sku);
           // if (selectedVariant == -1) {
@@ -264,7 +261,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                       Flexible(
                                         child: Label(
                                           kCurrencyFormat(
-                                            variant.salePrice,
+                                            selectedVariant.salePrice,
                                             symbol: "",
                                           ),
                                           fontSize: 30,
@@ -274,7 +271,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                       ),
                                       width10,
                                       Label(
-                                        "-${calculateDiscount(variant.mrp, variant.salePrice)}%",
+                                        "-${calculateDiscount(selectedVariant.mrp, selectedVariant.salePrice)}%",
                                         fontSize: 20,
                                         height: 1,
                                         weight: 500,
@@ -316,7 +313,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             ),
                             height5,
                             Label(
-                              "MRP ${kCurrencyFormat(variant.mrp)}",
+                              "MRP ${kCurrencyFormat(selectedVariant.mrp)}",
                               weight: 600,
                               color: KColor.fadeText,
                               decoration: TextDecoration.lineThrough,
@@ -331,15 +328,16 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                 Label("Variant:", fontSize: 16, weight: 600)
                                     .regular,
                                 Flexible(
-                                  child: variant.attributeType == "Color"
+                                  child: selectedVariant.attributeType ==
+                                          "Color"
                                       ? CircleAvatar(
                                           radius: 10,
                                           backgroundColor: Color(int.parse(
-                                              variant.attributeValue
+                                              selectedVariant.attributeValue
                                                   .replaceFirst('#', '0xff'))),
                                         )
                                       : Label(
-                                          variant.attributeValue,
+                                          selectedVariant.attributeValue,
                                           fontSize: 16,
                                           weight: 700,
                                         ).regular,
@@ -433,7 +431,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         ),
       ),
       bottomNavigationBar: productData.hasValue && productData.value != null
-          ? variant.stock == 0
+          ? selectedVariant.stock == 0
               ? KCard(
                   width: double.infinity,
                   child: SafeArea(
@@ -542,7 +540,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                       Label("Total Price").regular,
                       Label(
                         kCurrencyFormat(
-                          variant.salePrice,
+                          selectedVariant.salePrice,
                           symbol: "INR ",
                         ),
                         weight: 700,
@@ -555,7 +553,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 GestureDetector(
                   onTap: () {
                     if (!inCart) {
-                      addToCart(variant.id);
+                      addToCart(selectedVariant.id);
                     } else {
                       context.push("/cart");
                     }
@@ -632,11 +630,11 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
       // required String type,
 
       ) {
-    bool selected = variant == data;
+    bool selected = selectedVariant == data;
     bool isColor = data.attributeType == "Color";
     return KCard(
       onTap: () => setState(() {
-        variant = data;
+        selectedVariant = data;
       }),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       borderColor: selected ? kScheme.primary : KColor.card,

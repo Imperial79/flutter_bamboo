@@ -29,7 +29,7 @@ class ProductHelper {
 
   Future<void> shareProduct(
     ProductDetailModel product, {
-    required int variantId,
+    required String sku,
     String? referCode,
   }) async {
     try {
@@ -44,7 +44,7 @@ class ProductHelper {
         await file.writeAsBytes(response.bodyBytes);
         String productLink = createProductPath(
           name: product.name,
-          sku: product.product_variants[variantId]["sku"],
+          sku: sku,
           productId: product.id,
           referCode: referCode,
         );
@@ -57,7 +57,7 @@ class ProductHelper {
         // If image download fails, share only the text
         String productLink = createProductPath(
           name: product.name,
-          sku: product.product_variants[variantId]["sku"],
+          sku: sku,
           productId: product.id,
           referCode: referCode,
         );
@@ -69,7 +69,7 @@ class ProductHelper {
       // If any error occurs, share only the text
       String productLink = createProductPath(
         name: product.name,
-        sku: product.product_variants[variantId]["sku"],
+        sku: sku,
         productId: product.id,
         referCode: referCode,
       );

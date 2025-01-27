@@ -4,10 +4,12 @@ import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
+import 'package:flutter_bamboo/Resources/app_config.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../Resources/theme.dart';
 
 class OTP_UI extends StatefulWidget {
@@ -61,8 +63,7 @@ class _OTP_UIState extends State<OTP_UI> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
-                          // await launchUrlString(
-                          //     "https://mypostmates.in/terms-conditions");
+                          await launchUrlString(termsConditionLink);
                         },
                       text: "Terms & Conditions",
                       style: TextStyle(
@@ -74,8 +75,7 @@ class _OTP_UIState extends State<OTP_UI> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
-                          // await launchUrlString(
-                          //     "https://mypostmates.in/terms-conditions");
+                          await launchUrlString(privacyPolicyLink);
                         },
                       text: "Privacy Policy",
                       style: TextStyle(

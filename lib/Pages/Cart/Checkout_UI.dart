@@ -9,6 +9,7 @@ import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_bamboo/Repository/address_repo.dart';
 import 'package:flutter_bamboo/Repository/cart_repo.dart';
+import 'package:flutter_bamboo/Resources/app_config.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../Components/kCard.dart';
 import '../../Components/kWidgets.dart';
 import '../../Resources/theme.dart';
@@ -258,8 +260,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
-                          // await launchUrlString(
-                          //     "https://mypostmates.in/terms-conditions");
+                          await launchUrlString(termsConditionLink);
                         },
                       text: "Terms & Conditions",
                       style: TextStyle(
@@ -271,8 +272,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
-                          // await launchUrlString(
-                          //     "https://mypostmates.in/terms-conditions");
+                          await launchUrlString(privacyPolicyLink);
                         },
                       text: "Privacy Policy",
                       style: TextStyle(

@@ -1,6 +1,5 @@
 // ignore_for_file: unused_result
 
-import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -143,7 +142,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
 
       setState(() {});
     } catch (e) {
-      log("$e");
+      KSnackbar(context, message: "Something Went Wrong!", error: true);
     }
   }
 
@@ -403,7 +402,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                           discountCoupon: selectedCoupon?.coupon,
                         ),
                         label: "Proceed",
-                        radius: 7,
+                        radius: 5,
                       ),
                     ],
                   ),

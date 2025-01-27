@@ -197,7 +197,12 @@ class KTextfield {
               errorBorder: borderStyle(StatusText.danger),
               focusedBorder: borderStyle(KColor.border),
               enabledBorder: borderStyle(null),
-              errorStyle: const TextStyle(color: StatusText.danger),
+              errorStyle: TextStyle(
+                color: StatusText.danger,
+                fontVariations: [
+                  FontVariation.weight(500),
+                ],
+              ),
               hintText: hintText,
               hintStyle: kHintTextstyle.copyWith(
                   fontSize: fontSize, color: hintTextColor),
