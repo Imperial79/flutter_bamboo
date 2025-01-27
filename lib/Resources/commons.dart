@@ -112,3 +112,8 @@ Widget googleLoginButton({required void Function()? onPressed}) {
     ),
   );
 }
+
+Widget get kSmallLoading => Center(
+      child:
+          SizedBox(height: 30, width: 30, child: CircularProgressIndicator()),
+    );

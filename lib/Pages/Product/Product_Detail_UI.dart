@@ -429,7 +429,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 )
               : kNoData(context),
           error: (error, stackTrace) => kNoData(context),
-          loading: () => Center(child: CircularProgressIndicator()),
+          loading: () => kSmallLoading,
         ),
       ),
       bottomNavigationBar: productData.hasValue && productData.value != null

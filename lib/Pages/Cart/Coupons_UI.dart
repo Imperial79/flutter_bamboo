@@ -80,9 +80,7 @@ class _Coupons_UIState extends ConsumerState<Coupons_UI> {
                     subtitle: "$error",
                     showHome: false,
                   ),
-                  loading: () => Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  loading: () => kSmallLoading,
                 )
               ],
             ),

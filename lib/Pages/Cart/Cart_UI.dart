@@ -87,7 +87,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
 
   setAddress() async {
     if (ref.read(selectedAddressProvider) == null) {
-      final addressData = await ref.watch(addressFuture.future);
+      final addressData = await ref.read(addressFuture.future);
       if (addressData.isNotEmpty) {
         for (AddressModel e in addressData) {
           if (e.isPrimary!) {
@@ -214,9 +214,9 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                             builder: (context) => addressModal(),
                           ),
                           radius: 10,
-                          padding: EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 15),
+                          padding: EdgeInsets.all(15),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
                                 child: Column(
@@ -234,11 +234,39 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                   ],
                                 ),
                               ),
-                              Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 20,
-                                color: KColor.fadeText,
+                              CircleAvatar(
+                                radius: 10,
+                                backgroundColor: KColor.scaffold,
+                                child: Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 10,
+                                  color: KColor.fadeText,
+                                ),
                               ),
+                            ],
+                          ),
+                        )
+                      else
+                        KCard(
+                          onTap: () => showModalBottomSheet(
+                            context: context,
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            builder: (context) => addressModal(),
+                          ),
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.add,
+                                color: KColor.fadeText,
+                                size: 50,
+                              ),
+                              Label(
+                                "Add an address",
+                                color: KColor.fadeText,
+                              ).regular,
                             ],
                           ),
                         ),
@@ -260,7 +288,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                 buildCartItem(index, data[index]),
                           ),
                           error: (error, stackTrace) => kNoData(context),
-                          loading: () => CircularProgressIndicator(),
+                          loading: () => kSmallLoading,
                         ),
                       ),
                       height10,
@@ -344,7 +372,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                   ],
                 ),
           error: (error, stackTrace) => kNoData(context),
-          loading: () => CircularProgressIndicator(),
+          loading: () => kSmallLoading,
         )),
         bottomNavigationBar: cartData.hasValue && cartData.value!.isNotEmpty
             ? Container(
@@ -388,90 +416,109 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
 
   Widget addressModal() {
     return StatefulBuilder(
-      builder: (context, setState) => Consumer(builder: (context, ref, _) {
-        final selectedAddress = ref.watch(selectedAddressProvider);
-        final addressData = ref.watch(addressFuture);
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: SingleChildScrollView(
-            child: KCard(
-              radius: 25,
-              padding: EdgeInsets.all(kPadding),
-              child: SafeArea(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(child: Label("Select Address").title),
-                        TextButton(
-                            onPressed: () =>
-                                context.push("/profile/saved-address"),
-                            child: Row(
-                              spacing: 5,
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  color: kScheme.primary,
-                                ),
-                                Label("Add", color: kScheme.primary).regular,
-                              ],
-                            ))
-                      ],
-                    ),
-                    height10,
-                    addressData.when(
-                      data: (data) => data.isNotEmpty
-                          ? ListView.separated(
-                              separatorBuilder: (context, index) => height10,
-                              itemCount: data.length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) => KCard(
-                                  onTap: () {
-                                    ref
-                                        .read(selectedAddressProvider.notifier)
-                                        .state = data[index];
-                                    Navigator.pop(context);
-                                  },
-                                  borderColor: selectedAddress == data[index]
-                                      ? kScheme.primary
-                                      : KColor.scaffold,
-                                  borderWidth:
-                                      selectedAddress == data[index] ? 1 : 0,
-                                  color: selectedAddress == data[index]
-                                      ? kScheme.primaryContainer
-                                      : KColor.scaffold,
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Label(data[index].name!).regular,
-                                            Label("+91 ${data[index].phone!}")
-                                                .regular,
-                                            Label(data[index].address!).regular,
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            )
-                          : kNoData(context),
-                      error: (error, stackTrace) => kNoData(context),
-                      loading: () => Center(
-                        child: CircularProgressIndicator(),
+      builder: (context, setState) => Consumer(
+        builder: (context, ref, _) {
+          final selectedAddress = ref.watch(selectedAddressProvider);
+          final addressData = ref.watch(addressFuture);
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: SingleChildScrollView(
+              child: KCard(
+                radius: 25,
+                padding: EdgeInsets.all(kPadding),
+                child: SafeArea(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(child: Label("Select Address").title),
+                          TextButton(
+                              onPressed: () =>
+                                  context.push("/profile/saved-address"),
+                              child: Row(
+                                spacing: 5,
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: kScheme.primary,
+                                  ),
+                                  Label("Add", color: kScheme.primary).regular,
+                                ],
+                              ))
+                        ],
                       ),
-                    ),
-                  ],
+                      height10,
+                      addressData.when(
+                        data: (data) => data.isNotEmpty
+                            ? ListView.separated(
+                                separatorBuilder: (context, index) => height10,
+                                itemCount: data.length,
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) => KCard(
+                                    onTap: () {
+                                      ref
+                                          .read(
+                                              selectedAddressProvider.notifier)
+                                          .state = data[index];
+                                      Navigator.pop(context);
+                                    },
+                                    borderColor: selectedAddress == data[index]
+                                        ? kScheme.primary
+                                        : KColor.scaffold,
+                                    borderWidth:
+                                        selectedAddress == data[index] ? 1 : 0,
+                                    color: selectedAddress == data[index]
+                                        ? kScheme.primaryContainer
+                                        : KColor.scaffold,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      spacing: 10,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 10,
+                                          child: Label("${index + 1}",
+                                                  fontSize: 10)
+                                              .regular,
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Label(data[index].name!,
+                                                      height: 1)
+                                                  .regular,
+                                              height5,
+                                              Label("+91 ${data[index].phone!}")
+                                                  .regular,
+                                              Label("${data[index].address!} - ${data[index].pincode!}",
+                                                      weight: 500, fontSize: 12)
+                                                  .regular,
+                                              Label("${data[index].city!}, ${data[index].state!}",
+                                                      weight: 500, fontSize: 12)
+                                                  .regular,
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )),
+                              )
+                            : kNoData(context, showHome: false),
+                        error: (error, stackTrace) =>
+                            kNoData(context, showHome: false),
+                        loading: () => kSmallLoading,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 

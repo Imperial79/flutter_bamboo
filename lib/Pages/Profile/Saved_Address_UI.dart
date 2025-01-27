@@ -179,7 +179,7 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
                     ];
                   },
                   error: (error, stackTrace) => [kNoData(context)],
-                  loading: () => [Center(child: CircularProgressIndicator())],
+                  loading: () => [kSmallLoading],
                 ),
               ],
             ),
