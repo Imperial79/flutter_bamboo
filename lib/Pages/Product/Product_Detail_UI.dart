@@ -242,7 +242,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                 ),
                                 Expanded(
                                   child: Label(
-                                    "${data.totalRatings} Ratings • ${thoundsandToK(data.totalReviews)} Reviews • ${thoundsandToK(data.totalSell)} Sold",
+                                    "${data.totalRatings} Ratings • ${thousandToK(data.totalReviews)} Reviews • ${thousandToK(data.totalSell)} Sold",
                                     weight: 500,
                                     fontSize: 15,
                                     color: KColor.fadeText,

@@ -19,6 +19,7 @@ import 'package:flutter_bamboo/Pages/Profile/Saved_Address_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Transactions_UI.dart';
 import 'package:flutter_bamboo/Pages/Root_UI.dart';
 import 'package:flutter_bamboo/Pages/Splash_UI.dart';
+import 'package:flutter_bamboo/Pages/TawkTo%20Screens/ContactUs_UI.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -174,6 +175,10 @@ final goRouterProvider = Provider<GoRouter>(
               },
             ),
           ],
+        ),
+        GoRoute(
+          path: "/chat",
+          builder: (context, state) => ContactUsUI(),
         ),
       ],
     );

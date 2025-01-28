@@ -1,7 +1,5 @@
 // ignore_for_file: unused_result
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';

@@ -83,7 +83,7 @@ class ProductPreviewCard extends ConsumerWidget {
                           color: Colors.amber.shade700,
                         ),
                         Label(
-                          "${product.totalRatings} | ${thoundsandToK(product.totalSell)}",
+                          "${product.totalRatings} | ${thousandToK(product.totalSell)}",
                           weight: 600,
                           fontSize: 12,
                           color: KColor.fadeText,

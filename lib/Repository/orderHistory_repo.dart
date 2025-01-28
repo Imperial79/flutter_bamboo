@@ -13,14 +13,17 @@ final orderHistoryFuture = FutureProvider.autoDispose.family<List, int>(
   },
 );
 
-// final orderDetailFuture = FutureProvider.autoDispose.family<List, int>(
-//   (ref, orderId) async {
-//     final res =
-//         await apiCallBack(path: "/shopping/order-detail", body: {"pageNo": pageNo});
-//     ref.keepAlive();
-//     if (!res.error) {
-//       return res.data as List;
-//     }
-//     return [];
-//   },
-// );
+final orderDetailFuture =
+    FutureProvider.autoDispose.family<Map<String, dynamic>?, String>(
+  (ref, orderId) async {
+    final res = await apiCallBack(
+      path: "/shopping/order-details",
+      body: {"orderedItemId": orderId},
+    );
+
+    if (!res.error) {
+      return res.data;
+    }
+    return null;
+  },
+);

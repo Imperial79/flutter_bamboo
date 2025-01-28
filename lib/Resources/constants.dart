@@ -26,7 +26,7 @@ double parseToDouble(dynamic value) {
   return 0.0; // Default fallback if the value is of an unexpected type
 }
 
-String thoundsandToK(dynamic number) {
+String thousandToK(dynamic number) {
   final num = parseToDouble(number);
   if (num < 1000) return "$num";
   return "${(num / 1000).toStringAsFixed(1)}K";
@@ -38,4 +38,12 @@ String calculateDiscount(dynamic mrp, dynamic salePrice) {
           100)
       .round()
       .toString();
+}
+
+String kDateFormat(String date, {bool showTime = false}) {
+  String formatter = "dd MMM, yyyy";
+  if (showTime) {
+    formatter += " - hh:mm a";
+  }
+  return DateFormat(formatter).format(DateTime.parse(date));
 }
