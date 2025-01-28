@@ -49,7 +49,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
       final pdfFile = await PdfInvoiceApi.generate(orderDetails: invoiceData);
       await PdfInvoiceApi.openFile(pdfFile);
     } catch (e) {
-      log("${e}");
+      log("$e");
     }
   }
 

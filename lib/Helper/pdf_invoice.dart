@@ -1,7 +1,5 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:indian_currency_to_word/indian_currency_to_word.dart';
-import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -188,9 +186,12 @@ class PdfInvoiceApi {
           [
             "1",
             'Bamboo Brush (Non-pLastic) Stylish brush, Choose bamboo over plastic',
-            '',
-            '',
-            ''
+            '299',
+            '2',
+            '598',
+            '15%',
+            '78',
+            '900'
           ],
           [
             "",
