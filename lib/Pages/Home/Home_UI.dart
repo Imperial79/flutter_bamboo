@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
+import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:flutter_bamboo/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -184,6 +186,47 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                             ),
                           )
                           .toList(),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            kScheme.primary,
+                            KColor.primary,
+                            kScheme.primaryContainer,
+                          ],
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Label(
+                                  "NGF Organic",
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                ).regular,
+                                Label("Membership",
+                                        color: Colors.white, fontSize: 25)
+                                    .title,
+                              ],
+                            ),
+                          ),
+                          KButton(
+                            onPressed: () {},
+                            label: "Pay Now",
+                            radius: 5,
+                            fontSize: 12,
+                            backgroundColor: kScheme.secondary,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 5),
+                          ),
+                        ],
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: kPadding),

@@ -64,7 +64,7 @@ class KButton extends StatelessWidget {
           disabledBackgroundColor: KColor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
-            letterSpacing: .7,
+            // letterSpacing: .7,
             fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
@@ -96,7 +96,7 @@ class KButton extends StatelessWidget {
           disabledBackgroundColor: KColor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
-            letterSpacing: .7,
+            // letterSpacing: .7,
             fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
@@ -117,7 +117,7 @@ class KButton extends StatelessWidget {
           alignment: Alignment.center,
           textStyle: TextStyle(
             fontSize: fontSize,
-            letterSpacing: .7,
+            // letterSpacing: .7,
             fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
@@ -138,7 +138,7 @@ class KButton extends StatelessWidget {
           disabledBackgroundColor: KColor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
-            letterSpacing: .7,
+            // letterSpacing: .7,
             fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),

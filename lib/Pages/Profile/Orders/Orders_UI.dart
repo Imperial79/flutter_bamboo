@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
+import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kWidgets.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_bamboo/Repository/orderHistory_repo.dart';
@@ -101,11 +102,23 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
                   Label("Ordered on - ${kDateFormat(data["orderDate"])}")
                       .subtitle,
                   height5,
-                  Label(data["status"], color: statusColorMap[data["status"]])
-                      .regular,
+                  KCard(
+                    color: kOpacity(
+                        statusColorMap[data["status"]] ?? KColor.secondary, .1),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                    radius: 100,
+                    child: Label(data["status"],
+                            color: statusColorMap[data["status"]], fontSize: 12)
+                        .regular,
+                  ),
                 ],
               ),
             ),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 12,
+              color: KColor.fadeText,
+            )
           ],
         ),
       ),
