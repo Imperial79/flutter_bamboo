@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:indian_currency_to_word/indian_currency_to_word.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -11,9 +13,9 @@ class PdfInvoiceApi {
         await rootBundle.load('assets/images/logo.png');
     final Uint8List companyLogo = companyLogoBytes.buffer.asUint8List();
 
-    // final ByteData authSignBytes =
-    //     await rootBundle.load('assets/images/invoice_signature.png');
-    // final Uint8List authSignature = authSignBytes.buffer.asUint8List();
+    final ByteData authSignBytes =
+        await rootBundle.load('assets/images/logo.png');
+    final Uint8List authSignature = authSignBytes.buffer.asUint8List();
 
     // var url = orderDetail['productImg'];
     // var response = await get(Uri.parse(url));
@@ -28,9 +30,9 @@ class PdfInvoiceApi {
         headerPart(companyLogo),
         billingPart(),
         itemsPart(),
-        // amountPart(),
-        thanksNote(),
-        termsPart(),
+        amountPart(),
+        signaturePart(authSignature),
+        // termsPart(),
       ],
       footer: (context) => footerPart(),
     ));
@@ -194,56 +196,47 @@ class PdfInvoiceApi {
             '900'
           ],
           [
-            "",
-            "",
-            "",
-            Text('', style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('', style: TextStyle(fontWeight: FontWeight.bold))
+            '',
+            Text('Total', style: TextStyle(fontWeight: FontWeight.bold)),
+            '',
+            '',
+            '',
+            '',
+            Text('900', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('9200', style: TextStyle(fontWeight: FontWeight.bold))
           ]
         ],
         headerStyle: TextStyle(fontWeight: FontWeight.bold),
         headerDecoration: const BoxDecoration(color: PdfColors.grey300),
         cellHeight: 30,
-        columnWidths: const <int, TableColumnWidth>{
-          0: FlexColumnWidth(),
-          1: IntrinsicColumnWidth(),
-          2: IntrinsicColumnWidth(),
-          3: IntrinsicColumnWidth(),
-          4: IntrinsicColumnWidth(),
-        },
-        cellAlignments: {
-          0: Alignment.centerLeft,
-          1: Alignment.center,
-          2: Alignment.center,
-          3: Alignment.center,
-          4: Alignment.center,
-        },
+        defaultColumnWidth: IntrinsicColumnWidth(),
+        cellAlignment: Alignment.centerLeft,
       ),
     );
   }
 
-  // static Widget amountPart() {
-  //   return Container(
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         left: BorderSide(),
-  //         right: BorderSide(),
-  //         bottom: BorderSide(),
-  //       ),
-  //     ),
-  //     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-  //     child: Text(
-  //       "Amount in words: ${AmountToWords().convertAmountToWords(orderDetails!.netPayable!, ignoreDecimal: false)} ONLY",
-  //       style: TextStyle(
-  //         fontSize: 12,
-  //         fontWeight: FontWeight.bold,
-  //       ),
-  //     ),
-  //   );
-  // }
+  static Widget amountPart() {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        border: Border(
+          left: BorderSide(),
+          right: BorderSide(),
+          bottom: BorderSide(),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      child: Text(
+        "Amount in words:\n${AmountToWords().convertAmountToWords(12.90, ignoreDecimal: false)} ONLY",
+        style: TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
 
-  static Widget thanksNote() {
+  static Widget signaturePart(authSignature) {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -255,10 +248,22 @@ class PdfInvoiceApi {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            "Thanks for choosing My Postmates, Vivek!",
+            "For Shop Name Private Ltd:",
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+          Image(
+            MemoryImage(
+              authSignature,
+            ),
+            height: 30,
+            width: 30,
+            fit: BoxFit.cover,
+          ),
+          Text(
+            "Authorized Signatory",
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
         ],
@@ -316,7 +321,7 @@ class PdfInvoiceApi {
       children: [
         Divider(),
         SizedBox(height: 2 * PdfPageFormat.mm),
-        Text("Visit our website: https://mypostmates.in")
+        Text("Visit our website: https://ngforganic.com")
       ],
     );
   }
