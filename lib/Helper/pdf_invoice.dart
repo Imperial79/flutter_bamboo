@@ -28,9 +28,8 @@ class PdfInvoiceApi {
       margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
       build: (context) => [
         headerPart(companyLogo),
-        companyPart(),
-        // invoiceToPart(),
-        // itemsPart(),
+        billingPart(),
+        itemsPart(),
         // amountPart(),
         thanksNote(),
         termsPart(),
@@ -60,9 +59,6 @@ class PdfInvoiceApi {
   static Widget headerPart(companyLogo) {
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(
-        border: Border.all(),
-      ),
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       child: Row(
         children: [
@@ -70,25 +66,104 @@ class PdfInvoiceApi {
             MemoryImage(
               companyLogo,
             ),
-            height: 20,
-            width: 20,
+            height: 30,
+            width: 30,
             fit: BoxFit.cover,
           ),
           SizedBox(
             width: 10,
           ),
-          Text("My Postmates"),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text("NGF Organic", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Nightbirdes Hub OPC Pvt", style: TextStyle(fontSize: 8)),
+          ]),
           Spacer(),
-          Text(
-            "Invoice",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            Text(
+              "Tax Invoice/Bill of Supply/Cash Memo",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "(Original for Recipient)",
+              style: TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
+            ),
+          ]),
         ],
       ),
     );
   }
 
-  static Widget companyPart() {
+  static Widget billingPart() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 30),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              "SOLD BY:",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "COMPANY NAME",
+              style: const TextStyle(fontSize: 12),
+            ),
+            Text(
+              "Full Address here with state,\ncity, pincode and\ncountry code",
+              style: const TextStyle(fontSize: 12),
+            ),
+            SizedBox(height: 20),
+            Text(
+              "PAN No:MKAL00SOLS",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "GST Registration No:19AAKAOLS9DKIOD",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Text(
+              "Order Number: 6778",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "Order Date: 01-02-2025",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+          ]),
+          SizedBox(width: 30),
+          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            Text(
+              "BILLING/SHIPPING ADDRESS",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.right,
+            ),
+            Text(
+              "Vivek Verma",
+              style: const TextStyle(fontSize: 12),
+              textAlign: TextAlign.right,
+            ),
+            Text(
+              "Full Address here with state,\ncity, pincode and\ncountry code",
+              style: const TextStyle(fontSize: 12),
+              textAlign: TextAlign.right,
+            ),
+            Text(
+              "Place of supply:WEST BENGAL",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              "Place of delivery:WEST BENGAL",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+            ),
+          ])
+        ],
+      ),
+    );
+  }
+
+  static Widget itemsPart() {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -98,170 +173,58 @@ class PdfInvoiceApi {
           bottom: BorderSide(),
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "COSHIFTER LOGISTICS PRIVATE LIMITED",
-            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-          ),
-          Text(
-            "NO 6, MAHENDRU GAIGHAT, PATNA, Patna, Bihar, 800007",
-            style: const TextStyle(fontSize: 12),
-          ),
-          Text(
-            "CIN: U93000BR2020PTC047059",
-            style: const TextStyle(fontSize: 12),
-          ),
-          SizedBox(
-            height: 10,
-          ),
+      child: TableHelper.fromTextArray(
+        headers: [
+          'Sl. No.',
+          'Description',
+          'Unit Price',
+          'Qty',
+          'Net Amount',
+          'Tax Rate'
         ],
+        data: [
+          [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("From: "),
+                SizedBox(height: 10),
+                Text("To: "),
+              ],
+            ),
+            '',
+            '',
+            '',
+            ''
+          ],
+          [
+            "",
+            "",
+            "",
+            Text('', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('', style: TextStyle(fontWeight: FontWeight.bold))
+          ]
+        ],
+        headerStyle: TextStyle(fontWeight: FontWeight.bold),
+        headerDecoration: const BoxDecoration(color: PdfColors.grey300),
+        cellHeight: 30,
+        columnWidths: const <int, TableColumnWidth>{
+          0: FlexColumnWidth(),
+          1: IntrinsicColumnWidth(),
+          2: IntrinsicColumnWidth(),
+          3: IntrinsicColumnWidth(),
+          4: IntrinsicColumnWidth(),
+        },
+        cellAlignments: {
+          0: Alignment.centerLeft,
+          1: Alignment.center,
+          2: Alignment.center,
+          3: Alignment.center,
+          4: Alignment.center,
+        },
       ),
     );
   }
-
-  // static Widget invoiceToPart() {
-  //   return Container(
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         left: BorderSide(),
-  //         right: BorderSide(),
-  //         bottom: BorderSide(),
-  //       ),
-  //     ),
-  //     child: TableHelper.fromTextArray(
-  //       data: [
-  //         [
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(
-  //                 "Invoice To",
-  //                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-  //               ),
-  //               Text(
-  //                 "${orderDetails!.fromName} (+91 ${orderDetails!.fromPhone})",
-  //                 style: const TextStyle(fontSize: 12),
-  //               ),
-  //               Text(
-  //                 "${orderDetails!.fromAddress2}",
-  //                 style: const TextStyle(fontSize: 12),
-  //               ),
-  //               Text(
-  //                 "${orderDetails!.fromAddress}",
-  //                 style: const TextStyle(fontSize: 12),
-  //               ),
-  //             ],
-  //           ),
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(
-  //                 "Order Id: ${orderDetails!.id}",
-  //                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-  //               ),
-  //               Text(
-  //                 "Invoice Date: ${DateFormat('dd MMM, yyyy').format(DateTime.parse(orderDetails!.date!))}",
-  //                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-  //               ),
-  //               Text(
-  //                 "Order Status: ${orderDetails!.status}",
-  //                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-  //               ),
-  //               SizedBox(height: 10),
-  //               Text(
-  //                 "Order Value: ${orderDetails!.packageValue}",
-  //                 style: const TextStyle(fontSize: 12),
-  //               ),
-  //               Text(
-  //                 "Content: ${orderDetails!.packageContent}",
-  //                 style: const TextStyle(fontSize: 12),
-  //               ),
-  //               Text(
-  //                 "Weight: ${orderDetails!.weightRange}",
-  //                 style: const TextStyle(fontSize: 12),
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       ],
-  //       cellHeight: 30,
-  //       columnWidths: const <int, TableColumnWidth>{
-  //         0: FlexColumnWidth(),
-  //         1: FlexColumnWidth(),
-  //       },
-  //       cellAlignments: {
-  //         0: Alignment.centerLeft,
-  //         1: Alignment.centerLeft,
-  //       },
-  //     ),
-  //   );
-  // }
-
-  // static Widget itemsPart() {
-  //   return Container(
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         left: BorderSide(),
-  //         right: BorderSide(),
-  //         bottom: BorderSide(),
-  //       ),
-  //     ),
-  //     child: TableHelper.fromTextArray(
-  //       headers: ['Item', 'Cost', 'Distance', 'Extra Charge', 'Total'],
-  //       data: [
-  //         [
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               Text(
-  //                   "From: ${orderDetails!.fromAddress} ${orderDetails!.fromAddress2}"),
-  //               SizedBox(height: 10),
-  //               Text(
-  //                   "To: ${orderDetails!.toAddress} ${orderDetails!.toAddress2}"),
-  //             ],
-  //           ),
-  //           '${orderDetails!.subTotal}',
-  //           '${orderDetails!.direction!.distance}',
-  //           '${orderDetails!.extendedDistanceCharge}',
-  //           '${orderDetails!.netPayable}'
-  //         ],
-  //         [
-  //           Text("Total", style: TextStyle(fontWeight: FontWeight.bold)),
-  //           Text('${orderDetails!.subTotal}',
-  //               style: TextStyle(fontWeight: FontWeight.bold)),
-  //           Text('${orderDetails!.direction!.distance}',
-  //               style: TextStyle(fontWeight: FontWeight.bold)),
-  //           Text('${orderDetails!.extendedDistanceCharge}',
-  //               style: TextStyle(fontWeight: FontWeight.bold)),
-  //           Text('${orderDetails!.netPayable}',
-  //               style: TextStyle(fontWeight: FontWeight.bold))
-  //         ]
-  //       ],
-  //       headerStyle: TextStyle(fontWeight: FontWeight.bold),
-  //       headerDecoration: const BoxDecoration(color: PdfColors.grey300),
-  //       cellHeight: 30,
-  //       columnWidths: const <int, TableColumnWidth>{
-  //         0: FlexColumnWidth(),
-  //         1: IntrinsicColumnWidth(),
-  //         2: IntrinsicColumnWidth(),
-  //         3: IntrinsicColumnWidth(),
-  //         4: IntrinsicColumnWidth(),
-  //       },
-  //       cellAlignments: {
-  //         0: Alignment.centerLeft,
-  //         1: Alignment.center,
-  //         2: Alignment.center,
-  //         3: Alignment.center,
-  //         4: Alignment.center,
-  //       },
-  //     ),
-  //   );
-  // }
 
   // static Widget amountPart() {
   //   return Container(
