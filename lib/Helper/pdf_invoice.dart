@@ -174,7 +174,6 @@ class PdfInvoiceApi {
         ),
       ),
       child: TableHelper.fromTextArray(
-        tableDirection: TextDirection.ltr,
         headers: [
           'Sl. No.',
           'Description',
