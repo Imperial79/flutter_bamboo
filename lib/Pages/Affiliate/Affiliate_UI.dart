@@ -8,6 +8,7 @@ import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kTextfield.dart';
+import 'package:flutter_bamboo/Components/kWidgets.dart';
 import 'package:flutter_bamboo/Repository/affiliate_repo.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_bamboo/Resources/app_config.dart';
@@ -71,43 +72,49 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
     return KScaffold(
+      appBar: AppBar(
+        title: Label("Affiliate Zone").regular,
+        centerTitle: true,
+      ),
       isLoading: isLoading,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.all(kPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Label("Wallet", weight: 500).regular,
-              ),
-              Center(
-                child: Label("INR 0.00", fontSize: 22).title,
-              ),
-              height20,
-              KCard(
-                child: Row(
+        child: user != null
+            ? SingleChildScrollView(
+                padding: EdgeInsets.all(kPadding),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.info),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Label(
-                        user!.affiliateStatus == "Inactive"
-                            ? "You're not an affiliator. Apply to become an affiliator."
-                            : user.affiliateStatus == "Active"
-                                ? "You are an active affiliator. Track your earnings below."
-                                : "Your affiliate status is blocked. Contact customer support for assistance.",
-                        weight: 500,
-                      ).regular,
-                    )
+                    Center(
+                      child: Label("Wallet", weight: 500).regular,
+                    ),
+                    Center(
+                      child: Label("INR 0.00", fontSize: 22).title,
+                    ),
+                    height20,
+                    KCard(
+                      child: Row(
+                        children: [
+                          Icon(Icons.info),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Label(
+                              user.affiliateStatus == "Inactive"
+                                  ? "You're not an affiliator. Apply to become an affiliator."
+                                  : user.affiliateStatus == "Active"
+                                      ? "You are an active affiliator. Track your earnings below."
+                                      : "Your affiliate status is blocked. Contact customer support for assistance.",
+                              weight: 500,
+                            ).regular,
+                          )
+                        ],
+                      ),
+                    ),
+                    height20,
+                    if (user.affiliateStatus == "Inactive") affiliateForm(),
                   ],
                 ),
-              ),
-              height20,
-              if (user.affiliateStatus == "Inactive") affiliateForm(),
-            ],
-          ),
-        ),
+              )
+            : kLoginRequired(context),
       ),
     );
   }

@@ -17,6 +17,7 @@ class KScaffold extends StatelessWidget {
   Widget? floatingActionButton;
   Widget? bottomNavigationBar;
   ValueListenable<dynamic>? isLoading;
+  List<Widget>? persistentFooterButtons;
   KScaffold({
     super.key,
     this.appBar,
@@ -26,6 +27,7 @@ class KScaffold extends StatelessWidget {
     this.floatingActionButtonLocation,
     this.floatingActionButton,
     this.bottomNavigationBar,
+    this.persistentFooterButtons,
   });
 
   @override
@@ -33,27 +35,29 @@ class KScaffold extends StatelessWidget {
     systemColors();
     return Scaffold(
       body: ValueListenableBuilder(
-          valueListenable: isLoading ?? ValueNotifier(false),
-          builder: (context, loading, _) {
-            return Stack(
-              alignment: Alignment.center,
-              children: [
-                Scaffold(
-                  appBar: appBar,
-                  body: SizedBox(
-                    height: double.maxFinite,
-                    width: double.maxFinite,
-                    child: body,
-                  ),
-                  floatingActionButtonAnimator: floatingActionButtonAnimator,
-                  floatingActionButtonLocation: floatingActionButtonLocation,
-                  floatingActionButton: floatingActionButton,
-                  bottomNavigationBar: bottomNavigationBar,
+        valueListenable: isLoading ?? ValueNotifier(false),
+        builder: (context, loading, _) {
+          return Stack(
+            alignment: Alignment.center,
+            children: [
+              Scaffold(
+                persistentFooterButtons: persistentFooterButtons,
+                appBar: appBar,
+                body: SizedBox(
+                  height: double.maxFinite,
+                  width: double.maxFinite,
+                  child: body,
                 ),
-                _fullLoading(isLoading: loading),
-              ],
-            );
-          }),
+                floatingActionButtonAnimator: floatingActionButtonAnimator,
+                floatingActionButtonLocation: floatingActionButtonLocation,
+                floatingActionButton: floatingActionButton,
+                bottomNavigationBar: bottomNavigationBar,
+              ),
+              _fullLoading(isLoading: loading),
+            ],
+          );
+        },
+      ),
     );
   }
 

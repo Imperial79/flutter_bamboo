@@ -21,8 +21,12 @@ final authFuture = FutureProvider(
     try {
       final fcmToken = await FirebaseMessaging.instance.getToken();
 
-      final res =
-          await apiCallBack(path: "/user/auth", body: {"fcmToken": fcmToken});
+      final res = await apiCallBack(
+        path: "/user/auth",
+        body: {
+          "fcmToken": fcmToken,
+        },
+      );
 
       if (!res.error) {
         ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
@@ -49,7 +53,11 @@ class AuthRepo {
 
       final res = await apiCallBack(
         path: "/user/login-with-google",
-        body: {"token": idToken, "fcmToken": fcmToken},
+        body: {
+          "token": idToken,
+          "fcmToken": fcmToken,
+          "referrerCode": null,
+        },
       );
 
       if (!res.error) {

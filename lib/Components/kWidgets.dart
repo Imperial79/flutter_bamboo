@@ -24,8 +24,12 @@ Widget kNoData(
           ),
           height10,
           Label(title ?? "Sorry!", fontSize: 20).title,
-          Label(subtitle ?? "No data found.", fontSize: 17, weight: 500)
-              .regular,
+          Label(
+            subtitle ?? "No data found.",
+            fontSize: 17,
+            weight: 500,
+            textAlign: TextAlign.center,
+          ).regular,
           height20,
           if (showHome!)
             KButton(
@@ -43,7 +47,7 @@ Widget kNoData(
       ),
     );
 
-Widget kLoginRequired(BuildContext context) {
+Widget kLoginRequired(BuildContext context, {String redirectPath = ""}) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.all(kPadding),
@@ -66,7 +70,7 @@ Widget kLoginRequired(BuildContext context) {
           KButton(
             onPressed: () {
               activePageNotifier.value = 0;
-              context.push("/login");
+              context.push("/login", extra: {"redirectPath": redirectPath});
             },
             label: "Login",
             radius: 7,

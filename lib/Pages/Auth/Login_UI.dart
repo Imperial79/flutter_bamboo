@@ -14,14 +14,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-
 import '../../Models/User_Model.dart';
 import '../../Repository/auth_repo.dart';
 import '../../Resources/theme.dart';
 
 class Login_UI extends ConsumerStatefulWidget {
+  final String? redirectPath;
   const Login_UI({
     super.key,
+    this.redirectPath,
   });
 
   @override
@@ -39,7 +40,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
 
       if (!res.error) {
         ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
-        context.go("/");
+        context.go(widget.redirectPath ?? "/");
       } else {
         KSnackbar(context, message: res.message, error: res.error);
       }

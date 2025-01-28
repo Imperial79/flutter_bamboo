@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/OTP_UI.dart';
@@ -10,7 +12,8 @@ import 'package:flutter_bamboo/Pages/Auth/Login_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Search_Products_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Edit_Profile_UI.dart';
-import 'package:flutter_bamboo/Pages/Profile/Orders_UI.dart';
+import 'package:flutter_bamboo/Pages/Profile/Orders/Order_Detail_UI.dart';
+import 'package:flutter_bamboo/Pages/Profile/Orders/Orders_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Saved_Address_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Transactions_UI.dart';
@@ -31,6 +34,7 @@ final goRouterProvider = Provider<GoRouter>(
 
     return GoRouter(
       redirect: (context, state) {
+        log("${state.fullPath}");
         if (authState.isLoading) return "/splash";
         return null;
       },
@@ -45,7 +49,11 @@ final goRouterProvider = Provider<GoRouter>(
         GoRoute(
           path: '/login',
           builder: (context, state) {
-            return Login_UI();
+            final redirectPath =
+                (state.extra as Map<String, dynamic>)["redirectPath"];
+            return Login_UI(
+              redirectPath: redirectPath,
+            );
           },
           routes: [
             GoRoute(
@@ -147,6 +155,17 @@ final goRouterProvider = Provider<GoRouter>(
               builder: (context, state) {
                 return const Orders_UI();
               },
+              routes: [
+                GoRoute(
+                  path: 'details/:orderId',
+                  builder: (context, state) {
+                    String orderId = state.pathParameters["orderId"]!;
+                    return Order_Detail_UI(
+                      orderId: orderId,
+                    );
+                  },
+                ),
+              ],
             ),
             GoRoute(
               path: 'transactions',

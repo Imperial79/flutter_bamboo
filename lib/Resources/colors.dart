@@ -24,3 +24,11 @@ Color kOpacity(Color color, double opacity) =>
 // ColorScheme kColor(BuildContext context) => Theme.of(context).colorScheme;
 
 ColorFilter kSvgColor(Color color) => ColorFilter.mode(color, BlendMode.srcIn);
+
+final Map<String, Color> statusColorMap = {
+  "Ordered": StatusText.success,
+  "Shipped": StatusText.success,
+  "Delivered": StatusText.success,
+  "Return Pending": StatusText.warning,
+  "Refunded": StatusText.info,
+};

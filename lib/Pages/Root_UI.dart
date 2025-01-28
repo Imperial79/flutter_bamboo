@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KNavigationBar.dart';
 import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
-import 'package:flutter_bamboo/Pages/Cart/Cart_UI.dart';
 import 'package:flutter_bamboo/Pages/Home/Home_UI.dart';
+import 'package:flutter_bamboo/Pages/Profile/Orders/Orders_UI.dart';
 import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
@@ -20,14 +20,14 @@ class _Root_UIState extends State<Root_UI> {
   final List<Widget> _screens = [
     const Home_UI(),
     const Affiliate_UI(),
-    const Cart_UI(),
+    const Orders_UI(),
     const Profile_UI(),
   ];
 
   final List _navs = [
     {"label": "Home", "iconPath": "home", "index": 0},
     {"label": "Affiliate", "iconPath": "refer", "index": 1},
-    {"label": "Cart", "iconPath": "shopping-bag", "index": 2},
+    {"label": "Orders", "iconPath": "box", "index": 2},
     {"label": "Profile", "iconPath": "profile", "index": 3},
   ];
 

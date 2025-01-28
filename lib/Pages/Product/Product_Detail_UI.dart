@@ -100,11 +100,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     if (user != null) {
     } else {
       // context.push("/login");
-      showModalBottomSheet(
-        context: context,
-        isDismissible: !isLoading.value,
-        builder: (context) => loginModal(),
-      );
+      // showModalBottomSheet(
+      //   context: context,
+      //   isDismissible: !isLoading.value,
+      //   builder: (context) => loginModal(),
+      // );
+      context
+          .push("/login", extra: {"redirectPath": "/product/abc/${widget.id}"});
     }
   }
 
