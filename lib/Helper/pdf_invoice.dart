@@ -174,25 +174,21 @@ class PdfInvoiceApi {
         ),
       ),
       child: TableHelper.fromTextArray(
+        tableDirection: TextDirection.ltr,
         headers: [
           'Sl. No.',
           'Description',
           'Unit Price',
           'Qty',
           'Net Amount',
-          'Tax Rate'
+          'Tax Rate',
+          'Tax Amount',
+          'Total Amount'
         ],
         data: [
           [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("From: "),
-                SizedBox(height: 10),
-                Text("To: "),
-              ],
-            ),
-            '',
+            "1",
+            'Bamboo Brush (Non-pLastic) Stylish brush, Choose bamboo over plastic',
             '',
             '',
             ''
