@@ -108,8 +108,7 @@ class _Confirmation_UIState extends State<Confirmation_UI> {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => context
-                        .go("/profile/order-history/detail/${widget.orderId}"),
+                    onPressed: () => context.go("/profile/orders"),
                     child: Label("Track", weight: 700).regular,
                   ),
                 ],

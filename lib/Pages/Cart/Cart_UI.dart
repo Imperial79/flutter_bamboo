@@ -397,10 +397,18 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                       KButton(
                         padding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                        onPressed: () => checkout(
-                          shippingState: selectedAddress!.state!,
-                          discountCoupon: selectedCoupon?.coupon,
-                        ),
+                        onPressed: () {
+                          if (selectedAddress != null) {
+                            checkout(
+                              shippingState: selectedAddress.state!,
+                              discountCoupon: selectedCoupon?.coupon,
+                            );
+                          } else {
+                            KSnackbar(context,
+                                message: "Please select an address",
+                                error: true);
+                          }
+                        },
                         label: "Proceed",
                         radius: 5,
                       ),

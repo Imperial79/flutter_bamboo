@@ -1,7 +1,10 @@
 // ignore_for_file: unused_result
 
+import 'dart:developer';
+
 import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Components/kTextfield.dart';
+import 'package:flutter_bamboo/Helper/pdf_invoice.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -41,6 +44,15 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
     await ref.refresh(orderDetailFuture(widget.orderId).future);
   }
 
+  _generateInvoice(invoiceData) async {
+    try {
+      final pdfFile = await PdfInvoiceApi.generate(orderDetails: invoiceData);
+      await PdfInvoiceApi.openFile(pdfFile);
+    } catch (e) {
+      log("${e}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final orderData = ref.watch(orderDetailFuture(widget.orderId));
@@ -55,6 +67,12 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
               finalData != null ? Label("Order Details").regular : SizedBox(),
           actions: finalData != null
               ? [
+                  IconButton(
+                    icon: Icon(Icons.pause_presentation),
+                    onPressed: () {
+                      _generateInvoice(finalData);
+                    },
+                  ),
                   PopupMenuButton(
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: kRadius(10)),
