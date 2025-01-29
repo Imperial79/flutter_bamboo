@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bamboo/Models/Response_Model.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,21 +16,17 @@ final authRepository = Provider(
 
 final authFuture = FutureProvider(
   (ref) async {
-    try {
-      final fcmToken = await FirebaseMessaging.instance.getToken();
+    final fcmToken = await FirebaseMessaging.instance.getToken();
 
-      final res = await apiCallBack(
-        path: "/user/auth",
-        body: {
-          "fcmToken": fcmToken,
-        },
-      );
+    final res = await apiCallBack(
+      path: "/user/auth",
+      body: {
+        "fcmToken": fcmToken,
+      },
+    );
 
-      if (!res.error) {
-        ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
-      }
-    } catch (e) {
-      log("$e");
+    if (!res.error) {
+      ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
     }
   },
 );

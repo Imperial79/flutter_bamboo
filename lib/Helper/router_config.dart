@@ -8,6 +8,7 @@ import 'package:flutter_bamboo/Pages/Cart/Checkout_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Confirmation_UI.dart';
 import 'package:flutter_bamboo/Pages/Cart/Coupons_UI.dart';
 import 'package:flutter_bamboo/Pages/Error/Error_UI.dart';
+import 'package:flutter_bamboo/Pages/Error/Path_Error_UI.dart';
 import 'package:flutter_bamboo/Pages/Auth/Login_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Detail_UI.dart';
 import 'package:flutter_bamboo/Pages/Product/Search_Products_UI.dart';
@@ -37,12 +38,17 @@ final goRouterProvider = Provider<GoRouter>(
       redirect: (context, state) {
         log("${state.fullPath}");
         if (authState.isLoading) return "/splash";
+        if (authState.hasError) return "/error";
         return null;
       },
       redirectLimit: 1,
       initialLocation: '/',
-      errorBuilder: (context, state) => Error_UI(),
+      errorBuilder: (context, state) => Path_Error_UI(),
       routes: [
+        GoRoute(
+          path: '/error',
+          builder: (context, state) => const Error_UI(),
+        ),
         GoRoute(
           path: '/splash',
           builder: (context, state) => const Splash_UI(),
@@ -158,11 +164,12 @@ final goRouterProvider = Provider<GoRouter>(
               },
               routes: [
                 GoRoute(
-                  path: 'details/:orderId',
+                  path: 'details/:orderedItemId',
                   builder: (context, state) {
-                    String orderId = state.pathParameters["orderId"]!;
+                    String orderedItemId =
+                        state.pathParameters["orderedItemId"]!;
                     return Order_Detail_UI(
-                      orderId: orderId,
+                      orderedItemId: orderedItemId,
                     );
                   },
                 ),

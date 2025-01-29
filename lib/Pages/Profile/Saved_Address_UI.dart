@@ -151,7 +151,8 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
                       label: "Add Address",
                       icon: Icon(Icons.add),
                       style: KButtonStyle.outlined,
-                      backgroundColor: kScheme.primaryContainer,
+                      backgroundColor: KColor.scaffold,
+                      radius: 10,
                       foregroundColor: KColor.secondary,
                     );
                   },

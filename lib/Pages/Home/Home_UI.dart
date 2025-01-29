@@ -4,11 +4,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
-import 'package:flutter_bamboo/Components/kButton.dart';
+import 'package:flutter_bamboo/Pages/Home/Buy_Membership_Card.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
-import 'package:flutter_bamboo/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +25,7 @@ class Home_UI extends ConsumerStatefulWidget {
 }
 
 class _Home_UIState extends ConsumerState<Home_UI> {
+  final isLoading = ValueNotifier(false);
   int pageNo = 0;
   String selectedCategory = "All";
   Future<void> _refresh() async {
@@ -48,20 +48,9 @@ class _Home_UIState extends ConsumerState<Home_UI> {
     ));
 
     final products = ref.watch(productsList);
-    // final localCart = ref.watch(cartProvider);
     final cartData = ref.watch(cartFuture);
-    // cartData.whenData((value) {
-    //   if (value.isNotEmpty) {
-    //     for (Map e in value) {
-    //       if (localCart
-    //           .any((element) => element.productId != e["productVariantId"])) {
-    //         ref.read(cartProvider.notifier).addItem(CartItemModel(
-    //             productId: e["productVariantId"], quantity: e["qty"]));
-    //       }
-    //     }
-    //   }
-    // });
     return KScaffold(
+      isLoading: isLoading,
       body: SafeArea(
         child: Column(
           children: [
@@ -137,6 +126,11 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                 ],
               ),
             ),
+            BuyMembershipCard(
+              loadingStatus: (value) {
+                isLoading.value = value;
+              },
+            ),
             KCard(
               radius: 0,
               padding: EdgeInsets.symmetric(vertical: 5),
@@ -187,47 +181,6 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                           )
                           .toList(),
                     ),
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            kScheme.primary,
-                            KColor.primary,
-                            kScheme.primaryContainer,
-                          ],
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Label(
-                                  "NGF Organic",
-                                  color: Colors.white,
-                                  fontSize: 15,
-                                ).regular,
-                                Label("Membership",
-                                        color: Colors.white, fontSize: 25)
-                                    .title,
-                              ],
-                            ),
-                          ),
-                          KButton(
-                            onPressed: () {},
-                            label: "Pay Now",
-                            radius: 5,
-                            fontSize: 12,
-                            backgroundColor: kScheme.secondary,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 5),
-                          ),
-                        ],
-                      ),
-                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: kPadding),
                       child: Row(
@@ -266,20 +219,6 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                               ),
                             ],
                           ),
-                          // MasonryGridView.count(
-                          //   crossAxisCount: 2,
-                          //   mainAxisSpacing: 10,
-                          //   crossAxisSpacing: 10,
-                          //   physics: NeverScrollableScrollPhysics(),
-                          //   itemCount: products.length,
-                          //   shrinkWrap: true,
-                          //   itemBuilder: (context, index) {
-                          //     return ProductPreviewCard(
-                          //       cardWidth: double.infinity,
-                          //       product: products[index],
-                          //     );
-                          //   },
-                          // ),
                           GridView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),

@@ -64,7 +64,7 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
                             showHome: false, subtitle: "No Orders!"),
                     error: (error, stackTrace) =>
                         kNoData(context, showHome: false),
-                    loading: () => kSmallLoading,
+                    loading: () => LinearProgressIndicator(),
                   ),
                 )
               : kLoginRequired(context),

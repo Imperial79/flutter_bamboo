@@ -1,47 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Components/kButton.dart';
-import 'package:flutter_bamboo/Resources/commons.dart';
+import 'package:flutter_bamboo/Components/kWidgets.dart';
+import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Error_UI extends StatelessWidget {
+class Error_UI extends ConsumerStatefulWidget {
   const Error_UI({super.key});
 
   @override
+  ConsumerState<Error_UI> createState() => _Error_UIState();
+}
+
+class _Error_UIState extends ConsumerState<Error_UI> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(kPadding),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  "$kIconPath/error-404.svg",
-                  height: 200,
-                ),
-                height20,
-                Label("Page Not Found!", fontSize: 30, weight: 700).title,
-                Label(
-                  "Sorry we cannot find the requested page!",
-                  fontSize: 17,
-                  weight: 500,
-                  textAlign: TextAlign.center,
-                ).subtitle,
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(kPadding),
+        child: SafeArea(
+          child: Center(
+            child: kNoData(
+              context,
+              title: "Oops!",
+              subtitle: "Something Went Wrong.",
+              action: KButton(
+                onPressed: () => ref.refresh(authFuture.future),
+                label: "Retry",
+                radius: 5,
+                style: KButtonStyle.expanded,
+              ),
             ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(kPadding),
-          child: KButton(
-            onPressed: () => context.go("/"),
-            label: "Go Home",
           ),
         ),
       ),

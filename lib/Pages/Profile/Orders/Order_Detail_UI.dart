@@ -3,8 +3,11 @@
 import 'dart:developer';
 
 import 'package:flutter_bamboo/Components/kButton.dart';
+import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kTextfield.dart';
 import 'package:flutter_bamboo/Helper/pdf_invoice.dart';
+import 'package:flutter_bamboo/Repository/auth_repo.dart';
+import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
@@ -19,10 +22,10 @@ import 'package:easy_stepper/easy_stepper.dart';
 import 'package:go_router/go_router.dart';
 
 class Order_Detail_UI extends ConsumerStatefulWidget {
-  final String orderId;
+  final String orderedItemId;
   const Order_Detail_UI({
     super.key,
-    required this.orderId,
+    required this.orderedItemId,
   });
 
   @override
@@ -31,6 +34,14 @@ class Order_Detail_UI extends ConsumerStatefulWidget {
 
 class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
   double selectedRating = 0;
+  final isLoading = ValueNotifier(false);
+  final feedback = TextEditingController();
+
+  @override
+  void dispose() {
+    feedback.dispose();
+    super.dispose();
+  }
 
   List<String> statusList = [
     "Ordered",
@@ -40,8 +51,28 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
     // "Refunded",
   ];
 
+  _shareRatings() async {
+    try {
+      isLoading.value = true;
+
+      final res = await ref.read(orderHistoryRepo).shareRatings(
+            orderedItemId: widget.orderedItemId,
+            rate: selectedRating,
+            feedback: feedback.text,
+          );
+
+      if (!res.error) _refresh();
+
+      KSnackbar(context, message: res.message, error: res.error);
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   _refresh() async {
-    await ref.refresh(orderDetailFuture(widget.orderId).future);
+    await ref.refresh(orderDetailFuture(widget.orderedItemId).future);
   }
 
   _generateInvoice(invoiceData) async {
@@ -50,18 +81,21 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
       await PdfInvoiceApi.openFile(pdfFile);
     } catch (e) {
       log("$e");
+      KSnackbar(context,
+          message: "Error while generating invoice! $e", error: true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final orderData = ref.watch(orderDetailFuture(widget.orderId));
+    final orderData = ref.watch(orderDetailFuture(widget.orderedItemId));
 
     final finalData =
         orderData.hasValue && orderData.value != null ? orderData.value : null;
     return RefreshIndicator(
       onRefresh: () => _refresh(),
       child: KScaffold(
+        isLoading: isLoading,
         appBar: AppBar(
           title:
               finalData != null ? Label("Order Details").regular : SizedBox(),
@@ -193,7 +227,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                             .regular,
                         Label("${data["qty"]} Items", fontSize: 12).subtitle,
                         height20,
-                        ...shareRatings(data),
+                        ratingsAndReview(data),
                         height20,
                         ...shippingDetails(data),
                         height20,
@@ -252,52 +286,88 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
         Label("PAYMENT ID - ${data["paymentId"]}").subtitle
       ];
 
-  List<Widget> shareRatings(data) => [
-        Label("Share Ratings").regular,
-        div,
-        height20,
-        Row(
+  Widget ratingsAndReview(data) => Consumer(builder: (context, ref, child) {
+        final user = ref.watch(userProvider)!;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Flexible(
-              child: Center(
-                child: RatingBar.builder(
-                  initialRating: parseToDouble(data["ratings"]),
-                  minRating: 1,
-                  glow: false,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  unratedColor: Colors.grey.shade300,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: StatusText.warning,
-                  ),
-                  onRatingUpdate: (rating) {
-                    setState(() {
-                      selectedRating = rating;
-                    });
-                  },
+            Label("Share Ratings").regular,
+            div,
+            if (parseToDouble(data["rating"]) > 0)
+              KCard(
+                child: Column(
+                  spacing: 5,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      spacing: 10,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(user.image),
+                          radius: 12,
+                        ),
+                        Flexible(child: Label(user.name).regular)
+                      ],
+                    ),
+                    height5,
+                    StarRating(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      color: StatusText.warning,
+                      size: 20,
+                      rating: parseToDouble(data["rating"]),
+                    ),
+                    if (data["feedback"].isNotEmpty)
+                      Label(data["feedback"], weight: 600, fontSize: 12)
+                          .regular,
+                  ],
                 ),
               ),
+            height20,
+            Row(
+              children: [
+                Flexible(
+                  child: Center(
+                    child: RatingBar.builder(
+                      initialRating: parseToDouble(data["rating"]),
+                      minRating: 1,
+                      glow: false,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      unratedColor: Colors.grey.shade300,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: StatusText.warning,
+                      ),
+                      onRatingUpdate: (rating) {
+                        setState(() {
+                          selectedRating = rating;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                KButton(
+                  onPressed: _shareRatings,
+                  label: "Share",
+                  style: KButtonStyle.regular,
+                  radius: 5,
+                  backgroundColor: KColor.secondary,
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                ),
+              ],
             ),
-            KButton(
-              onPressed: () {},
-              label: "Share",
-              style: KButtonStyle.regular,
-              radius: 5,
-              backgroundColor: KColor.secondary,
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-            ),
+            height20,
+            KTextfield(
+              controller: feedback,
+              hintText: "Add a review (Optional)",
+              maxLines: 2,
+              minLines: 2,
+            ).regular,
           ],
-        ),
-        height20,
-        KTextfield(
-          hintText: "Add a review",
-          maxLines: 2,
-          minLines: 2,
-        ).regular,
-      ];
+        );
+      });
 
   Widget _row(
     String text1,

@@ -11,6 +11,7 @@ import 'kButton.dart';
 Widget kNoData(
   BuildContext context, {
   String? title,
+  Widget? action,
   String? subtitle,
   bool? showHome = true,
 }) =>
@@ -31,7 +32,7 @@ Widget kNoData(
             textAlign: TextAlign.center,
           ).regular,
           height20,
-          if (showHome!)
+          if (action == null && showHome!)
             KButton(
               onPressed: () {
                 context.go("/");
@@ -42,7 +43,8 @@ Widget kNoData(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               backgroundColor: kScheme.tertiaryContainer,
               foregroundColor: kScheme.tertiary,
-            )
+            ),
+          if (action != null) action
         ],
       ),
     );
