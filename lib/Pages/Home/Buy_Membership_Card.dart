@@ -17,7 +17,12 @@ import '../../Resources/constants.dart';
 
 class BuyMembershipCard extends ConsumerStatefulWidget {
   final void Function(bool isLoading) loadingStatus;
-  const BuyMembershipCard({super.key, required this.loadingStatus});
+  final int fees;
+  const BuyMembershipCard({
+    super.key,
+    required this.loadingStatus,
+    required this.fees,
+  });
 
   @override
   ConsumerState<BuyMembershipCard> createState() => _BuyMembershipCardState();
@@ -158,7 +163,7 @@ class _BuyMembershipCardState extends ConsumerState<BuyMembershipCard> {
             ),
             KButton(
               onPressed: generatePaymentOrder,
-              label: "Pay Now",
+              label: "Join@${kCurrencyFormat(widget.fees)}",
               radius: 5,
               fontSize: 12,
               backgroundColor: StatusText.warning,

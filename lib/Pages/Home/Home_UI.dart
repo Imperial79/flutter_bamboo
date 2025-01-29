@@ -1,12 +1,14 @@
 // ignore_for_file: unused_result
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Pages/Home/Buy_Membership_Card.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
+import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -49,6 +51,8 @@ class _Home_UIState extends ConsumerState<Home_UI> {
 
     final products = ref.watch(productsList);
     final cartData = ref.watch(cartFuture);
+    final offersData = ref.watch(offersFuture);
+    log("$offersData");
     return KScaffold(
       isLoading: isLoading,
       body: SafeArea(
@@ -126,60 +130,77 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                 ],
               ),
             ),
-            BuyMembershipCard(
-              loadingStatus: (value) {
-                isLoading.value = value;
-              },
-            ),
-            KCard(
-              radius: 0,
-              padding: EdgeInsets.symmetric(vertical: 5),
-              height: 30,
-              child: Marquee(
-                text:
-                    'Mega Offer! Get Instant 20% OFF* on Selected Products. Mega Offer! Get Instant 20% OFF* on Selected Products.',
-                style: TextStyle(
-                  fontVariations: [
-                    FontVariation.weight(600),
-                  ],
-                ),
-                scrollAxis: Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                blankSpace: 20.0,
-                velocity: 50.0,
-                startPadding: 10.0,
-                accelerationDuration: Duration(seconds: 1),
-                accelerationCurve: Curves.linear,
-                decelerationDuration: Duration(milliseconds: 500),
-                decelerationCurve: Curves.decelerate,
-              ),
+            // BuyMembershipCard(
+            //   loadingStatus: (value) {
+            //     isLoading.value = value;
+            //   },
+            // ),
+            ...offersData.when(
+              data: (data) => data != null
+                  ? [
+                      BuyMembershipCard(
+                        fees: data["settings"]["membershipFees"],
+                        loadingStatus: (value) {
+                          isLoading.value = value;
+                        },
+                      ),
+                      KCard(
+                        radius: 0,
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        height: 30,
+                        child: Marquee(
+                          text: data["settings"]["offerMarquee"],
+                          style: TextStyle(
+                            fontVariations: [
+                              FontVariation.weight(600),
+                            ],
+                          ),
+                          scrollAxis: Axis.horizontal,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          blankSpace: 20.0,
+                          velocity: 50.0,
+                          startPadding: 10.0,
+                          accelerationDuration: Duration(seconds: 0),
+                          accelerationCurve: Curves.linear,
+                          decelerationDuration: Duration(milliseconds: 500),
+                          decelerationCurve: Curves.decelerate,
+                        ),
+                      )
+                    ]
+                  : [SizedBox()],
+              error: (error, stackTrace) => [SizedBox()],
+              loading: () => [kHeight(30)],
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   spacing: 20,
                   children: [
-                    KCarousel(
-                      height: 250,
-                      isLooped: true,
-                      children: [
-                        "https://static.vecteezy.com/system/resources/previews/001/381/216/non_2x/special-offer-sale-banner-with-megaphone-free-vector.jpg",
-                        "https://img.freepik.com/free-vector/mega-sale-offers-banner-template_1017-31299.jpg",
-                        "https://mir-s3-cdn-cf.behance.net/project_modules/hd/e0258724785543.5633a09ab2d1d.jpg",
-                      ]
-                          .map(
-                            (e) => Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    e,
+                    offersData.when(
+                      data: (data) => data != null
+                          ? KCarousel(
+                              height: 250,
+                              isLooped: true,
+                              children: List.generate(
+                                data["banners"].length,
+                                (index) => Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                        data["banners"][index]["image"],
+                                      ),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                  fit: BoxFit.cover,
                                 ),
                               ),
-                            ),
-                          )
-                          .toList(),
+                            )
+                          : SizedBox(),
+                      error: (error, stackTrace) => SizedBox(),
+                      loading: () => KCard(
+                        width: double.infinity,
+                        height: 250,
+                      ),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: kPadding),

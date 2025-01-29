@@ -12,6 +12,14 @@ final searchedProductsList = StateProvider<List<ProductModel>>(
   (ref) => [],
 );
 
+final offersFuture = FutureProvider<Map?>(
+  (ref) async {
+    final res = await apiCallBack(path: "/app-config/fetch");
+    if (!res.error) return res.data;
+    return null;
+  },
+);
+
 final productListFuture = FutureProvider.family<void, String>(
   (ref, params) async {
     final body = jsonDecode(params);
