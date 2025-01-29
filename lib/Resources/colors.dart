@@ -31,4 +31,5 @@ final Map<String, Color> statusColorMap = {
   "Delivered": StatusText.success,
   "Return Pending": StatusText.warning,
   "Refunded": StatusText.info,
+  "Cancelled": StatusText.danger,
 };

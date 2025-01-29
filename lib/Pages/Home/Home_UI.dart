@@ -1,7 +1,6 @@
 // ignore_for_file: unused_result
 
 import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
@@ -52,7 +51,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
     final products = ref.watch(productsList);
     final cartData = ref.watch(cartFuture);
     final offersData = ref.watch(offersFuture);
-    log("$offersData");
+
     return KScaffold(
       isLoading: isLoading,
       body: SafeArea(

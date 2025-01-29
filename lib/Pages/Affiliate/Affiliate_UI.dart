@@ -1,5 +1,6 @@
 // ignore_for_file: unused_result
 
+import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kTextfield.dart';
 import 'package:flutter_bamboo/Components/kWidgets.dart';
+import 'package:flutter_bamboo/Models/affiliate_model.dart';
 import 'package:flutter_bamboo/Repository/affiliate_repo.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
 import 'package:flutter_bamboo/Resources/app_config.dart';
@@ -34,6 +36,8 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
   final upiId = TextEditingController();
   final panNumber = TextEditingController();
   final isLoading = ValueNotifier(false);
+  final pageNo = ValueNotifier(0);
+  final status = ValueNotifier("All");
 
   apply() async {
     try {
@@ -71,6 +75,14 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
+    final asyncData = ref.watch(affiliateFuture(
+      jsonEncode({
+        "pageNo": pageNo.value,
+        "status": status.value,
+      }),
+    ));
+
+    final affiliateList = ref.watch(affiliateListProvider);
     return KScaffold(
       appBar: AppBar(
         title: Label("Affiliate Zone").regular,
@@ -109,13 +121,83 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
                         ],
                       ),
                     ),
+                    if (user.affiliateStatus == "Inactive") ...[
+                      height20,
+                      affiliateForm()
+                    ],
                     height20,
-                    if (user.affiliateStatus == "Inactive") affiliateForm(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Label("Product Details", fontSize: 12).regular,
+                        Label("Earning", fontSize: 12).regular,
+                      ],
+                    ),
+                    height15,
+                    if (asyncData.isLoading && affiliateList.isEmpty)
+                      kSmallLoading
+                    else if (affiliateList.isNotEmpty)
+                      ListView.separated(
+                        separatorBuilder: (context, index) => Divider(
+                          height: 30,
+                        ),
+                        itemCount: affiliateList.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) =>
+                            affiliateRow(affiliateList[index]),
+                      )
+                    else
+                      kNoData(context)
                   ],
                 ),
               )
             : kLoginRequired(context),
       ),
+    );
+  }
+
+  Widget affiliateRow(AffiliateModel data) {
+    return Row(
+      spacing: 15,
+      children: [
+        Container(
+          height: 30,
+          width: 30,
+          decoration: BoxDecoration(
+            color: KColor.card,
+            image: DecorationImage(
+              image: NetworkImage(
+                data.images[0],
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Label(data.name).regular,
+              Label("Qty: ${data.qty} | ${kCurrencyFormat(data.subTotal)}",
+                      fontSize: 12, weight: 500)
+                  .regular,
+            ],
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Label(
+              kCurrencyFormat(data.commissionAmount, decimalDigits: 2),
+            ).regular,
+            Label(
+              data.commissionStatus,
+              color: statusColorMap[data.commissionStatus],
+              fontSize: 12,
+            ).regular,
+          ],
+        )
+      ],
     );
   }
 
