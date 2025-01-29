@@ -38,6 +38,27 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
   final isLoading = ValueNotifier(false);
   final pageNo = ValueNotifier(0);
   final status = ValueNotifier("All");
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.atEdge) {
+      if (_scrollController.position.pixels != 0) {
+        pageNo.value += 1;
+        ref.refresh(affiliateFuture(
+          jsonEncode({
+            "pageNo": pageNo.value,
+            "status": status.value,
+          }),
+        ));
+      }
+    }
+  }
 
   apply() async {
     try {
@@ -69,6 +90,7 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
     accHolderName.dispose();
     upiId.dispose();
     panNumber.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -92,6 +114,7 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
       body: SafeArea(
         child: user != null
             ? SingleChildScrollView(
+                controller: _scrollController,
                 padding: EdgeInsets.all(kPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,6 +182,7 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
 
   Widget affiliateRow(AffiliateModel data) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 15,
       children: [
         Container(
@@ -179,6 +203,10 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
             children: [
               Label(data.name).regular,
               Label("Qty: ${data.qty} | ${kCurrencyFormat(data.subTotal)}",
+                      fontSize: 12, weight: 500)
+                  .regular,
+              height5,
+              Label("Ordered On: ${kDateFormat(data.orderDate)}",
                       fontSize: 12, weight: 500)
                   .regular,
             ],
@@ -239,6 +267,12 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
             label: "IFSC Code",
             hintText: "Eg. SBIN1992",
             textCapitalization: TextCapitalization.characters,
+            validator: (val) => KValidation.required(val),
+          ).regular,
+          height10,
+          KTextfield(
+            controller: accHolderName,
+            label: "Account Holder Name",
             validator: (val) => KValidation.required(val),
           ).regular,
           height10,
