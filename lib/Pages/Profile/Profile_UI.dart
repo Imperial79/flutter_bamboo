@@ -57,66 +57,106 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: CircleAvatar(
-                        radius: 30,
-                        backgroundImage: user.image.isNotEmpty
-                            ? NetworkImage(user.image)
-                            : null,
-                        child: user.image.isEmpty
-                            ? Label(user.name[0].toUpperCase(), fontSize: 22)
-                                .regular
-                            : null,
+                    if (user.isMember)
+                      Container(
+                        padding: EdgeInsets.all(kPadding),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: kRadius(15),
+                          image: DecorationImage(
+                            image: AssetImage("$kImagePath/premium-bg.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage: user.image.isNotEmpty
+                                  ? NetworkImage(user.image)
+                                  : null,
+                              child: user.image.isEmpty
+                                  ? Label(user.name[0].toUpperCase(),
+                                          fontSize: 22)
+                                      .regular
+                                  : null,
+                            ),
+                            height10,
+                            Label(
+                              user.name,
+                              color: Colors.white,
+                            ).title,
+                            Label(
+                              "Member",
+                              fontSize: 13,
+                              weight: 600,
+                              color: Colors.white,
+                            ).title,
+                          ],
+                        ),
+                      )
+                    else ...[
+                      Center(
+                        child: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: user.image.isNotEmpty
+                              ? NetworkImage(user.image)
+                              : null,
+                          child: user.image.isEmpty
+                              ? Label(user.name[0].toUpperCase(), fontSize: 22)
+                                  .regular
+                              : null,
+                        ),
                       ),
-                    ),
-                    height10,
-                    Center(
-                      child: Label(user.name).title,
-                    ),
-                    if (user.phone != null)
-                      Row(
-                        spacing: 5,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Label(
-                            user.phone!,
-                            fontSize: 17,
-                            weight: 700,
-                          ).subtitle,
-                          InkWell(
-                            onTap: () => context.push("/edit-profile"),
+                      height10,
+                      Center(
+                        child: Label(user.name).title,
+                      ),
+                      if (user.phone != null)
+                        Row(
+                          spacing: 5,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Label(
+                              user.phone!,
+                              fontSize: 17,
+                              weight: 700,
+                            ).subtitle,
+                            InkWell(
+                              onTap: () => context.push("/edit-profile"),
+                              child: Row(
+                                spacing: 5,
+                                children: [
+                                  Icon(
+                                    Icons.edit,
+                                    size: 15,
+                                  ),
+                                  Label("Edit").regular
+                                ],
+                              ),
+                            )
+                          ],
+                        )
+                      else
+                        Center(
+                          child: InkWell(
+                            onTap: () => context.push("/profile/edit"),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               spacing: 5,
                               children: [
                                 Icon(
-                                  Icons.edit,
-                                  size: 15,
+                                  Icons.add_circle_outline,
+                                  color: KColor.fadeText,
+                                  size: 20,
                                 ),
-                                Label("Edit").regular
+                                Label("Add phone", fontSize: 15, weight: 600)
+                                    .subtitle,
                               ],
                             ),
-                          )
-                        ],
-                      )
-                    else
-                      Center(
-                        child: InkWell(
-                          onTap: () => context.push("/profile/edit"),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            spacing: 5,
-                            children: [
-                              Icon(
-                                Icons.add_circle_outline,
-                                color: KColor.fadeText,
-                                size: 20,
-                              ),
-                              Label("Add phone", fontSize: 15, weight: 600)
-                                  .subtitle,
-                            ],
                           ),
                         ),
-                      ),
+                    ],
                     height20,
                     KCard(
                       padding: EdgeInsets.all(7),
