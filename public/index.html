@@ -1,91 +1,105 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
-
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/11.2.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/11.2.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/11.2.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGF Organic - Sustainable Bamboo Products</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- Header Section -->
+  <header class="bg-green-700 text-white py-6">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+      <h1 class="text-3xl font-bold">NGF Organic</h1>
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#about" class="hover:text-green-300">About</a></li>
+          <li><a href="#products" class="hover:text-green-300">Products</a></li>
+          <li><a href="#movement" class="hover:text-green-300">Movement</a></li>
+          <li><a href="#download" class="hover:text-green-300">Download App</a></li>
+        </ul>
+      </nav>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+  </header>
 
-    <script>
-       window.location.href = "https://play.google.com/store/apps/details?id=com.imperial.transactRecord&hl=en";  
-      // document.addEventListener('DOMContentLoaded', function() {
-      //   const loadEl = document.querySelector('#load');
-      //   // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-      //   // // The Firebase SDK is initialized and available here!
-      //   //
-      //   // firebase.auth().onAuthStateChanged(user => { });
-      //   // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-      //   // firebase.firestore().doc('/foo/bar').get().then(() => { });
-      //   // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-      //   // firebase.messaging().requestPermission().then(() => { });
-      //   // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-      //   // firebase.analytics(); // call to activate
-      //   // firebase.analytics().logEvent('tutorial_completed');
-      //   // firebase.performance(); // call to activate
-      //   //
-      //   // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+  <!-- Hero Section -->
+  <section class="bg-green-100 py-20">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-4">Go Green with Bamboo</h2>
+      <p class="text-lg mb-8">Join the movement to replace plastic with sustainable, organic bamboo products.</p>
+      <a href="#products" class="bg-green-700 text-white px-8 py-3 rounded-full hover:bg-green-600">Explore Products</a>
+    </div>
+  </section>
 
-      //   try {
-         
-      //     let app = firebase.app();
-      //     let features = [
-      //       'auth', 
-      //       'database', 
-      //       'firestore',
-      //       'functions',
-      //       'messaging', 
-      //       'storage', 
-      //       'analytics', 
-      //       'remoteConfig',
-      //       'performance',
-      //     ].filter(feature => typeof app[feature] === 'function');
-      //     loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-      //   } catch (e) {
-      //     console.error(e);
-      //     loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-      //   }
-      // });
-    </script>
-  </body>
+  <!-- About Section -->
+  <section id="about" class="py-20">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-8">About NGF Organic</h2>
+      <p class="text-lg text-center max-w-2xl mx-auto">
+        NGF Organic is dedicated to providing eco-friendly, organic bamboo products for everyday use. Our mission is to reduce plastic waste and promote sustainable living through high-quality, biodegradable alternatives.
+      </p>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section id="products" class="bg-green-50 py-20">
+    <div class="container mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-8">Our Products</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Product 1 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+          <img src="https://via.placeholder.com/150" alt="Bamboo Toothbrush" class="mx-auto mb-4">
+          <h3 class="text-xl font-bold mb-2">Bamboo Toothbrush</h3>
+          <p class="text-gray-700">Eco-friendly and biodegradable toothbrushes for a cleaner planet.</p>
+        </div>
+        <!-- Product 2 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+          <img src="https://via.placeholder.com/150" alt="Bamboo Cutlery" class="mx-auto mb-4">
+          <h3 class="text-xl font-bold mb-2">Bamboo Cutlery</h3>
+          <p class="text-gray-700">Sustainable cutlery sets for your on-the-go meals.</p>
+        </div>
+        <!-- Product 3 -->
+        <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+          <img src="https://via.placeholder.com/150" alt="Bamboo Straws" class="mx-auto mb-4">
+          <h3 class="text-xl font-bold mb-2">Bamboo Straws</h3>
+          <p class="text-gray-700">Reusable and natural straws to replace plastic ones.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Movement Section -->
+  <section id="movement" class="py-20">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-8">Join the Movement</h2>
+      <p class="text-lg max-w-2xl mx-auto mb-8">
+        Together, we can make a difference. By switching to bamboo products, you're helping to reduce plastic waste and protect our planet for future generations.
+      </p>
+      <a href="#download" class="bg-green-700 text-white px-8 py-3 rounded-full hover:bg-green-600">Join Now</a>
+    </div>
+  </section>
+
+  <!-- App Download Section -->
+  <section id="download" class="bg-green-700 text-white py-20">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-bold mb-8">Download Our App</h2>
+      <p class="text-lg mb-8">Get exclusive offers, track your eco-impact, and shop our bamboo products on the go.</p>
+      <div class="flex justify-center space-x-4">
+        <a href="#" class="bg-white text-green-700 px-6 py-3 rounded-full hover:bg-gray-100">Download on iOS</a>
+        <a href="#" class="bg-white text-green-700 px-6 py-3 rounded-full hover:bg-gray-100">Download on Android</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-6">
+    <div class="container mx-auto px-6 text-center">
+      <p>&copy; 2023 NGF Organic. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+
+<script>
+  window.location.href = "https://play.google.com/store/apps/details?id=com.imperial.transactRecord&hl=en";
+</script>
 </html>
