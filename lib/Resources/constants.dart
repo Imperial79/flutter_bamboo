@@ -40,10 +40,10 @@ String calculateDiscount(dynamic mrp, dynamic salePrice) {
       .toString();
 }
 
-String kDateFormat(String date, {bool showTime = false}) {
+String kDateFormat(String date, {bool showTime = false, String? format}) {
   String formatter = "dd MMM, yyyy";
   if (showTime) {
     formatter += " - hh:mm a";
   }
-  return DateFormat(formatter).format(DateTime.parse(date));
+  return DateFormat(format ?? formatter).format(DateTime.parse(date));
 }

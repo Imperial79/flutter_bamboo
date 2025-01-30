@@ -256,7 +256,35 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             Label("Inclusive of all taxes",
                                     color: KColor.fadeText, weight: 600)
                                 .subtitle,
-                            // height20,
+                            height20,
+                            KCard(
+                              width: double.infinity,
+                              borderWidth: 1,
+                              color: KColor.scaffold,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: 15,
+                                children: [
+                                  // Row(
+                                  //   spacing: 12,
+                                  //   children: [
+                                  //     SvgPicture.asset(
+                                  //       '$kIconPath/shipping-fast.svg',
+                                  //       height: 20,
+                                  //     ),
+                                  //     Label("Delivery Within").regular,
+                                  //   ],
+                                  // )
+                                  _row("shipping-fast.svg", "Express delivery"),
+                                  _row(
+                                      "return.svg",
+                                      product.returnDays != 0
+                                          ? "${product.returnDays} days returnable"
+                                          : "Non returnable"),
+                                  _row("secure.svg", "Secure transaction"),
+                                ],
+                              ),
+                            ),
                             // Row(
                             //   spacing: 5,
                             //   children: [
@@ -340,6 +368,19 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 )
               : footer(productData.value!, cartData.value ?? [])
           : null,
+    );
+  }
+
+  Widget _row(String iconPath, String text) {
+    return Row(
+      spacing: 12,
+      children: [
+        SvgPicture.asset(
+          '$kIconPath/$iconPath',
+          height: 20,
+        ),
+        Label(text, weight: 500).regular,
+      ],
     );
   }
 

@@ -61,14 +61,14 @@ class ProductPreviewCard extends ConsumerWidget {
                 children: [
                   Label(
                     product.category,
-                    weight: 600,
+                    weight: 500,
                     fontSize: 12,
                     color: KColor.fadeText,
                   ).subtitle,
                   Label(
                     "${product.name}\n",
                     maxLines: 2,
-                    weight: 700,
+                    weight: 600,
                   ).regular,
                   height10,
                   Row(
@@ -88,24 +88,26 @@ class ProductPreviewCard extends ConsumerWidget {
                   ),
                   height5,
                   Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    spacing: 10,
+                    crossAxisAlignment: WrapCrossAlignment.end,
+                    spacing: 5,
                     children: [
                       Label(
                         kCurrencyFormat(product.salePrice),
-                        weight: 700,
+                        weight: 600,
+                        height: 1.2,
                         fontSize: 20,
                       ).title,
                       Label(
                         "-${calculateDiscount(product.mrp, product.salePrice)}%",
-                        weight: 600,
+                        weight: 500,
                         fontSize: 15,
                         color: StatusText.danger,
                       ).title,
+                      width5,
                       Label(
                         "MRP ${kCurrencyFormat(product.mrp)}",
-                        weight: 600,
-                        fontSize: 15,
+                        weight: 500,
+                        fontSize: 12,
                         color: KColor.fadeText,
                         decoration: TextDecoration.lineThrough,
                       ).regular,
