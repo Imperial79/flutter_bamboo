@@ -261,7 +261,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
           ),
         ),
         Center(child: Label("NGF Organic © ${DateTime.now().year}").regular),
-        Center(child: Label("Nightbirdes Hub OPC Pvt.").regular),
+        Center(child: Label("NIGHTBIRDES HUB (OPC) PRIVATE LIMITED").regular),
       ],
     );
   }

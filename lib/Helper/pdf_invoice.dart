@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:flutter_bamboo/Models/order_detail_model.dart';
+import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:indian_currency_to_word/indian_currency_to_word.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -7,18 +9,21 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfInvoiceApi {
-  static Future<File> generate({required orderDetails}) async {
+  static OrderDetailModel? orderDetails;
+  static double taxAmount = 0;
+  static Future<File> generate({required OrderDetailModel orderDetails}) async {
+    // Company logo
     final ByteData companyLogoBytes =
         await rootBundle.load('assets/images/logo.png');
     final Uint8List companyLogo = companyLogoBytes.buffer.asUint8List();
 
+    // authroised signatory
     final ByteData authSignBytes =
-        await rootBundle.load('assets/images/logo.png');
+        await rootBundle.load('assets/images/signature.png');
     final Uint8List authSignature = authSignBytes.buffer.asUint8List();
 
-    // var url = orderDetail['productImg'];
-    // var response = await get(Uri.parse(url));
-    // var data = response.bodyBytes;
+    PdfInvoiceApi.orderDetails = orderDetails;
+    PdfInvoiceApi.taxAmount = orderDetails.subTotal * orderDetails.taxRate;
 
     final pdf = Document();
 
@@ -36,7 +41,8 @@ class PdfInvoiceApi {
       footer: (context) => footerPart(),
     ));
     return saveDocument(
-        name: "Invoice_${orderDetails["orderId"]}.pdf", pdf: pdf);
+        name: "NGFOrganic_Invoice_${orderDetails.shoppingOrderId}.pdf",
+        pdf: pdf);
   }
 
   static Future<File> saveDocument({
@@ -74,7 +80,8 @@ class PdfInvoiceApi {
           ),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text("NGF Organic", style: TextStyle(fontWeight: FontWeight.bold)),
-            Text("Nightbirdes Hub OPC Pvt", style: TextStyle(fontSize: 8)),
+            Text("NIGHTBIRDES HUB (OPC) PRIVATE LIMITED",
+                style: TextStyle(fontSize: 8)),
           ]),
           Spacer(),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
@@ -98,71 +105,91 @@ class PdfInvoiceApi {
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              "SOLD BY:",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "SOLD BY:",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "NIGHTBIRDES HUB (OPC) PRIVATE LIMITED",
+                  style: const TextStyle(fontSize: 12),
+                ),
+                Text(
+                  """Floor No.: SECOND FLOOR
+Building No./Flat No.: NO 5/10-73
+Road/Street: SEVENWELL STREET ST.THOMAS MOUNT
+City/Town/Village: Chennai
+District: Chennai
+State: Tamil Nadu
+PIN Code: 600016""",
+                  style: const TextStyle(fontSize: 12),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "GST Registration No:33AAJCN0176A1ZY",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Order Number: ${orderDetails?.shoppingOrderId}",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Order Date: ${kDateFormat(orderDetails!.orderDate)}",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            Text(
-              "COMPANY NAME",
-              style: const TextStyle(fontSize: 12),
+          ),
+          SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  "BILLING/SHIPPING ADDRESS",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.right,
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "${orderDetails?.shippingName}",
+                  style: const TextStyle(fontSize: 12),
+                  textAlign: TextAlign.right,
+                ),
+                Text(
+                  "${orderDetails?.shippingAddress}",
+                  style: const TextStyle(fontSize: 12),
+                  textAlign: TextAlign.right,
+                ),
+                Text(
+                  "Place of supply:${orderDetails?.shippingState}",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Place of delivery:${orderDetails?.shippingState}",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
-            Text(
-              "Full Address here with state,\ncity, pincode and\ncountry code",
-              style: const TextStyle(fontSize: 12),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "PAN No:MKAL00SOLS",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "GST Registration No:19AAKAOLS9DKIOD",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "Order Number: 6778",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "Order Date: 01-02-2025",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            ),
-          ]),
-          SizedBox(width: 30),
-          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text(
-              "BILLING/SHIPPING ADDRESS",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.right,
-            ),
-            Text(
-              "Vivek Verma",
-              style: const TextStyle(fontSize: 12),
-              textAlign: TextAlign.right,
-            ),
-            Text(
-              "Full Address here with state,\ncity, pincode and\ncountry code",
-              style: const TextStyle(fontSize: 12),
-              textAlign: TextAlign.right,
-            ),
-            Text(
-              "Place of supply:WEST BENGAL",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              "Place of delivery:WEST BENGAL",
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-            ),
-          ])
+          )
         ],
       ),
     );
   }
 
   static Widget itemsPart() {
+    double unitPrice = orderDetails!.salePrice - PdfInvoiceApi.taxAmount;
+    double netAmount =
+        orderDetails!.subTotal - (PdfInvoiceApi.taxAmount * orderDetails!.qty);
+    double taxPercent = orderDetails!.taxRate * 100;
+    double taxAmount = PdfInvoiceApi.taxAmount * orderDetails!.qty;
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
@@ -181,28 +208,41 @@ class PdfInvoiceApi {
           'Net Amount',
           'Tax Rate',
           'Tax Amount',
+          'Discount',
           'Total Amount'
         ],
         data: [
           [
             "1",
-            'Bamboo Brush (Non-pLastic) Stylish brush, Choose bamboo over plastic',
-            '299',
-            '2',
-            '598',
-            '15%',
-            '78',
-            '900'
+            '${orderDetails?.name} - ${orderDetails?.attributeValue}',
+            kCurrencyFormat(unitPrice, decimalDigits: 2, symbol: "INR "),
+            '${orderDetails?.qty}',
+            kCurrencyFormat(netAmount, decimalDigits: 2, symbol: "INR "),
+            '${taxPercent.toStringAsFixed(1)}%',
+            kCurrencyFormat(taxAmount, decimalDigits: 2, symbol: "INR "),
+            kCurrencyFormat(orderDetails!.couponDiscount,
+                decimalDigits: 2, symbol: "INR "),
+            kCurrencyFormat(orderDetails!.netPayable,
+                decimalDigits: 2, symbol: "INR "),
           ],
           [
             '',
             Text('Total', style: TextStyle(fontWeight: FontWeight.bold)),
             '',
             '',
+            Text(kCurrencyFormat(netAmount, decimalDigits: 2, symbol: "INR "),
+                style: TextStyle(fontWeight: FontWeight.bold)),
             '',
-            '',
-            Text('900', style: TextStyle(fontWeight: FontWeight.bold)),
-            Text('9200', style: TextStyle(fontWeight: FontWeight.bold))
+            Text(kCurrencyFormat(taxAmount, decimalDigits: 2, symbol: "INR "),
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+                kCurrencyFormat(orderDetails!.couponDiscount,
+                    decimalDigits: 2, symbol: "INR "),
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(
+                kCurrencyFormat(orderDetails!.netPayable,
+                    decimalDigits: 2, symbol: "INR "),
+                style: TextStyle(fontWeight: FontWeight.bold))
           ]
         ],
         headerStyle: TextStyle(fontWeight: FontWeight.bold),
@@ -226,7 +266,7 @@ class PdfInvoiceApi {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
       child: Text(
-        "Amount in words:\n${AmountToWords().convertAmountToWords(12.90, ignoreDecimal: false)} ONLY",
+        "Amount in words:\n${AmountToWords().convertAmountToWords(orderDetails!.netPayable, ignoreDecimal: false)} ONLY",
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.bold,
@@ -250,17 +290,19 @@ class PdfInvoiceApi {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            "For Shop Name Private Ltd:",
+            "For NIGHTBIRDES HUB (OPC) PRIVATE LIMITED:",
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
           ),
+          SizedBox(height: 10),
           Image(
             MemoryImage(
               authSignature,
             ),
-            height: 30,
-            width: 30,
+            height: 20,
+            width: 50,
             fit: BoxFit.cover,
           ),
+          SizedBox(height: 10),
           Text(
             "Authorized Signatory",
             style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
