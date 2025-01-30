@@ -20,9 +20,11 @@ import '../../Resources/theme.dart';
 
 class Login_UI extends ConsumerStatefulWidget {
   final String? redirectPath;
+  final String? referCode;
   const Login_UI({
     super.key,
     this.redirectPath,
+    this.referCode,
   });
 
   @override
@@ -45,7 +47,6 @@ class _Login_UIState extends ConsumerState<Login_UI> {
         KSnackbar(context, message: res.message, error: res.error);
       }
     } catch (e) {
-      log("$e");
       KSnackbar(context, message: "$e", error: true);
     } finally {
       isLoading.value = false;

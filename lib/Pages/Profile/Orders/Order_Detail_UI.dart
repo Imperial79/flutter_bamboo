@@ -208,16 +208,20 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                                 ],
                               ),
                             ),
-                            Container(
-                              height: 70,
-                              width: 70,
-                              decoration: BoxDecoration(
-                                color: KColor.card,
-                                image: DecorationImage(
-                                  image: NetworkImage(
-                                    data.images[0],
+                            GestureDetector(
+                              onTap: () => context.push(
+                                  "/product/abc/${data.productId}?sku=${data.sku}"),
+                              child: Container(
+                                height: 70,
+                                width: 70,
+                                decoration: BoxDecoration(
+                                  color: KColor.card,
+                                  image: DecorationImage(
+                                    image: NetworkImage(
+                                      data.images[0],
+                                    ),
+                                    fit: BoxFit.cover,
                                   ),
-                                  fit: BoxFit.cover,
                                 ),
                               ),
                             ),

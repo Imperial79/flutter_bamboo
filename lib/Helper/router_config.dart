@@ -56,10 +56,13 @@ final goRouterProvider = Provider<GoRouter>(
         GoRoute(
           path: '/login',
           builder: (context, state) {
-            final redirectPath =
-                (state.extra as Map<String, dynamic>)["redirectPath"];
+            final data = (state.extra as Map<String, dynamic>);
+            final redirectPath = data["redirectPath"];
+            final referCode = data["referCode"];
+
             return Login_UI(
               redirectPath: redirectPath,
+              referCode: referCode,
             );
           },
           routes: [

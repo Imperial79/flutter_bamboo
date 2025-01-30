@@ -75,18 +75,28 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     }
   }
 
-  buyNow(user) {
+  buyNow(user) async {
     if (user != null) {
+      await addToCart(selectedVariant.id);
+      context.push("/cart");
     } else {
-      context
-          .push("/login", extra: {"redirectPath": "/product/abc/${widget.id}"});
+      context.push("/login", extra: {
+        "redirectPath": "/product/abc/${widget.id}?sku=${widget.sku}",
+        "referCode": widget.referCode,
+      });
     }
   }
 
   shareProduct(ProductDetailModel product) async {
     try {
       isLoading.value = true;
-      await ProductHelper().shareProduct(product, sku: selectedVariant.sku);
+      final user = ref.read(userProvider);
+
+      await ProductHelper().shareProduct(product,
+          sku: selectedVariant.sku,
+          referCode: user != null && user.affiliateStatus == "Active"
+              ? user.referCode
+              : null);
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);
     } finally {
@@ -411,14 +421,14 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Label("Total Price").regular,
+                      Label("Total Price", fontSize: 12).regular,
                       Label(
                         kCurrencyFormat(
                           selectedVariant.salePrice,
                           symbol: "INR ",
                         ),
                         weight: 700,
-                        fontSize: 25,
+                        fontSize: 20,
                         color: KColor.secondary,
                       ).title,
                     ],
@@ -433,7 +443,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     }
                   },
                   child: Container(
-                    height: 55,
+                    height: 50,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     decoration: BoxDecoration(
@@ -472,7 +482,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     buyNow(user);
                   },
                   child: Container(
-                    height: 55,
+                    height: 50,
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                     decoration: BoxDecoration(

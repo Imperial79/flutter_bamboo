@@ -233,14 +233,10 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                   ],
                                 ),
                               ),
-                              CircleAvatar(
-                                radius: 10,
-                                backgroundColor: KColor.scaffold,
-                                child: Icon(
-                                  Icons.arrow_forward_ios_rounded,
-                                  size: 10,
-                                  color: KColor.fadeText,
-                                ),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 12,
+                                color: KColor.fadeText,
                               ),
                             ],
                           ),

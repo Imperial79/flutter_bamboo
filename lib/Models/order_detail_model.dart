@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+
 import 'package:flutter_bamboo/Resources/constants.dart';
 
 class OrderDetailModel {
   int id = 0;
+  int productId = 0;
   int shoppingOrderId = 0;
   String name = "";
   String sku = "";
@@ -32,6 +34,7 @@ class OrderDetailModel {
   List<String> images = [];
   OrderDetailModel({
     required this.id,
+    required this.productId,
     required this.shoppingOrderId,
     required this.name,
     required this.sku,
@@ -61,6 +64,7 @@ class OrderDetailModel {
 
   OrderDetailModel copyWith({
     int? id,
+    int? productId,
     int? shoppingOrderId,
     String? name,
     String? sku,
@@ -89,6 +93,7 @@ class OrderDetailModel {
   }) {
     return OrderDetailModel(
       id: id ?? this.id,
+      productId: productId ?? this.productId,
       shoppingOrderId: shoppingOrderId ?? this.shoppingOrderId,
       name: name ?? this.name,
       sku: sku ?? this.sku,
@@ -120,6 +125,7 @@ class OrderDetailModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'productId': productId,
       'shoppingOrderId': shoppingOrderId,
       'name': name,
       'sku': sku,
@@ -151,6 +157,7 @@ class OrderDetailModel {
   factory OrderDetailModel.fromMap(Map<String, dynamic> map) {
     return OrderDetailModel(
       id: map['id']?.toInt() ?? 0,
+      productId: map['productId']?.toInt() ?? 0,
       shoppingOrderId: map['shoppingOrderId']?.toInt() ?? 0,
       name: map['name'] ?? '',
       sku: map['sku'] ?? '',
@@ -186,7 +193,7 @@ class OrderDetailModel {
 
   @override
   String toString() {
-    return 'OrderDetailModel(id: $id, shoppingOrderId: $shoppingOrderId, name: $name, sku: $sku, attributeType: $attributeType, attributeValue: $attributeValue, status: $status, mrp: $mrp, salePrice: $salePrice, taxRate: $taxRate, qty: $qty, couponDiscount: $couponDiscount, subTotal: $subTotal, netPayable: $netPayable, orderDate: $orderDate, shippingName: $shippingName, shippingPhone: $shippingPhone, shippingAddress: $shippingAddress, shippingState: $shippingState, rating: $rating, feedback: $feedback, deliveredOn: $deliveredOn, returnDays: $returnDays, returnReason: $returnReason, paymentId: $paymentId, images: $images)';
+    return 'OrderDetailModel(id: $id, productId: $productId, shoppingOrderId: $shoppingOrderId, name: $name, sku: $sku, attributeType: $attributeType, attributeValue: $attributeValue, status: $status, mrp: $mrp, salePrice: $salePrice, taxRate: $taxRate, qty: $qty, couponDiscount: $couponDiscount, subTotal: $subTotal, netPayable: $netPayable, orderDate: $orderDate, shippingName: $shippingName, shippingPhone: $shippingPhone, shippingAddress: $shippingAddress, shippingState: $shippingState, rating: $rating, feedback: $feedback, deliveredOn: $deliveredOn, returnDays: $returnDays, returnReason: $returnReason, paymentId: $paymentId, images: $images)';
   }
 
   @override
@@ -195,6 +202,7 @@ class OrderDetailModel {
 
     return other is OrderDetailModel &&
         other.id == id &&
+        other.productId == productId &&
         other.shoppingOrderId == shoppingOrderId &&
         other.name == name &&
         other.sku == sku &&
@@ -225,6 +233,7 @@ class OrderDetailModel {
   @override
   int get hashCode {
     return id.hashCode ^
+        productId.hashCode ^
         shoppingOrderId.hashCode ^
         name.hashCode ^
         sku.hashCode ^

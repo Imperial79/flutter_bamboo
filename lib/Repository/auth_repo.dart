@@ -41,7 +41,10 @@ class AuthRepo {
         ],
       );
   static Future<ResponseModel> sendTokenToBackend(
-      WidgetRef ref, String idToken) async {
+    WidgetRef ref,
+    String idToken,
+    String? referrerCode,
+  ) async {
     try {
       final fcmToken = await FirebaseMessaging.instance.getToken();
 
@@ -50,7 +53,7 @@ class AuthRepo {
         body: {
           "token": idToken,
           "fcmToken": fcmToken,
-          "referrerCode": null,
+          "referrerCode": referrerCode,
         },
       );
 
@@ -64,7 +67,8 @@ class AuthRepo {
     }
   }
 
-  Future<ResponseModel> signInWithGoogle(WidgetRef ref) async {
+  Future<ResponseModel> signInWithGoogle(WidgetRef ref,
+      {String? referrerCode}) async {
     try {
       await googleSignIn.signOut();
 
@@ -73,7 +77,7 @@ class AuthRepo {
       if (gAccount != null) {
         final GoogleSignInAuthentication gAuth = await gAccount.authentication;
 
-        return await sendTokenToBackend(ref, gAuth.idToken ?? "");
+        return await sendTokenToBackend(ref, gAuth.idToken ?? "", referrerCode);
       }
       return ResponseModel(error: true, message: "User is null!");
     } catch (error) {
