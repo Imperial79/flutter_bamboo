@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
-import 'package:flutter_bamboo/Components/Label.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 
 class Transactions_UI extends StatefulWidget {
@@ -14,8 +13,9 @@ class _Transactions_UIState extends State<Transactions_UI> {
   @override
   Widget build(BuildContext context) {
     return KScaffold(
-      appBar: AppBar(
-        title: Label("Transactions").regular,
+      appBar: KAppBar(
+        context,
+        title: "Transactions",
       ),
       body: SafeArea(
         child: SingleChildScrollView(

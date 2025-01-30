@@ -80,13 +80,11 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
     return RefreshIndicator(
       onRefresh: _refresh,
       child: KScaffold(
-        appBar: AppBar(
-          title: Label(
-            widget.category == "All"
-                ? "Our Products"
-                : "Showing products for ${widget.category}",
-            fontSize: 18,
-          ).regular,
+        appBar: KAppBar(
+          context,
+          title: widget.category == "All"
+              ? "Our Products"
+              : "Showing products for ${widget.category}",
         ),
         body: SafeArea(
           child: SingleChildScrollView(

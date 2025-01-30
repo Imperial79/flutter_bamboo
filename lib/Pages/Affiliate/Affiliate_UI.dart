@@ -106,9 +106,10 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
 
     final affiliateList = ref.watch(affiliateListProvider);
     return KScaffold(
-      appBar: AppBar(
-        title: Label("Affiliate Zone").regular,
-        centerTitle: true,
+      appBar: KAppBar(
+        context,
+        title: "Affiliate Zone",
+        showBack: false,
       ),
       isLoading: isLoading,
       body: SafeArea(

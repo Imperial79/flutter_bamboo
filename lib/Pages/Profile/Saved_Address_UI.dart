@@ -125,10 +125,7 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
       onRefresh: () => _refresh(),
       child: KScaffold(
         isLoading: isLoading,
-        appBar: AppBar(
-          title: Label("Saved Address").regular,
-          centerTitle: true,
-        ),
+        appBar: KAppBar(context, title: "Saved Address"),
         body: SafeArea(
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),

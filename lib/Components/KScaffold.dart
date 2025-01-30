@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Resources/colors.dart';
-
 import '../Resources/commons.dart';
 import '../Resources/constants.dart';
 import 'Label.dart';
@@ -99,7 +98,7 @@ class KScaffold extends StatelessWidget {
 AppBar KAppBar(
   context, {
   IconData? icon,
-  String? title = "title",
+  String title = "",
   Widget? child,
   bool showBack = true,
   List<Widget>? actions,
@@ -108,35 +107,27 @@ AppBar KAppBar(
     backgroundColor: KColor.scaffold,
     automaticallyImplyLeading: false,
     titleSpacing: showBack ? 0 : kPadding,
-    leadingWidth: 70,
+    leadingWidth: 50,
     leading: showBack
-        ? IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            style: IconButton.styleFrom(
-              backgroundColor: Colors.grey.shade800,
-              foregroundColor: Colors.white,
+        ? Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              onPressed: () {
+                context.pop();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_new,
+                size: 20,
+              ),
             ),
-            icon: const Icon(Icons.arrow_back))
+          )
         : null,
     title: child ??
-        Row(
-          children: [
-            if (icon != null)
-              Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: Icon(icon),
-              ),
-            Label(
-              title!,
-              fontStyle: FontStyle.italic,
-              fontSize: 27,
-              weight: 600,
-              color: Colors.white,
-            ).title,
-          ],
-        ),
+        Label(
+          title,
+          fontSize: 18,
+          weight: 600,
+        ).title,
     actions: actions,
   );
 }

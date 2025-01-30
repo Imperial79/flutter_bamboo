@@ -30,9 +30,9 @@ class _Coupons_UIState extends ConsumerState<Coupons_UI> {
     return RefreshIndicator(
       onRefresh: () => _refresh(),
       child: KScaffold(
-        appBar: AppBar(
-          title: Label("Offers").regular,
-          centerTitle: true,
+        appBar: KAppBar(
+          context,
+          title: "Coupons & Offers",
         ),
         body: SafeArea(
           child: SingleChildScrollView(

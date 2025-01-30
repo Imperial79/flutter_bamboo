@@ -45,11 +45,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
 
     return KScaffold(
       isLoading: isLoading,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Label("Profile").regular,
-        centerTitle: true,
-      ),
+      appBar: KAppBar(context, showBack: false, title: "Profile"),
       body: SafeArea(
         child: user != null
             ? SingleChildScrollView(

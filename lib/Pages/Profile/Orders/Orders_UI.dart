@@ -41,9 +41,9 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
     return RefreshIndicator(
       onRefresh: () => _refresh(),
       child: KScaffold(
-        appBar: AppBar(
-          title: Label("Orders").regular,
-          centerTitle: true,
+        appBar: KAppBar(
+          context,
+          title: "Orders",
         ),
         body: SafeArea(
           child: user != null

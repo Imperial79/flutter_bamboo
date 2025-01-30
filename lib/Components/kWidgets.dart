@@ -123,7 +123,7 @@ Widget KCartIcon() {
               data.isNotEmpty
                   ? "$kIconPath/shopping-bag-filled.svg"
                   : "$kIconPath/shopping-bag.svg",
-              height: 22,
+              height: 20,
               colorFilter: kSvgColor(
                 data.isNotEmpty ? KColor.primary : Colors.black,
               ),
@@ -134,14 +134,14 @@ Widget KCartIcon() {
           onPressed: () => context.push("/cart"),
           icon: SvgPicture.asset(
             "$kIconPath/shopping-bag.svg",
-            height: 22,
+            height: 20,
           ),
         ),
         loading: () => IconButton(
           onPressed: () => context.push("/cart"),
           icon: SvgPicture.asset(
             "$kIconPath/shopping-bag.svg",
-            height: 22,
+            height: 20,
           ),
         ),
       );

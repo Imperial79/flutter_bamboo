@@ -190,9 +190,9 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
       onRefresh: () => _refresh(),
       child: KScaffold(
         isLoading: isLoading,
-        appBar: AppBar(
-          title: Label("Cart").regular,
-          centerTitle: true,
+        appBar: KAppBar(
+          context,
+          title: "Cart",
         ),
         body: SafeArea(
             child: cartData.when(

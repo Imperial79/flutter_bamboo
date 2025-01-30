@@ -161,9 +161,9 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
 
     return KScaffold(
       isLoading: isLoading,
-      appBar: AppBar(
-        title: Label('Checkout').regular,
-        centerTitle: true,
+      appBar: KAppBar(
+        context,
+        title: "Checkout",
       ),
       body: SafeArea(
         child: SingleChildScrollView(

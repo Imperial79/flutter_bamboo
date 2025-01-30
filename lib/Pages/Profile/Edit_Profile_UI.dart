@@ -23,8 +23,9 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
     return KScaffold(
-      appBar: AppBar(
-        title: Label("Edit Profile").regular,
+      appBar: KAppBar(
+        context,
+        title: "Edit Profile",
         actions: [
           IconButton(onPressed: () {}, icon: Icon(Icons.help_outline_rounded)),
           width5,

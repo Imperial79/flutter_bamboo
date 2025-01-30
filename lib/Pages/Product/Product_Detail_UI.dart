@@ -17,6 +17,7 @@ import 'package:flutter_bamboo/Resources/colors.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -109,16 +110,14 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     return KScaffold(
       isLoading: isLoading,
       appBar: productData.hasValue && productData.value != null
-          ? AppBar(
-              leading: IconButton(
-                  onPressed: () => context.go("/"),
-                  icon: Icon(Icons.arrow_back)),
+          ? KAppBar(
+              context,
               actions: [
                 IconButton(
                   onPressed: () => shareProduct(productData.value!),
                   icon: SvgPicture.asset(
                     "$kIconPath/share.svg",
-                    height: 22,
+                    height: 20,
                   ),
                 ),
                 width10,
@@ -129,7 +128,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           : null,
       body: SafeArea(
         child: productData.when(
-          data: (data) => data != null
+          data: (product) => product != null
               ? SingleChildScrollView(
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(
@@ -142,7 +141,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           children: [
                             KCarousel(
                               isLooped: false,
-                              images: data.images,
+                              images: product.images,
                               height: 300,
                             ),
                             height20,
@@ -150,12 +149,12 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                               spacing: 5,
                               children: [
                                 Icon(
-                                  kCatgeoryMap[data.category] ?? Icons.apps,
+                                  kCatgeoryMap[product.category] ?? Icons.apps,
                                   size: 20,
                                   color: KColor.fadeText,
                                 ),
                                 Label(
-                                  data.category,
+                                  product.category,
                                   fontSize: 15,
                                   weight: 600,
                                   color: KColor.fadeText,
@@ -163,7 +162,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                               ],
                             ),
                             height5,
-                            Label(data.name,
+                            Label(product.name,
                                     weight: 700, fontSize: 17, height: 1.3)
                                 .title,
                             height10,
@@ -176,7 +175,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                 ),
                                 Expanded(
                                   child: Label(
-                                    "${data.totalRatings} Ratings • ${thousandToK(data.totalReviews)} Reviews • ${thousandToK(data.totalSell)} Sold",
+                                    "${product.totalRatings} Ratings • ${thousandToK(product.totalReviews)} Reviews • ${thousandToK(product.totalSell)} Sold",
                                     weight: 500,
                                     fontSize: 15,
                                     color: KColor.fadeText,
@@ -257,49 +256,49 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             Label("Inclusive of all taxes",
                                     color: KColor.fadeText, weight: 600)
                                 .subtitle,
-                            height20,
-                            Row(
-                              spacing: 5,
-                              children: [
-                                Label("Variant:", fontSize: 16, weight: 600)
-                                    .regular,
-                                Flexible(
-                                  child: selectedVariant.attributeType ==
-                                          "Color"
-                                      ? CircleAvatar(
-                                          radius: 10,
-                                          backgroundColor: Color(int.parse(
-                                              selectedVariant.attributeValue
-                                                  .replaceFirst('#', '0xff'))),
-                                        )
-                                      : Label(
-                                          selectedVariant.attributeValue,
-                                          fontSize: 16,
-                                          weight: 700,
-                                        ).regular,
-                                ),
-                              ],
-                            ),
+                            // height20,
+                            // Row(
+                            //   spacing: 5,
+                            //   children: [
+                            //     Label("Variant:", fontSize: 16, weight: 600)
+                            //         .regular,
+                            //     Flexible(
+                            //       child: selectedVariant.attributeType ==
+                            //               "Color"
+                            //           ? CircleAvatar(
+                            //               radius: 10,
+                            //               backgroundColor: Color(int.parse(
+                            //                   selectedVariant.attributeValue
+                            //                       .replaceFirst('#', '0xff'))),
+                            //             )
+                            //           : Label(
+                            //               selectedVariant.attributeValue,
+                            //               fontSize: 16,
+                            //               weight: 700,
+                            //             ).regular,
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         ),
                       ),
-                      height5,
-                      SingleChildScrollView(
-                        padding: EdgeInsets.symmetric(horizontal: kPadding),
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          spacing: 8,
-                          children: List.generate(
-                            data.product_variants.length,
-                            (index) {
-                              return _variantCard(
-                                ProductVariantModel.fromMap(
-                                    data.product_variants[index]),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      // height5,
+                      // SingleChildScrollView(
+                      //   padding: EdgeInsets.symmetric(horizontal: kPadding),
+                      //   scrollDirection: Axis.horizontal,
+                      //   child: Row(
+                      //     spacing: 8,
+                      //     children: List.generate(
+                      //       product.product_variants.length,
+                      //       (index) {
+                      //         return _variantCard(
+                      //           ProductVariantModel.fromMap(
+                      //               product.product_variants[index]),
+                      //         );
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: kPadding),
                         child: Column(
@@ -314,9 +313,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             ),
                             height20,
                             if (selectedDescriptionType == "About Item")
-                              ...aboutItemTab(data)
+                              ...aboutItemTab(product)
                             else
-                              ...reviewsTab(),
+                              reviewsTab(product),
                           ],
                         ),
                       ),
@@ -456,57 +455,57 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     );
   }
 
-  Widget _variantCard(ProductVariantModel data) {
-    bool selected = selectedVariant == data;
-    bool isColor = data.attributeType == "Color";
-    return KCard(
-      onTap: () => setState(() {
-        selectedVariant = data;
-      }),
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      borderColor: selected ? kScheme.primary : KColor.card,
-      color: selected ? kOpacity(kScheme.primaryContainer, .7) : KColor.card,
-      borderWidth: 1.5,
-      radius: 10,
-      width: 200,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            spacing: 10,
-            children: [
-              Flexible(
-                child: isColor
-                    ? CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Color(int.parse(
-                            data.attributeValue.replaceFirst('#', '0xff'))),
-                      )
-                    : Label(data.attributeValue,
-                            fontSize: 17, weight: 700, maxLines: 1)
-                        .regular,
-              ),
-              KCard(
-                borderWidth: 2,
-                color: kOpacity(Colors.white, .8),
-                radius: 5,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                child: Label(
-                  kCurrencyFormat(data.salePrice),
-                  fontSize: 12,
-                ).regular,
-              ),
-            ],
-          ),
-          Label(kCurrencyFormat(data.mrp),
-                  decoration: TextDecoration.lineThrough,
-                  color: KColor.fadeText)
-              .regular,
-        ],
-      ),
-    );
-  }
+  // Widget _variantCard(ProductVariantModel data) {
+  //   bool selected = selectedVariant == data;
+  //   bool isColor = data.attributeType == "Color";
+  //   return KCard(
+  //     onTap: () => setState(() {
+  //       selectedVariant = data;
+  //     }),
+  //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+  //     borderColor: selected ? kScheme.primary : KColor.card,
+  //     color: selected ? kOpacity(kScheme.primaryContainer, .7) : KColor.card,
+  //     borderWidth: 1.5,
+  //     radius: 10,
+  //     width: 200,
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           spacing: 10,
+  //           children: [
+  //             Flexible(
+  //               child: isColor
+  //                   ? CircleAvatar(
+  //                       radius: 10,
+  //                       backgroundColor: Color(int.parse(
+  //                           data.attributeValue.replaceFirst('#', '0xff'))),
+  //                     )
+  //                   : Label(data.attributeValue,
+  //                           fontSize: 17, weight: 700, maxLines: 1)
+  //                       .regular,
+  //             ),
+  //             KCard(
+  //               borderWidth: 2,
+  //               color: kOpacity(Colors.white, .8),
+  //               radius: 5,
+  //               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+  //               child: Label(
+  //                 kCurrencyFormat(data.salePrice),
+  //                 fontSize: 12,
+  //               ).regular,
+  //             ),
+  //           ],
+  //         ),
+  //         Label(kCurrencyFormat(data.mrp),
+  //                 decoration: TextDecoration.lineThrough,
+  //                 color: KColor.fadeText)
+  //             .regular,
+  //       ],
+  //     ),
+  //   );
+  // }
 
   List<Widget> aboutItemTab(ProductDetailModel product) {
     return [
@@ -542,74 +541,133 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           ],
         ),
       ),
+      height20,
     ];
   }
 
-  List<Widget> reviewsTab() {
-    return [
-      height20,
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        spacing: 10,
-        children: [
-          Label("4.9", fontSize: 50, height: 1, weight: 700).title,
-          Label("/ 5.0").title,
-        ],
-      ),
-      StarRating(
-        rating: 4.9,
-        allowHalfRating: false,
-        color: Colors.amber.shade800,
-      ),
-      Center(
-        child: Label(
-          "2.8k Reviews",
-          weight: 500,
-          fontSize: 17,
-          textAlign: TextAlign.center,
-        ).regular,
-      ),
-      height20,
-      Label(
-        "Reviews & Ratings",
-      ).regular,
-      height15,
-      KCard(
-        radius: 0,
-        child: Column(
-          spacing: 10,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              spacing: 5,
-              children: [
-                CircleAvatar(
-                  radius: 15,
-                ),
-                width5,
-                Expanded(
-                    child: Label(
-                  "User N***e",
+  reviewsTab(ProductDetailModel product) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final reviewData = ref.watch(productReviewsFuture(product.id));
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: kPadding),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                spacing: 10,
+                children: [
+                  Label(
+                    "${product.totalRatings}",
+                    fontSize: 40,
+                    height: 1,
+                    weight: 800,
+                  ).title,
+                  Label(
+                    "/ 5.0",
+                    fontSize: 17,
+                  ).title,
+                ],
+              ),
+              StarRating(
+                rating: product.totalRatings,
+                allowHalfRating: false,
+                color: Colors.amber.shade800,
+              ),
+              Center(
+                child: Label(
+                  "${thousandToK(product.totalReviews)} Reviews",
+                  weight: 500,
                   fontSize: 15,
-                ).regular),
-                Icon(
-                  Icons.star,
-                  color: Colors.amber.shade700,
-                ),
-                Label(
-                  "5.0",
-                  fontSize: 15,
-                ).regular
-              ],
-            ),
-            Label("\"The product is more than my expectations\"",
-                    fontSize: 13, weight: 600)
-                .subtitle,
-          ],
-        ),
-      )
-    ];
+                  textAlign: TextAlign.center,
+                ).regular,
+              ),
+              height20,
+              Label(
+                "Reviews & Ratings",
+              ).regular,
+              height15,
+              ...reviewData.when(
+                data: (data) => data.isNotEmpty
+                    ? data
+                        .map(
+                          (e) => KCard(
+                            margin: EdgeInsets.only(bottom: 10),
+                            radius: 0,
+                            child: Column(
+                              spacing: 10,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  spacing: 5,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 15,
+                                      child: Label(e["name"][0].toUpperCase(),
+                                              fontSize: 12, weight: 500)
+                                          .regular,
+                                    ),
+                                    width5,
+                                    Expanded(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Label(
+                                          e["name"],
+                                          fontSize: 15,
+                                        ).regular,
+                                        Label(kDateFormat(e["date"]),
+                                                fontSize: 10)
+                                            .subtitle
+                                      ],
+                                    )),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        RatingBar.builder(
+                                          itemSize: 15,
+                                          initialRating:
+                                              parseToDouble(e["rating"]),
+                                          itemBuilder: (context, index) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber.shade800,
+                                          ),
+                                          unratedColor: Colors.grey.shade300,
+                                          onRatingUpdate: (value) {},
+                                        ),
+                                        Label(
+                                          "${e["rating"]}",
+                                          fontSize: 15,
+                                        ).regular
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                Label("\"${e["feedback"]}\"",
+                                        fontSize: 13, weight: 600)
+                                    .subtitle,
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList()
+                    : [
+                        kNoData(context),
+                      ],
+                error: (error, stackTrace) => [
+                  kNoData(context, subtitle: "$error"),
+                ],
+                loading: () => [kSmallLoading],
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   Widget descriptionSelectBtn(String label) {

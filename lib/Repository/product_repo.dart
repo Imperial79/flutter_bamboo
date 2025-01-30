@@ -20,6 +20,15 @@ final offersFuture = FutureProvider<Map?>(
   },
 );
 
+final productReviewsFuture = FutureProvider.autoDispose.family<List, int>(
+  (ref, productId) async {
+    final res = await apiCallBack(
+        path: "/products/reviews", body: {"productId": productId});
+    if (!res.error) return res.data as List;
+    return [];
+  },
+);
+
 final productListFuture = FutureProvider.family<void, String>(
   (ref, params) async {
     final body = jsonDecode(params);

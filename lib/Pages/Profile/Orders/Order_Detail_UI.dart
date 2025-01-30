@@ -98,9 +98,9 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
       onRefresh: () => _refresh(),
       child: KScaffold(
         isLoading: isLoading,
-        appBar: AppBar(
-          title:
-              finalData != null ? Label("Order Details").regular : SizedBox(),
+        appBar: KAppBar(
+          context,
+          title: "Order Details",
           actions: finalData != null
               ? [
                   IconButton(
