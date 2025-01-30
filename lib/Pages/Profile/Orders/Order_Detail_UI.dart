@@ -6,7 +6,9 @@ import 'package:flutter_bamboo/Components/kButton.dart';
 import 'package:flutter_bamboo/Components/kCard.dart';
 import 'package:flutter_bamboo/Components/kTextfield.dart';
 import 'package:flutter_bamboo/Helper/pdf_invoice.dart';
+import 'package:flutter_bamboo/Models/order_detail_model.dart';
 import 'package:flutter_bamboo/Repository/auth_repo.dart';
+import 'package:flutter_bamboo/Resources/theme.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/material.dart';
@@ -133,60 +135,59 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Label("ORDER ID - ${data["shoppingOrderId"]}",
+                        Label("ORDER ID - ${data.shoppingOrderId}",
                                 weight: 600, fontSize: 12)
                             .subtitle,
-                        Label("ORDER DATE - ${kDateFormat(data["orderDate"], showTime: true)}",
+                        Label("ORDER DATE - ${kDateFormat(data.orderDate, showTime: true)}",
                                 weight: 600, fontSize: 12)
                             .subtitle,
-                        if (data["deliveredOn"] != null)
-                          Label("DELIVERED ON - ${kDateFormat(data["deliveredOn"], showTime: true)}",
+                        if (data.deliveredOn != null)
+                          Label("DELIVERED ON - ${kDateFormat(data.deliveredOn ?? "NA", showTime: true)}",
                                   weight: 600, fontSize: 12)
                               .subtitle,
                         div,
                         kHeight(50),
-                        Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: kPadding),
-                          child: EasyStepper(
-                            activeStep: statusList.indexOf(data["status"]),
-                            lineStyle: LineStyle(
-                              lineType: LineType.normal,
-                              lineWidth: 0,
-                              lineSpace: 0,
-                              lineLength: 100,
-                              lineThickness: 3,
-                              unreachedLineColor: Colors.grey.shade300,
-                              activeLineColor: KColor.card,
-                              defaultLineColor: KColor.border,
-                              finishedLineColor: KColor.primary,
-                            ),
-                            fitWidth: true,
-                            disableScroll: true,
-                            internalPadding: 5,
-                            showLoadingAnimation: false,
-                            stepRadius: 8,
-                            showStepBorder: false,
-                            steps: List.generate(
-                              statusList.length,
-                              (index) => EasyStep(
-                                customStep: CircleAvatar(
-                                  radius: 8,
-                                  backgroundColor: Colors.white,
-                                  child: CircleAvatar(
-                                    radius: 7,
-                                    backgroundColor:
-                                        statusList.indexOf(data["status"]) >=
-                                                index
-                                            ? KColor.primary
-                                            : Colors.grey.shade300,
-                                  ),
-                                ),
-                                customTitle: Label(statusList[index]).regular,
-                                topTitle: index % 2 == 0,
-                              ),
-                            ),
+                        EasyStepper(
+                          enableStepTapping: false,
+                          activeStep: statusList.indexOf(data.status),
+                          lineStyle: LineStyle(
+                            lineType: LineType.normal,
+                            lineWidth: 0,
+                            lineSpace: 0,
+                            lineLength: 140,
+                            lineThickness: 3,
+                            unreachedLineColor: KColor.card,
+                            activeLineColor: KColor.card,
+                            defaultLineColor: KColor.border,
+                            finishedLineColor: KColor.primary,
                           ),
+                          finishedStepBackgroundColor: Colors.white,
+                          activeStepBackgroundColor: kScheme.tertiary,
+                          fitWidth: true,
+                          disableScroll: true,
+                          internalPadding: 5,
+                          showLoadingAnimation: false,
+                          stepRadius: 8,
+                          showStepBorder: false,
+                          steps: List.generate(statusList.length, (index) {
+                            bool active =
+                                statusList.indexOf(data.status) == index;
+                            return EasyStep(
+                              customStep: CircleAvatar(
+                                radius: active ? 20 : 5,
+                                backgroundColor:
+                                    statusList.indexOf(data.status) >= index
+                                        ? KColor.primary
+                                        : Colors.grey.shade300,
+                              ),
+                              customTitle: Label(
+                                statusList[index],
+                                fontSize: 12,
+                                textAlign: TextAlign.center,
+                              ).regular,
+                              topTitle: index % 2 == 0,
+                            );
+                          }),
                         ),
                         height20,
                         Label("Product Details").regular,
@@ -199,12 +200,11 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Label(data["name"]).regular,
+                                  Label(data.name).regular,
                                   height5,
-                                  Label(data["attributeValue"], fontSize: 12)
+                                  Label(data.attributeValue, fontSize: 12)
                                       .subtitle,
-                                  Label("${data["sku"]}", fontSize: 12)
-                                      .subtitle,
+                                  Label(data.sku, fontSize: 12).subtitle,
                                 ],
                               ),
                             ),
@@ -215,7 +215,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                                 color: KColor.card,
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                    data["images"].split("#_#")[0],
+                                    data.images[0],
                                   ),
                                   fit: BoxFit.cover,
                                 ),
@@ -223,11 +223,14 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                             ),
                           ],
                         ),
-                        Label(kCurrencyFormat(data["salePrice"]), fontSize: 17)
+                        Label(kCurrencyFormat(data.salePrice), fontSize: 17)
                             .regular,
-                        Label("${data["qty"]} Items", fontSize: 12).subtitle,
-                        height20,
-                        ratingsAndReview(data),
+                        Label("${data.qty} Items", fontSize: 12).subtitle,
+                        if (["Delivered", "Return Pending", "Refunded"]
+                            .contains(data.status)) ...[
+                          height20,
+                          ratingsAndReview(data)
+                        ],
                         height20,
                         ...shippingDetails(data),
                         height20,
@@ -246,54 +249,54 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
     );
   }
 
-  List<Widget> shippingDetails(data) => [
+  List<Widget> shippingDetails(OrderDetailModel data) => [
         Label("Shipping Details").regular,
         div,
-        Label(data["shippingName"]).subtitle,
-        Label(data["shippingAddress"]).subtitle,
-        Label("Phone number - ${data["shippingPhone"]}").subtitle,
+        Label(data.shippingName).subtitle,
+        Label(data.shippingAddress).subtitle,
+        Label("Phone number - ${data.shippingPhone}").subtitle,
       ];
 
-  List<Widget> priceDetails(data) => [
+  List<Widget> priceDetails(OrderDetailModel data) => [
         Label("Price Details").regular,
         div,
         _row(
-          "Price (${data["qty"]} Items)",
-          kCurrencyFormat(
-              parseToDouble(data["mrp"]) * int.parse("${data["qty"]}"),
+          "Price (${data.qty} Items)",
+          kCurrencyFormat(parseToDouble(data.mrp) * int.parse("${data.qty}"),
               decimalDigits: 2),
         ),
         height5,
         _row(
-          "Selling Price (${data["qty"]} Items)",
-          kCurrencyFormat(data["subTotal"], decimalDigits: 2),
+          "Selling Price (${data.qty} Items)",
+          kCurrencyFormat(data.subTotal, decimalDigits: 2),
         ),
         height5,
         _row("Coupon Discount",
-            kCurrencyFormat(data["couponDiscount"], decimalDigits: 2),
+            kCurrencyFormat(data.couponDiscount, decimalDigits: 2),
             isDiscount: true),
         height5,
         div,
         _row(
           "Net Payable",
-          kCurrencyFormat(data["netPayable"], decimalDigits: 2),
+          kCurrencyFormat(data.netPayable, decimalDigits: 2),
         ),
       ];
 
-  List<Widget> paymentDetails(data) => [
+  List<Widget> paymentDetails(OrderDetailModel data) => [
         Label("Payment Details").regular,
         div,
-        Label("PAYMENT ID - ${data["paymentId"]}").subtitle
+        Label("PAYMENT ID - ${data.paymentId}").subtitle
       ];
 
-  Widget ratingsAndReview(data) => Consumer(builder: (context, ref, child) {
+  Widget ratingsAndReview(OrderDetailModel data) =>
+      Consumer(builder: (context, ref, child) {
         final user = ref.watch(userProvider)!;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Label("Share Ratings").regular,
             div,
-            if (parseToDouble(data["rating"]) > 0)
+            if (parseToDouble(data.rating) > 0)
               KCard(
                 child: Column(
                   spacing: 5,
@@ -314,10 +317,10 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       color: StatusText.warning,
                       size: 20,
-                      rating: parseToDouble(data["rating"]),
+                      rating: parseToDouble(data.rating),
                     ),
-                    if (data["feedback"].isNotEmpty)
-                      Label(data["feedback"], weight: 600, fontSize: 12)
+                    if (data.feedback != null)
+                      Label(data.feedback ?? "NA", weight: 600, fontSize: 12)
                           .regular,
                   ],
                 ),
@@ -328,7 +331,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                 Flexible(
                   child: Center(
                     child: RatingBar.builder(
-                      initialRating: parseToDouble(data["rating"]),
+                      initialRating: parseToDouble(data.rating),
                       minRating: 1,
                       glow: false,
                       direction: Axis.horizontal,

@@ -21,7 +21,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../Models/User_Model.dart';
 import '../../Resources/theme.dart';
 
 class Product_Detail_UI extends ConsumerStatefulWidget {
@@ -65,29 +64,8 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           error: res.error,
         );
       } else {
-        showModalBottomSheet(
-          context: context,
-          isDismissible: !isLoading.value,
-          builder: (context) => loginModal(),
-        );
-      }
-    } catch (e) {
-      KSnackbar(context, message: "$e", error: true);
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  _signInWithGoogle() async {
-    try {
-      isLoading.value = true;
-      final res = await ref.read(authRepository).signInWithGoogle(ref);
-
-      if (!res.error) {
-        ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
-        Navigator.pop(context);
-      } else {
-        KSnackbar(context, message: res.message, error: res.error);
+        context.push("/login",
+            extra: {"redirectPath": "/product/abc/${widget.id}"});
       }
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);
@@ -99,12 +77,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   buyNow(user) {
     if (user != null) {
     } else {
-      // context.push("/login");
-      // showModalBottomSheet(
-      //   context: context,
-      //   isDismissible: !isLoading.value,
-      //   builder: (context) => loginModal(),
-      // );
       context
           .push("/login", extra: {"redirectPath": "/product/abc/${widget.id}"});
     }
@@ -124,7 +96,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   @override
   Widget build(BuildContext context) {
     final productData = ref.watch(productDetailsFuture(widget.id));
-    // final cartData = ref.watch(cartProvider);
     final cartData = ref.watch(cartFuture);
 
     productData.whenData(
@@ -132,11 +103,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         if (value != null && selectedVariant.id == -1) {
           selectedVariant =
               ProductVariantModel.fromMap(value.product_variants[0]);
-          // selectedVariant = value.product_variants
-          //     .indexWhere((item) => item["sku"] == widget.sku);
-          // if (selectedVariant == -1) {
-          //   selectedVariant = 0;
-          // }
         }
       },
     );
@@ -156,39 +122,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   ),
                 ),
                 width10,
-                cartData.when(
-                  data: (data) => Badge(
-                    offset: Offset(-1, 20),
-                    isLabelVisible: data.isNotEmpty,
-                    label: Label("${data.length}").regular,
-                    child: IconButton(
-                      onPressed: () => context.push("/cart"),
-                      icon: SvgPicture.asset(
-                        data.isNotEmpty
-                            ? "$kIconPath/shopping-bag-filled.svg"
-                            : "$kIconPath/shopping-bag.svg",
-                        height: 22,
-                        colorFilter: kSvgColor(
-                          data.isNotEmpty ? KColor.primary : Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                  error: (error, stackTrace) => IconButton(
-                    onPressed: () => context.push("/cart"),
-                    icon: SvgPicture.asset(
-                      "$kIconPath/shopping-bag.svg",
-                      height: 22,
-                    ),
-                  ),
-                  loading: () => IconButton(
-                    onPressed: () => context.push("/cart"),
-                    icon: SvgPicture.asset(
-                      "$kIconPath/shopping-bag.svg",
-                      height: 22,
-                    ),
-                  ),
-                ),
+                KCartIcon(),
                 width10,
               ],
             )
@@ -355,28 +289,17 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           spacing: 8,
-                          children: List.generate(data.product_variants.length,
-                              (index) {
-                            return _variantCard(
-                              ProductVariantModel.fromMap(
-                                  data.product_variants[index]),
-                              // index: index,
-                              // label: data.product_variants[index]
-                              //     ["attributeValue"],
-                              // amount: kCurrencyFormat(
-                              //   data.product_variants[index]["salePrice"],
-                              // ),
-                              // mrp: kCurrencyFormat(
-                              //   data.product_variants[index]["mrp"],
-                              //   symbol: "MRP ",
-                              // ),
-                              // type: data.product_variants[index]
-                              //     ["attributeType"],
-                            );
-                          }),
+                          children: List.generate(
+                            data.product_variants.length,
+                            (index) {
+                              return _variantCard(
+                                ProductVariantModel.fromMap(
+                                    data.product_variants[index]),
+                              );
+                            },
+                          ),
                         ),
                       ),
-
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: kPadding),
                         child: Column(
@@ -397,33 +320,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                           ],
                         ),
                       ),
-                      height20,
-                      // Label(
-                      //   "Products you may like",
-                      // ).regular,
-                      // SingleChildScrollView(
-                      //   scrollDirection: Axis.horizontal,
-                      //   child: Row(
-                      //     spacing: 10,
-                      //     children: [
-                      //       // ProductPreviewCard(
-                      //       //   cardWidth: 200,
-                      //       // ),
-                      //       // ProductPreviewCard(
-                      //       //   cardWidth: 200,
-                      //       // ),
-                      //       // ProductPreviewCard(
-                      //       //   cardWidth: 200,
-                      //       // ),
-                      //       // ProductPreviewCard(
-                      //       //   cardWidth: 200,
-                      //       // ),
-                      //       // ProductPreviewCard(
-                      //       //   cardWidth: 200,
-                      //       // ),
-                      //     ],
-                      //   ),
-                      // ),
                     ],
                   ),
                 )
@@ -446,70 +342,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
               : footer(productData.value!, cartData.value ?? [])
           : null,
     );
-  }
-
-  loginModal() {
-    return StatefulBuilder(builder: (context, setState) {
-      return ValueListenableBuilder(
-          valueListenable: isLoading,
-          builder: (context, loading, _) {
-            return SingleChildScrollView(
-              child: KCard(
-                width: double.infinity,
-                padding: EdgeInsets.all(kPadding),
-                radius: 20,
-                child: SafeArea(
-                  child: !loading
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: KCard(
-                                height: 7,
-                                width: 50,
-                                radius: 100,
-                                color: Colors.grey.shade300,
-                              ),
-                            ),
-                            height20,
-                            Label("Login to continue").title,
-                            Label(
-                              "Please login to order products and track your orders.",
-                              fontSize: 16,
-                            ).subtitle,
-                            height20,
-                            googleLoginButton(onPressed: _signInWithGoogle),
-                          ],
-                        )
-                      : Center(
-                          child: Column(
-                            children: [
-                              Label("Logging in").title,
-                              height20,
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 70,
-                                    width: 70,
-                                    child: CircularProgressIndicator(
-                                      color: KColor.primary,
-                                    ),
-                                  ),
-                                  SvgPicture.asset(
-                                    "$kIconPath/glogo.svg",
-                                    height: 50,
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                ),
-              ),
-            );
-          });
-    });
   }
 
   Widget footer(ProductDetailModel product, List cart) {
@@ -624,14 +456,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     );
   }
 
-  Widget _variantCard(ProductVariantModel data
-      // required int index,
-      // required String label,
-      // required String amount,
-      // required String mrp,
-      // required String type,
-
-      ) {
+  Widget _variantCard(ProductVariantModel data) {
     bool selected = selectedVariant == data;
     bool isColor = data.attributeType == "Color";
     return KCard(

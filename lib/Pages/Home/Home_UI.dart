@@ -4,18 +4,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KScaffold.dart';
 import 'package:flutter_bamboo/Components/Label.dart';
+import 'package:flutter_bamboo/Components/kWidgets.dart';
 import 'package:flutter_bamboo/Pages/Home/Buy_Membership_Card.dart';
 import 'package:flutter_bamboo/Pages/Product/Product_Preview_Card.dart';
 import 'package:flutter_bamboo/Repository/product_repo.dart';
 import 'package:flutter_bamboo/Resources/commons.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:marquee/marquee.dart';
 import '../../Components/kCard.dart';
 import '../../Components/kCarousel.dart';
-import '../../Repository/cart_repo.dart';
 import '../../Resources/colors.dart';
 
 class Home_UI extends ConsumerStatefulWidget {
@@ -49,7 +50,6 @@ class _Home_UIState extends ConsumerState<Home_UI> {
     ));
 
     final products = ref.watch(productsList);
-    final cartData = ref.watch(cartFuture);
     final offersData = ref.watch(offersFuture);
 
     return KScaffold(
@@ -93,39 +93,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                       ),
                     ),
                   ),
-                  cartData.when(
-                    data: (data) => Badge(
-                      offset: Offset(-1, 20),
-                      isLabelVisible: data.isNotEmpty,
-                      label: Label("${data.length}").regular,
-                      child: IconButton(
-                        onPressed: () => context.push("/cart"),
-                        icon: SvgPicture.asset(
-                          data.isNotEmpty
-                              ? "$kIconPath/shopping-bag-filled.svg"
-                              : "$kIconPath/shopping-bag.svg",
-                          height: 22,
-                          colorFilter: kSvgColor(
-                            data.isNotEmpty ? KColor.primary : Colors.black,
-                          ),
-                        ),
-                      ),
-                    ),
-                    error: (error, stackTrace) => IconButton(
-                      onPressed: () => context.push("/cart"),
-                      icon: SvgPicture.asset(
-                        "$kIconPath/shopping-bag.svg",
-                        height: 22,
-                      ),
-                    ),
-                    loading: () => IconButton(
-                      onPressed: () => context.push("/cart"),
-                      icon: SvgPicture.asset(
-                        "$kIconPath/shopping-bag.svg",
-                        height: 22,
-                      ),
-                    ),
-                  )
+                  KCartIcon(),
                 ],
               ),
             ),
@@ -239,21 +207,18 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                               ),
                             ],
                           ),
-                          GridView.builder(
-                            shrinkWrap: true,
+                          MasonryGridView.count(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
                             physics: NeverScrollableScrollPhysics(),
                             itemCount: products.length,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: .59,
-                              mainAxisSpacing: 10,
-                              crossAxisSpacing: 10,
-                            ),
-                            itemBuilder: (context, index) => ProductPreviewCard(
-                              cardWidth: double.infinity,
-                              product: products[index],
-                            ),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return ProductPreviewCard(
+                                product: products[index],
+                              );
+                            },
                           ),
                         ],
                       ),

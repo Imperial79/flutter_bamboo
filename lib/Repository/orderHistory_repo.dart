@@ -1,5 +1,6 @@
 import 'package:flutter_bamboo/Helper/api_config.dart';
 import 'package:flutter_bamboo/Models/Response_Model.dart';
+import 'package:flutter_bamboo/Models/order_detail_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final orderHistoryFuture = FutureProvider.autoDispose.family<List, int>(
@@ -15,7 +16,7 @@ final orderHistoryFuture = FutureProvider.autoDispose.family<List, int>(
 );
 
 final orderDetailFuture =
-    FutureProvider.autoDispose.family<Map<String, dynamic>?, String>(
+    FutureProvider.autoDispose.family<OrderDetailModel?, String>(
   (ref, orderId) async {
     final res = await apiCallBack(
       path: "/shopping/order-details",
@@ -23,7 +24,7 @@ final orderDetailFuture =
     );
 
     if (!res.error) {
-      return res.data;
+      return OrderDetailModel.fromMap(res.data);
     }
     return null;
   },

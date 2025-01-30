@@ -10,19 +10,16 @@ import '../../Resources/colors.dart';
 import '../../Resources/commons.dart';
 
 class ProductPreviewCard extends ConsumerWidget {
-  final double cardWidth;
+  final double? cardWidth;
   final ProductModel product;
   const ProductPreviewCard({
     super.key,
-    required this.cardWidth,
+    this.cardWidth,
     required this.product,
   });
 
   @override
   Widget build(BuildContext context, ref) {
-    // final cartData = ref.watch(cartProvider);
-    // final inCart = cartData.any((item) => item.productId == product.id);
-
     return InkWell(
       onTap: () => context.push("/product/abcd/${product.id}"),
       child: KCard(
@@ -56,67 +53,65 @@ class ProductPreviewCard extends ConsumerWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Label(
-                      product.category,
-                      weight: 600,
-                      fontSize: 12,
-                      color: KColor.fadeText,
-                    ).subtitle,
-                    Label(
-                      "${product.name}\n",
-                      maxLines: 2,
-                      weight: 700,
-                    ).regular,
-                    height10,
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.star,
-                          size: 20,
-                          color: Colors.amber.shade700,
-                        ),
-                        Label(
-                          "${product.totalRatings} | ${thousandToK(product.totalSell)}",
-                          weight: 600,
-                          fontSize: 12,
-                          color: KColor.fadeText,
-                        ).regular,
-                      ],
-                    ),
-                    height5,
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 10,
-                      children: [
-                        Label(
-                          kCurrencyFormat(product.salePrice),
-                          weight: 700,
-                          fontSize: 20,
-                        ).title,
-                        Label(
-                          "-${calculateDiscount(product.mrp, product.salePrice)}%",
-                          weight: 600,
-                          fontSize: 15,
-                          color: StatusText.danger,
-                        ).title,
-                        Label(
-                          "MRP ${kCurrencyFormat(product.mrp)}",
-                          weight: 600,
-                          fontSize: 15,
-                          color: KColor.fadeText,
-                          decoration: TextDecoration.lineThrough,
-                        ).regular,
-                      ],
-                    ),
-                  ],
-                ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Label(
+                    product.category,
+                    weight: 600,
+                    fontSize: 12,
+                    color: KColor.fadeText,
+                  ).subtitle,
+                  Label(
+                    "${product.name}\n",
+                    maxLines: 2,
+                    weight: 700,
+                  ).regular,
+                  height10,
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.star,
+                        size: 20,
+                        color: Colors.amber.shade700,
+                      ),
+                      Label(
+                        "${product.totalRatings} | ${thousandToK(product.totalSell)}",
+                        weight: 600,
+                        fontSize: 12,
+                        color: KColor.fadeText,
+                      ).regular,
+                    ],
+                  ),
+                  height5,
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 10,
+                    children: [
+                      Label(
+                        kCurrencyFormat(product.salePrice),
+                        weight: 700,
+                        fontSize: 20,
+                      ).title,
+                      Label(
+                        "-${calculateDiscount(product.mrp, product.salePrice)}%",
+                        weight: 600,
+                        fontSize: 15,
+                        color: StatusText.danger,
+                      ).title,
+                      Label(
+                        "MRP ${kCurrencyFormat(product.mrp)}",
+                        weight: 600,
+                        fontSize: 15,
+                        color: KColor.fadeText,
+                        decoration: TextDecoration.lineThrough,
+                      ).regular,
+                    ],
+                  ),
+                ],
               ),
             )
           ],

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bamboo/Components/KNavigationBar.dart';
+import 'package:flutter_bamboo/Repository/cart_repo.dart';
 import 'package:flutter_bamboo/Resources/constants.dart';
 import 'package:flutter_bamboo/Resources/theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import '../Resources/colors.dart';
 import '../Resources/commons.dart';
 import 'Label.dart';
 import 'kButton.dart';
@@ -102,5 +105,46 @@ Widget kAmount(dynamic amount, {double? fontSize = 25}) {
         ).title,
       ),
     ],
+  );
+}
+
+Widget KCartIcon() {
+  return Consumer(
+    builder: (context, ref, child) {
+      final cartData = ref.watch(cartFuture);
+      return cartData.when(
+        data: (data) => IconButton(
+          onPressed: () => context.push("/cart"),
+          icon: Badge(
+            offset: Offset(10, 10),
+            isLabelVisible: data.isNotEmpty,
+            label: Label("${data.length}", fontSize: 10).regular,
+            child: SvgPicture.asset(
+              data.isNotEmpty
+                  ? "$kIconPath/shopping-bag-filled.svg"
+                  : "$kIconPath/shopping-bag.svg",
+              height: 22,
+              colorFilter: kSvgColor(
+                data.isNotEmpty ? KColor.primary : Colors.black,
+              ),
+            ),
+          ),
+        ),
+        error: (error, stackTrace) => IconButton(
+          onPressed: () => context.push("/cart"),
+          icon: SvgPicture.asset(
+            "$kIconPath/shopping-bag.svg",
+            height: 22,
+          ),
+        ),
+        loading: () => IconButton(
+          onPressed: () => context.push("/cart"),
+          icon: SvgPicture.asset(
+            "$kIconPath/shopping-bag.svg",
+            height: 22,
+          ),
+        ),
+      );
+    },
   );
 }
