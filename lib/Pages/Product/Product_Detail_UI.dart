@@ -65,8 +65,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           error: res.error,
         );
       } else {
-        context.push("/login",
-            extra: {"redirectPath": "/product/abc/${widget.id}"});
+        context.push("/login", extra: {
+          "redirectPath": "/product/abc/${widget.id}?sku=${widget.sku}",
+          "referCode": widget.referCode,
+        });
       }
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);
