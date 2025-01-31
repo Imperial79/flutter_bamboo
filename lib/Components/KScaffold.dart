@@ -1,8 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/kCard.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
+import 'package:ngf_organic/Components/kCard.dart';
+import 'package:ngf_organic/Resources/colors.dart';
 import '../Resources/commons.dart';
 import '../Resources/constants.dart';
 import 'Label.dart';

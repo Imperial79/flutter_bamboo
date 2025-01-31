@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 
 class UserModel {
   int id = 0;

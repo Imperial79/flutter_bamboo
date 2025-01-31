@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/kButton.dart';
-import 'package:flutter_bamboo/Components/kWidgets.dart';
-import 'package:flutter_bamboo/Repository/auth_repo.dart';
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Components/kButton.dart';
+import 'package:ngf_organic/Components/kWidgets.dart';
+import 'package:ngf_organic/Repository/auth_repo.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Error_UI extends ConsumerStatefulWidget {

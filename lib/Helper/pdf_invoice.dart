@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:flutter_bamboo/Models/order_detail_model.dart';
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Models/order_detail_model.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 import 'package:indian_currency_to_word/indian_currency_to_word.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/Label.dart';
-import 'package:flutter_bamboo/Components/kButton.dart';
-import 'package:flutter_bamboo/Resources/commons.dart';
-import 'package:flutter_bamboo/Resources/constants.dart';
-import 'package:flutter_bamboo/Resources/theme.dart';
+import 'package:ngf_organic/Components/Label.dart';
+import 'package:ngf_organic/Components/kButton.dart';
+import 'package:ngf_organic/Resources/commons.dart';
+import 'package:ngf_organic/Resources/constants.dart';
+import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';

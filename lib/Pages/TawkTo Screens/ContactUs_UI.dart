@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/Label.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
+import 'package:ngf_organic/Components/Label.dart';
+import 'package:ngf_organic/Resources/colors.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 

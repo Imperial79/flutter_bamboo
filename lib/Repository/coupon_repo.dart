@@ -1,5 +1,5 @@
-import 'package:flutter_bamboo/Helper/api_config.dart';
-import 'package:flutter_bamboo/Models/Cart/coupon_model.dart';
+import 'package:ngf_organic/Helper/api_config.dart';
+import 'package:ngf_organic/Models/Cart/coupon_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final selectedCouponProvider = StateProvider<CouponModel?>(

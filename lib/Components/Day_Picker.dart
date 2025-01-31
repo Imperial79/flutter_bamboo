@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_bamboo/Components/Label.dart';
-import 'package:flutter_bamboo/Components/kCard.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
+import 'package:ngf_organic/Components/Label.dart';
+import 'package:ngf_organic/Components/kCard.dart';
+import 'package:ngf_organic/Resources/colors.dart';
 
 import '../Resources/commons.dart';
 

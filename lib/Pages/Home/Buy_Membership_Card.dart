@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/Label.dart';
-import 'package:flutter_bamboo/Components/kButton.dart';
-import 'package:flutter_bamboo/Repository/auth_repo.dart';
-import 'package:flutter_bamboo/Repository/membership_repo.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
-import 'package:flutter_bamboo/Resources/commons.dart';
+import 'package:ngf_organic/Components/Label.dart';
+import 'package:ngf_organic/Components/kButton.dart';
+import 'package:ngf_organic/Repository/auth_repo.dart';
+import 'package:ngf_organic/Repository/membership_repo.dart';
+import 'package:ngf_organic/Resources/colors.dart';
+import 'package:ngf_organic/Resources/commons.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

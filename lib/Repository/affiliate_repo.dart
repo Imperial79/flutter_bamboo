@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter_bamboo/Helper/api_config.dart';
-import 'package:flutter_bamboo/Models/Response_Model.dart';
-import 'package:flutter_bamboo/Models/affiliate_model.dart';
+import 'package:ngf_organic/Helper/api_config.dart';
+import 'package:ngf_organic/Models/Response_Model.dart';
+import 'package:ngf_organic/Models/affiliate_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final affiliateRepo = Provider(
