@@ -1,11 +1,14 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ngf_organic/Components/KNavigationBar.dart';
 import 'package:ngf_organic/Repository/cart_repo.dart';
+import 'package:ngf_organic/Resources/app_config.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../Resources/colors.dart';
 import '../Resources/commons.dart';
 import 'Label.dart';
@@ -146,5 +149,45 @@ Widget KCartIcon() {
         ),
       );
     },
+  );
+}
+
+Widget kTermsAndPrivacy() {
+  return Text.rich(
+    textAlign: TextAlign.center,
+    TextSpan(
+      style: TextStyle(
+        fontSize: 14,
+        height: 1.5,
+        color: Colors.grey.shade700,
+        fontVariations: [FontVariation.weight(500)],
+      ),
+      children: [
+        const TextSpan(text: "By proceeding you agree to our "),
+        TextSpan(
+          recognizer: TapGestureRecognizer()
+            ..onTap = () async {
+              await launchUrlString(termsConditionLink);
+            },
+          text: "Terms & Conditions",
+          style: TextStyle(
+            fontVariations: [FontVariation.weight(700)],
+            color: StatusText.info,
+          ),
+        ),
+        const TextSpan(text: " and "),
+        TextSpan(
+          recognizer: TapGestureRecognizer()
+            ..onTap = () async {
+              await launchUrlString(privacyPolicyLink);
+            },
+          text: "Privacy Policy",
+          style: TextStyle(
+            fontVariations: [FontVariation.weight(700)],
+            color: StatusText.info,
+          ),
+        ),
+      ],
+    ),
   );
 }

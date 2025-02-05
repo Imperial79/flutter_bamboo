@@ -7,30 +7,39 @@ import 'kButton.dart';
 
 class KValidation {
   static String? required(String? val) =>
-      val == null || val.isEmpty ? 'Required!' : null;
+      (val ?? '').isEmpty ? 'Required!' : null;
 
   static String? phone(String? val) {
     if (val == null || val.isEmpty) return 'Required!';
-    return val.length != 10 ? "Phone must be of length 10!" : null;
+    if (val.length != 10) return "Phone must be of length 10!";
+    if (!RegExp(r'^\d+$').hasMatch(val)) {
+      return "Phone must contain only digits!";
+    }
+    return null;
   }
+
+  static const String emailPattern = r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
 
   static String? email(String? val) {
     if (val == null || val.isEmpty) return 'Required!';
-    String pattern = r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+';
-    return !RegExp(pattern).hasMatch(val)
+    return !RegExp(emailPattern).hasMatch(val)
         ? 'Enter a valid email address'
         : null;
   }
 
   static String? pan(String? val) {
-    if (val == null || val.isEmpty) return 'Required!';
-    return val.length != 10 ? 'Length must be 10!' : null;
+    if (val!.length != 10) return 'Length must be 10!';
+    if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(val)) {
+      return 'PAN must be alphanumeric!';
+    }
+    return null;
   }
 }
 
 class KTextfield {
   static const double kFontSize = 15;
   static const double kTextHeight = 1.5;
+  static const Color khintColor = Colors.grey;
 
   /// Show Required text aside Label.
   final bool showRequired;
@@ -78,7 +87,7 @@ class KTextfield {
     this.cursorColor = KColor.primary,
     this.borderColor,
     this.textColor,
-    this.hintTextColor,
+    this.hintTextColor = khintColor,
     this.obscureText,
     this.maxLength,
     this.minLines = 1,
@@ -103,7 +112,7 @@ class KTextfield {
   );
 
   static const TextStyle kHintTextstyle = TextStyle(
-    fontVariations: [FontVariation.weight(600)],
+    fontVariations: [FontVariation.weight(550)],
     fontSize: kFontSize,
     height: kTextHeight,
     color: KColor.fadeText,

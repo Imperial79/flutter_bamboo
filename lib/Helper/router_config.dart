@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:ngf_organic/Models/Response_Model.dart';
 import 'package:ngf_organic/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:ngf_organic/Pages/Auth/OTP_UI.dart';
+import 'package:ngf_organic/Pages/Auth/Register_UI.dart';
 import 'package:ngf_organic/Pages/Cart/Cart_UI.dart';
 import 'package:ngf_organic/Pages/Cart/Checkout_UI.dart';
 import 'package:ngf_organic/Pages/Cart/Confirmation_UI.dart';
@@ -54,6 +55,10 @@ final goRouterProvider = Provider<GoRouter>(
           builder: (context, state) => const Splash_UI(),
         ),
         GoRoute(
+          path: '/register',
+          builder: (context, state) => const Register_UI(),
+        ),
+        GoRoute(
           path: '/login',
           builder: (context, state) {
             final data = (state.extra as Map<String, dynamic>);
@@ -69,10 +74,15 @@ final goRouterProvider = Provider<GoRouter>(
             GoRoute(
               path: 'otp',
               builder: (context, state) {
-                final extra = state.extra;
-                final phone =
-                    (extra is Map<String, dynamic>) ? extra["phone"] : null;
-                return OTP_UI(phone: phone);
+                final extra = state.extra as Map<String, dynamic>;
+                final phone = extra["phone"];
+                final redirectPath = extra["redirectPath"];
+                final referrerCode = extra["referrerCode"];
+                return OTP_UI(
+                  phone: phone,
+                  redirectPath: redirectPath,
+                  referrerCode: referrerCode,
+                );
               },
             ),
           ],

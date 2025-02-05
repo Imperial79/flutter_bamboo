@@ -13,7 +13,7 @@ class StatusText {
   static const Color danger = Color(0xFFFF0000);
   static const Color success = Color.fromARGB(255, 0, 112, 26);
   static const Color warning = Color(0xFFFFC107);
-  static const Color info = Color(0xFF17a2b8);
+  static const Color info = Color(0xFF1976D2);
   static const Color light = Color(0xFFf8f9fa);
   static const Color dark = Color(0xFF343a40);
 }

@@ -1,17 +1,15 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ngf_organic/Components/KScaffold.dart';
 import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kButton.dart';
 import 'package:ngf_organic/Components/kCard.dart';
-import 'package:ngf_organic/Resources/app_config.dart';
+import 'package:ngf_organic/Components/kTextfield.dart';
+import 'package:ngf_organic/Components/kWidgets.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import '../../Models/User_Model.dart';
 import '../../Repository/auth_repo.dart';
 import '../../Resources/theme.dart';
@@ -31,6 +29,7 @@ class Login_UI extends ConsumerStatefulWidget {
 
 class _Login_UIState extends ConsumerState<Login_UI> {
   final phone = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   final isLoading = ValueNotifier(false);
 
   _signInWithGoogle() async {
@@ -51,6 +50,23 @@ class _Login_UIState extends ConsumerState<Login_UI> {
       KSnackbar(context, message: "$e", error: true);
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  _signInWithPhone() async {
+    try {
+      final error = KValidation.phone(phone.text);
+      if (error == null) {
+        context.push("/login/otp", extra: {
+          "phone": phone.text,
+          "redirectPath": widget.redirectPath,
+          "referrerCode": widget.referCode,
+        });
+      } else {
+        KSnackbar(context, message: error, error: true);
+      }
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
     }
   }
 
@@ -84,161 +100,119 @@ class _Login_UIState extends ConsumerState<Login_UI> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(kPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Label(
-                        "Sign in or Create an account",
-                        weight: 800,
-                        fontSize: 27,
-                      ).title,
-                      height10,
-                      Label(
-                        "Choose Organic and Natural ptoducts and ditch plastic for a better tomorrow!",
-                        weight: 600,
-                        fontSize: 15,
-                      ).subtitle,
-                      height20,
-                      Label(
-                        "Please enter your phone number to start.",
-                        weight: 600,
-                        fontSize: 15,
-                      ).subtitle,
-                      height5,
-                      KCard(
-                        radius: 15,
-                        borderColor: KColor.border,
-                        color: KColor.scaffold,
-                        borderWidth: 1,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                        child: TextField(
-                          controller: phone,
-                          // autofocus: true,
-                          keyboardType: TextInputType.phone,
-                          autofillHints: [AutofillHints.telephoneNumber],
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontVariations: [
-                              FontVariation.weight(800),
-                            ],
-                          ),
-                          maxLength: 10,
-                          maxLines: 1,
-                          minLines: 1,
-                          decoration: InputDecoration(
-                            counter: SizedBox(),
-                            label: Label("Phone Number").regular,
-                            border: InputBorder.none,
-                            prefixText: "+91 ",
+          child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Label(
+                          "Sign in or Create an account",
+                          weight: 700,
+                          fontSize: 27,
+                        ).title,
+                        height10,
+                        Label(
+                          "Choose Organic and Natural products and ditch plastic for a better tomorrow!",
+                          weight: 600,
+                          fontSize: 15,
+                        ).subtitle,
+                        height20,
+                        Label(
+                          "Please enter your phone number to start.",
+                          weight: 600,
+                          fontSize: 15,
+                        ).subtitle,
+                        height5,
+                        KCard(
+                          radius: 15,
+                          borderColor: KColor.border,
+                          color: KColor.scaffold,
+                          borderWidth: 1,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                          child: TextFormField(
+                            controller: phone,
+                            keyboardType: TextInputType.phone,
+                            autofillHints: [AutofillHints.telephoneNumber],
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontVariations: [
+                                FontVariation.weight(650),
+                              ],
+                            ),
+                            maxLength: 10,
+                            maxLines: 1,
+                            minLines: 1,
+                            decoration: InputDecoration(
+                              counter: SizedBox(),
+                              label: Label("Phone Number").regular,
+                              border: InputBorder.none,
+                              prefixText: "+91 ",
+                            ),
                           ),
                         ),
-                      ),
-                      height10,
-                      KButton(
-                        onPressed: () => context.push(
-                          "/login/otp",
-                          extra: {
-                            "phone": phone.text,
-                          },
+                        height10,
+                        KButton(
+                          onPressed: _signInWithPhone,
+                          label: "Continue",
+                          fontSize: 17,
+                          backgroundColor: kScheme.primaryContainer,
+                          foregroundColor: kScheme.primary,
+                          padding: EdgeInsets.all(17),
+                          style: KButtonStyle.expanded,
                         ),
-                        label: "Continue",
-                        fontSize: 17,
-                        backgroundColor: kScheme.primaryContainer,
-                        foregroundColor: kScheme.primary,
-                        padding: EdgeInsets.all(17),
-                        style: KButtonStyle.expanded,
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              AnimatedSwitcher(
-                duration: Duration(milliseconds: 250),
-                child: MediaQuery.of(context).viewInsets.bottom == 0
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Center(
-                            child:
-                                Label("or continue with", weight: 700).subtitle,
-                          ),
-                          height10,
-                          ElevatedButton(
-                            onPressed: _signInWithGoogle,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: KColor.scaffold,
-                              foregroundColor: Colors.black,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: kRadius(15),
-                                side: BorderSide(
-                                  color: KColor.border,
-                                ),
-                              ),
-                              padding: EdgeInsets.all(15),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              spacing: 10,
-                              children: [
-                                SvgPicture.asset(
-                                  "$kIconPath/glogo.svg",
-                                  height: 25,
-                                ),
-                                Label("Continue with Google",
-                                        fontSize: 17, weight: 600)
-                                    .regular,
-                              ],
-                            ),
-                          ),
-                          height10,
-                          Text.rich(
-                            TextSpan(
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: KColor.fadeText,
-                                fontVariations: [FontVariation.weight(600)],
-                              ),
-                              children: [
-                                const TextSpan(
-                                    text: "By proceeding you agree to our "),
-                                TextSpan(
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () async {
-                                      await launchUrlString(termsConditionLink);
-                                    },
-                                  text: "Terms & Conditions",
-                                  style: TextStyle(
-                                    fontVariations: [FontVariation.weight(800)],
-                                    color: kScheme.primary,
-                                  ),
-                                ),
-                                const TextSpan(text: " and "),
-                                TextSpan(
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () async {
-                                      await launchUrlString(privacyPolicyLink);
-                                    },
-                                  text: "Privacy Policy",
-                                  style: TextStyle(
-                                    fontVariations: [FontVariation.weight(800)],
-                                    color: kScheme.primary,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      )
-                    : SizedBox(),
-              ),
-            ],
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 250),
+                  child: MediaQuery.of(context).viewInsets.bottom == 0
+                      ? Column(
+                          children: [
+                            Label("or continue with", weight: 550).subtitle,
+                            height10,
+                            googleLoginButton(onPressed: _signInWithGoogle),
+                            // height20,
+                            // Center(
+                            //   child: Text.rich(
+                            //     TextSpan(
+                            //       style: TextStyle(
+                            //         fontSize: 15,
+                            //         color: KColor.fadeText,
+                            //         fontVariations: [FontVariation.weight(600)],
+                            //       ),
+                            //       children: [
+                            //         const TextSpan(
+                            //             text: "Don't have an account? "),
+                            //         TextSpan(
+                            //           recognizer: TapGestureRecognizer()
+                            //             ..onTap = () => context.push("/register"),
+                            //           text: "Create Account",
+                            //           style: TextStyle(
+                            //             fontVariations: [
+                            //               FontVariation.weight(700)
+                            //             ],
+                            //             color: KColor.primary,
+                            //           ),
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
+                            height15,
+                            kTermsAndPrivacy(),
+                          ],
+                        )
+                      : SizedBox(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

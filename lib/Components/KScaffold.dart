@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import '../Resources/commons.dart';
@@ -68,23 +69,31 @@ class KScaffold extends StatelessWidget {
           ? Container(
               height: double.maxFinite,
               width: double.maxFinite,
-              color: KColor.scaffold.withAlpha((.8 * 255).round()),
+              color: kOpacity(KColor.scaffold, .8),
               child: Center(
                 child: KCard(
+                  width: 300,
+                  color: KColor.secondary,
                   padding: const EdgeInsets.all(30),
                   child: Column(
                     spacing: 30,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         height: 25,
                         width: 25,
                         child: CircularProgressIndicator(
-                          strokeWidth: 3,
+                          strokeWidth: 4,
+                          backgroundColor: kOpacity(KColor.scaffold, .1),
                           color: KColor.primary,
                         ),
                       ),
-                      Label("Please Wait", fontSize: 17, weight: 600).title,
+                      Label(
+                        "Please Wait",
+                        fontSize: 17,
+                        weight: 600,
+                        color: KColor.scaffold,
+                      ).title,
                     ],
                   ),
                 ),
@@ -96,7 +105,7 @@ class KScaffold extends StatelessWidget {
 }
 
 AppBar KAppBar(
-  context, {
+  BuildContext context, {
   IconData? icon,
   String title = "",
   Widget? child,
@@ -112,9 +121,7 @@ AppBar KAppBar(
         ? Align(
             alignment: Alignment.centerRight,
             child: IconButton(
-              onPressed: () {
-                context.pop();
-              },
+              onPressed: () => context.pop(),
               icon: const Icon(
                 Icons.arrow_back_ios_new,
                 size: 20,

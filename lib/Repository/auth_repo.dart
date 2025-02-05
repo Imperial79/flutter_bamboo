@@ -85,6 +85,52 @@ class AuthRepo {
     }
   }
 
+  Future<ResponseModel> sendOtp({
+    required String phone,
+    required String appSignature,
+  }) async {
+    try {
+      final res = await apiCallBack(
+        path: "/sms-service/send-otp",
+        body: {
+          "phone": phone,
+          "appSignature": appSignature,
+        },
+      );
+      if (res.error) {
+        throw res.message;
+      }
+      return res;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<ResponseModel> loginWithPhone({
+    required String phone,
+    required String otp,
+    String? referrerCode = "",
+  }) async {
+    try {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      final res = await apiCallBack(
+        path: "/user/login-with-phone",
+        body: {
+          "phone": phone,
+          "otp": otp,
+          "referrerCode": referrerCode,
+          "fcmToken": fcmToken,
+        },
+      );
+      if (res.error) {
+        throw res.message;
+      }
+      return res;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<ResponseModel> logout() async {
     try {
       final res = await apiCallBack(path: "/user/logout");

@@ -638,14 +638,14 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 ).regular,
               ),
               height20,
-              Label(
-                "Reviews & Ratings",
-              ).regular,
               height15,
               ...reviewData.when(
                 data: (data) => data.isNotEmpty
-                    ? data
-                        .map(
+                    ? [
+                        Label(
+                          "Reviews & Ratings",
+                        ).regular,
+                        ...data.map(
                           (e) => KCard(
                             margin: EdgeInsets.only(bottom: 10),
                             radius: 0,
@@ -707,9 +707,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             ),
                           ),
                         )
-                        .toList()
+                      ]
                     : [
-                        kNoData(context),
+                        const SizedBox(),
                       ],
                 error: (error, stackTrace) => [
                   kNoData(context, subtitle: "$error"),
