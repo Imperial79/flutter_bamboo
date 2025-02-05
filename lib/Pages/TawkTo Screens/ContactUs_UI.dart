@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ngf_organic/Components/Label.dart';
+import 'package:ngf_organic/Components/KScaffold.dart';
 import 'package:ngf_organic/Resources/colors.dart';
+import 'package:ngf_organic/Resources/commons.dart';
+import 'package:ngf_organic/Resources/theme.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
@@ -97,16 +99,22 @@ Page resource error:
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Label("Chat with us").regular,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1),
-          child: _progress != 1
-              ? LinearProgressIndicator(
-                  value: _progress,
-                )
-              : SizedBox(),
-        ),
+      appBar: KAppBar(
+        context,
+        title: "Chat with us",
+        actions: [
+          if (_progress != 1)
+            SizedBox(
+              width: 25,
+              height: 25,
+              child: CircularProgressIndicator(
+                value: _progress,
+                color: kScheme.primary,
+                backgroundColor: kScheme.primaryContainer,
+              ),
+            ),
+          width20,
+        ],
       ),
       body: SafeArea(
         child: PlatformWebViewWidget(

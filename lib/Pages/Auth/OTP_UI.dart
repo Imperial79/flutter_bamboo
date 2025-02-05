@@ -7,6 +7,7 @@ import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kButton.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Components/kWidgets.dart';
+import 'package:ngf_organic/Models/User_Model.dart';
 import 'package:ngf_organic/Repository/auth_repo.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
@@ -111,10 +112,12 @@ class _OTP_UIState extends ConsumerState<OTP_UI> {
           );
 
       KSnackbar(context, res: res);
-
+      ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
       context.go("/");
     } catch (e) {
       KSnackbar(context, message: '$e', error: true);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -153,7 +156,7 @@ class _OTP_UIState extends ConsumerState<OTP_UI> {
               buildOtpField(),
               height10,
               KButton(
-                onPressed: otp.text.isNotEmpty ? () => _loginWithPhone : null,
+                onPressed: otp.text.isNotEmpty ? _loginWithPhone : null,
                 label: "Continue",
                 fontSize: 17,
                 backgroundColor: kScheme.primaryContainer,

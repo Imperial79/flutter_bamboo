@@ -10,6 +10,7 @@ import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smart_auth/smart_auth.dart';
 import '../../Models/User_Model.dart';
 import '../../Repository/auth_repo.dart';
 import '../../Resources/theme.dart';
@@ -31,6 +32,16 @@ class _Login_UIState extends ConsumerState<Login_UI> {
   final phone = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final isLoading = ValueNotifier(false);
+
+  selectPhone() async {
+    final res = await SmartAuth.instance.requestPhoneNumberHint();
+    if (res.hasData) {
+      setState(() {
+        phone.text = res.requireData.substring(res.requireData.length - 10);
+        _signInWithPhone();
+      });
+    }
+  }
 
   _signInWithGoogle() async {
     try {
@@ -137,6 +148,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                               EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                           child: TextFormField(
                             controller: phone,
+                            onTap: phone.text.isEmpty ? selectPhone : null,
                             keyboardType: TextInputType.phone,
                             autofillHints: [AutofillHints.telephoneNumber],
                             style: TextStyle(

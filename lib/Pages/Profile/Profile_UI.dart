@@ -114,12 +114,12 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Label(
-                              user.phone!,
-                              fontSize: 17,
-                              weight: 700,
+                              "+91 ${user.phone!}",
+                              weight: 500,
+                              color: Colors.black,
                             ).subtitle,
                             InkWell(
-                              onTap: () => context.push("/edit-profile"),
+                              onTap: () => context.push("/profile/edit"),
                               child: Row(
                                 spacing: 5,
                                 children: [
@@ -182,7 +182,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                           _profileBtn(
                             icon: Icons.help,
                             label: "Help",
-                            path: "/profile/help",
+                            path: "/help",
                           ),
                           div,
                           _profileBtn(

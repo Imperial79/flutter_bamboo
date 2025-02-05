@@ -197,7 +197,7 @@ final goRouterProvider = Provider<GoRouter>(
           ],
         ),
         GoRoute(
-          path: "/chat",
+          path: "/help",
           builder: (context, state) => ContactUsUI(),
         ),
       ],
