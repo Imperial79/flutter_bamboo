@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/KNavigationBar.dart';
-import 'package:flutter_bamboo/Repository/cart_repo.dart';
-import 'package:flutter_bamboo/Resources/constants.dart';
-import 'package:flutter_bamboo/Resources/theme.dart';
+import 'package:ngf_organic/Components/KNavigationBar.dart';
+import 'package:ngf_organic/Repository/cart_repo.dart';
+import 'package:ngf_organic/Resources/constants.dart';
+import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';

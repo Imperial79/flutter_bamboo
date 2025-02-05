@@ -1,5 +1,5 @@
-import 'package:flutter_bamboo/Helper/api_config.dart';
-import 'package:flutter_bamboo/Models/Response_Model.dart';
+import 'package:ngf_organic/Helper/api_config.dart';
+import 'package:ngf_organic/Models/Response_Model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final cartFuture = FutureProvider.autoDispose<List>((ref) async {

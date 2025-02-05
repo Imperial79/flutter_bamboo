@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 
 class OrderDetailModel {
   int id = 0;

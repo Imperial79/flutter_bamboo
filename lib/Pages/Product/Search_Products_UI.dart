@@ -4,12 +4,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/KScaffold.dart';
-import 'package:flutter_bamboo/Components/KSearchbar.dart';
-import 'package:flutter_bamboo/Components/Label.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
-import 'package:flutter_bamboo/Resources/commons.dart';
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Components/KScaffold.dart';
+import 'package:ngf_organic/Components/KSearchbar.dart';
+import 'package:ngf_organic/Components/Label.dart';
+import 'package:ngf_organic/Resources/colors.dart';
+import 'package:ngf_organic/Resources/commons.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../Repository/product_repo.dart';

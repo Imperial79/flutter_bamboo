@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
+import 'package:ngf_organic/Resources/colors.dart';
 import '../Resources/commons.dart';
 import 'Label.dart';
 import 'kButton.dart';

@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/kCard.dart';
-import 'package:flutter_bamboo/Models/Product_Model.dart';
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Components/kCard.dart';
+import 'package:ngf_organic/Models/Product_Model.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../Components/Label.dart';

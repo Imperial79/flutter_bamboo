@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 
 class Splash_UI extends StatefulWidget {
   const Splash_UI({super.key});

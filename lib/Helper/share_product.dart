@@ -1,4 +1,4 @@
-import 'package:flutter_bamboo/Models/Product_Detail_Model.dart';
+import 'package:ngf_organic/Models/Product_Detail_Model.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;

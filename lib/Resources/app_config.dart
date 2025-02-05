@@ -1,5 +1,5 @@
-const String kAppVersion = "1.2.5";
-const String kAppBuild = "8";
+const String kAppVersion = "1.0.0";
+const String kAppBuild = "1";
 
-const String termsConditionLink = "";
-const String privacyPolicyLink = "";
+const String termsConditionLink = "https://ngforganic.com/privacy-policy.html";
+const String privacyPolicyLink = "https://ngforganic.com/privacy-policy.html";

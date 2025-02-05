@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/KScaffold.dart';
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Components/KScaffold.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 
 class Transactions_UI extends StatefulWidget {
   const Transactions_UI({super.key});

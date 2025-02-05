@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
+import 'package:ngf_organic/Resources/colors.dart';
 import '../Resources/commons.dart';
 
 class KCarousel extends StatefulWidget {

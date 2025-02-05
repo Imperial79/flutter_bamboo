@@ -1,4 +1,4 @@
-import 'package:flutter_bamboo/Resources/constants.dart';
+import 'package:ngf_organic/Resources/constants.dart';
 
 const String kPackagePath = "$kIconPath/package_type";
 

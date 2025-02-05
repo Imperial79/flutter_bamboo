@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bamboo/Components/KNavigationBar.dart';
-import 'package:flutter_bamboo/Pages/Affiliate/Affiliate_UI.dart';
-import 'package:flutter_bamboo/Pages/Home/Home_UI.dart';
-import 'package:flutter_bamboo/Pages/Profile/Orders/Orders_UI.dart';
-import 'package:flutter_bamboo/Pages/Profile/Profile_UI.dart';
-import 'package:flutter_bamboo/Resources/colors.dart';
-import 'package:flutter_bamboo/Resources/commons.dart';
+import 'package:ngf_organic/Components/KNavigationBar.dart';
+import 'package:ngf_organic/Pages/Affiliate/Affiliate_UI.dart';
+import 'package:ngf_organic/Pages/Home/Home_UI.dart';
+import 'package:ngf_organic/Pages/Profile/Orders/Orders_UI.dart';
+import 'package:ngf_organic/Pages/Profile/Profile_UI.dart';
+import 'package:ngf_organic/Resources/colors.dart';
+import 'package:ngf_organic/Resources/commons.dart';
 import 'package:animations/animations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
