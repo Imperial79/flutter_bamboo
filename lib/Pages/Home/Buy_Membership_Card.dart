@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -113,7 +115,7 @@ class _BuyMembershipCardState extends ConsumerState<BuyMembershipCard> {
       widget.loadingStatus(true);
 
       await ref.read(membershipRepo).verify(paymentId);
-
+      ref.refresh(authFuture.future);
       showDialog(
         context: context,
         builder: (context) => successDialog(),

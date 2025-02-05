@@ -130,7 +130,14 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
                     KCard(
                       child: Row(
                         children: [
-                          Icon(Icons.info),
+                          Icon(
+                            user.affiliateStatus == "Active"
+                                ? Icons.check_circle
+                                : Icons.info,
+                            color: user.affiliateStatus == "Active"
+                                ? StatusText.success
+                                : null,
+                          ),
                           SizedBox(width: 10),
                           Expanded(
                             child: Label(
@@ -268,12 +275,6 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
             label: "IFSC Code",
             hintText: "Eg. SBIN1992",
             textCapitalization: TextCapitalization.characters,
-            validator: (val) => KValidation.required(val),
-          ).regular,
-          height10,
-          KTextfield(
-            controller: accHolderName,
-            label: "Account Holder Name",
             validator: (val) => KValidation.required(val),
           ).regular,
           height10,
