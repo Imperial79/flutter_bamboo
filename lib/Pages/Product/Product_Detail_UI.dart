@@ -297,28 +297,29 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                 ],
                               ),
                             ),
-                            // Row(
-                            //   spacing: 5,
-                            //   children: [
-                            //     Label("Variant:", fontSize: 16, weight: 600)
-                            //         .regular,
-                            //     Flexible(
-                            //       child: selectedVariant.attributeType ==
-                            //               "Color"
-                            //           ? CircleAvatar(
-                            //               radius: 10,
-                            //               backgroundColor: Color(int.parse(
-                            //                   selectedVariant.attributeValue
-                            //                       .replaceFirst('#', '0xff'))),
-                            //             )
-                            //           : Label(
-                            //               selectedVariant.attributeValue,
-                            //               fontSize: 16,
-                            //               weight: 700,
-                            //             ).regular,
-                            //     ),
-                            //   ],
-                            // ),
+                            height20,
+                            Row(
+                              spacing: 5,
+                              children: [
+                                Label("Variant:", fontSize: 16, weight: 600)
+                                    .regular,
+                                Flexible(
+                                  child: selectedVariant.attributeType ==
+                                          "Color"
+                                      ? CircleAvatar(
+                                          radius: 10,
+                                          backgroundColor: Color(int.parse(
+                                              selectedVariant.attributeValue
+                                                  .replaceFirst('#', '0xff'))),
+                                        )
+                                      : Label(
+                                          selectedVariant.attributeValue,
+                                          fontSize: 16,
+                                          weight: 700,
+                                        ).regular,
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),

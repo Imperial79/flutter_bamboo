@@ -97,52 +97,50 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                 ],
               ),
             ),
-            // BuyMembershipCard(
-            //   loadingStatus: (value) {
-            //     isLoading.value = value;
-            //   },
-            // ),
-            ...offersData.when(
+            offersData.when(
               data: (data) => data != null
-                  ? [
-                      BuyMembershipCard(
-                        fees: data["settings"]["membershipFees"],
-                        loadingStatus: (value) {
-                          isLoading.value = value;
-                        },
-                      ),
-                      KCard(
-                        radius: 0,
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        height: 30,
-                        child: Marquee(
-                          text: data["settings"]["offerMarquee"],
-                          style: TextStyle(
-                            fontVariations: [
-                              FontVariation.weight(600),
-                            ],
-                          ),
-                          scrollAxis: Axis.horizontal,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          blankSpace: 20.0,
-                          velocity: 50.0,
-                          startPadding: 10.0,
-                          accelerationDuration: Duration(seconds: 0),
-                          accelerationCurve: Curves.linear,
-                          decelerationDuration: Duration(milliseconds: 500),
-                          decelerationCurve: Curves.decelerate,
+                  ? KCard(
+                      radius: 0,
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      height: 30,
+                      child: Marquee(
+                        text: data["settings"]["offerMarquee"],
+                        style: TextStyle(
+                          fontVariations: [
+                            FontVariation.weight(600),
+                          ],
                         ),
-                      )
-                    ]
-                  : [SizedBox()],
-              error: (error, stackTrace) => [SizedBox()],
-              loading: () => [kHeight(30)],
+                        scrollAxis: Axis.horizontal,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        blankSpace: 20.0,
+                        velocity: 50.0,
+                        startPadding: 10.0,
+                        accelerationDuration: Duration(seconds: 0),
+                        accelerationCurve: Curves.linear,
+                        decelerationDuration: Duration(milliseconds: 500),
+                        decelerationCurve: Curves.decelerate,
+                      ),
+                    )
+                  : SizedBox(),
+              error: (error, stackTrace) => SizedBox(),
+              loading: () => kHeight(30),
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
-                  spacing: 20,
                   children: [
+                    offersData.when(
+                      data: (data) => data != null
+                          ? BuyMembershipCard(
+                              fees: data["settings"]["membershipFees"],
+                              loadingStatus: (value) {
+                                isLoading.value = value;
+                              },
+                            )
+                          : SizedBox(),
+                      error: (error, stackTrace) => SizedBox(),
+                      loading: () => SizedBox(),
+                    ),
                     offersData.when(
                       data: (data) => data != null
                           ? KCarousel(
@@ -170,7 +168,8 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: kPadding),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: kPadding, vertical: kPadding),
                       child: Row(
                         spacing: 10,
                         children: [

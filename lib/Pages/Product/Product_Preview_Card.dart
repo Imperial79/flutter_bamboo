@@ -41,6 +41,17 @@ class ProductPreviewCard extends ConsumerWidget {
                   ),
                 ),
               ),
+              placeholder: (context, url) => KCard(
+                color: KColor.scaffold,
+                height: 150,
+                child: Center(
+                  child: Icon(
+                    Icons.image,
+                    color: KColor.fadeText,
+                    size: 30,
+                  ),
+                ),
+              ),
               errorWidget: (context, url, error) => KCard(
                 color: KColor.scaffold,
                 height: 150,

@@ -155,31 +155,32 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
                     if (user.affiliateStatus == "Inactive") ...[
                       height20,
                       affiliateForm()
+                    ] else ...[
+                      height20,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Label("Product Details", fontSize: 12).regular,
+                          Label("Earning", fontSize: 12).regular,
+                        ],
+                      ),
+                      height15,
+                      if (asyncData.isLoading && affiliateList.isEmpty)
+                        kSmallLoading
+                      else if (affiliateList.isNotEmpty)
+                        ListView.separated(
+                          separatorBuilder: (context, index) => Divider(
+                            height: 30,
+                          ),
+                          itemCount: affiliateList.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) =>
+                              affiliateRow(affiliateList[index]),
+                        )
+                      else
+                        kNoData(context)
                     ],
-                    height20,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Label("Product Details", fontSize: 12).regular,
-                        Label("Earning", fontSize: 12).regular,
-                      ],
-                    ),
-                    height15,
-                    if (asyncData.isLoading && affiliateList.isEmpty)
-                      kSmallLoading
-                    else if (affiliateList.isNotEmpty)
-                      ListView.separated(
-                        separatorBuilder: (context, index) => Divider(
-                          height: 30,
-                        ),
-                        itemCount: affiliateList.length,
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) =>
-                            affiliateRow(affiliateList[index]),
-                      )
-                    else
-                      kNoData(context)
                   ],
                 ),
               )

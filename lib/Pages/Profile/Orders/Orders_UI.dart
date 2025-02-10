@@ -60,8 +60,12 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
                                 _orderItem(data[index]),
                             padding: EdgeInsets.all(kPadding),
                           )
-                        : kNoData(context,
-                            showHome: false, subtitle: "No Orders!"),
+                        : kNoData(
+                            context,
+                            showHome: false,
+                            title: "No Orders!",
+                            subtitle: "All orders will be visible here.",
+                          ),
                     error: (error, stackTrace) =>
                         kNoData(context, showHome: false),
                     loading: () => LinearProgressIndicator(),
