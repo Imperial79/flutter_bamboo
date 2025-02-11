@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:ngf_organic/Components/KScaffold.dart';
 import 'package:ngf_organic/Components/Label.dart';
@@ -46,6 +48,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
   _signInWithGoogle() async {
     try {
       isLoading.value = true;
+      log("Refercode (Login) - ${widget.referCode} | Redirect - ${widget.redirectPath}");
       final res = await ref.read(authRepository).signInWithGoogle(
             ref,
             referrerCode: widget.referCode,

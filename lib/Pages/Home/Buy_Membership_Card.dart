@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kButton.dart';
 import 'package:ngf_organic/Repository/auth_repo.dart';
@@ -115,7 +116,9 @@ class _BuyMembershipCardState extends ConsumerState<BuyMembershipCard> {
       widget.loadingStatus(true);
 
       await ref.read(membershipRepo).verify(paymentId);
-      ref.refresh(authFuture.future);
+      ref.read(userProvider.notifier).update(
+            (state) => state!.copyWith(isMember: true),
+          );
       showDialog(
         context: context,
         builder: (context) => successDialog(),
@@ -137,6 +140,7 @@ class _BuyMembershipCardState extends ConsumerState<BuyMembershipCard> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
+
     return Visibility(
       visible: user != null && !user.isMember,
       child: Container(
@@ -190,7 +194,16 @@ class _BuyMembershipCardState extends ConsumerState<BuyMembershipCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Lottie.asset("assets/animations/success.json", height: 200),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Lottie.asset("assets/animations/success.json", height: 200),
+                    SvgPicture.asset(
+                      "$kIconPath/party-popper.svg",
+                      height: 150,
+                    ),
+                  ],
+                ),
                 height20,
                 Label("Congratulations!", weight: 900, fontSize: 30).title,
                 Label("🎉You are now a member🎉", weight: 600).regular,

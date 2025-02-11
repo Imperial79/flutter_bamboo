@@ -1,4 +1,6 @@
 // ignore_for_file: unused_result
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:ngf_organic/Components/KScaffold.dart';
@@ -82,6 +84,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
       await addToCart(selectedVariant.id);
       context.push("/cart");
     } else {
+      log("Refercode (Product Detail) - ${widget.referCode} | SKU (Product Detail) - ${widget.sku}");
       context.push("/login", extra: {
         "redirectPath": "/product/abc/${widget.id}?sku=${widget.sku}",
         "referCode": widget.referCode,

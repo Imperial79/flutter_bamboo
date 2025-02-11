@@ -12,17 +12,18 @@ class ProductHelper {
     return name.replaceAll(" ", "-");
   }
 
-  String createProductPath({
+  Uri createProductPath({
     required int productId,
     String? referCode,
     required String name,
     required String sku,
   }) {
-    String path = "$appLink/product/${createNameForUrl(name)}/$productId";
-    path += "?sku=$sku";
-    if (referCode != null) {
-      path += "&referCode=$referCode";
-    }
+    Map<String, dynamic> query = {"sku": sku};
+    if (referCode != null) query["referCode"] = referCode;
+
+    Uri path = Uri.parse(
+      "$appLink/product/${createNameForUrl(name)}/$productId",
+    ).replace(queryParameters: query);
 
     return path;
   }
@@ -42,7 +43,7 @@ class ProductHelper {
 
         // Save the image to a temporary file
         await file.writeAsBytes(response.bodyBytes);
-        String productLink = createProductPath(
+        Uri productLink = createProductPath(
           name: product.name,
           sku: sku,
           productId: product.id,
@@ -51,30 +52,30 @@ class ProductHelper {
         // Share the link and image
         await Share.shareXFiles(
           [XFile(file.path)],
-          text: 'Check out this product: ${Uri.parse(productLink)}',
+          text: 'Check out this product: $productLink',
         );
       } else {
         // If image download fails, share only the text
-        String productLink = createProductPath(
+        Uri productLink = createProductPath(
           name: product.name,
           sku: sku,
           productId: product.id,
           referCode: referCode,
         );
         await Share.share(
-          'Check out this product: ${Uri.parse(productLink)}',
+          'Check out this product: $productLink',
         );
       }
     } catch (e) {
       // If any error occurs, share only the text
-      String productLink = createProductPath(
+      Uri productLink = createProductPath(
         name: product.name,
         sku: sku,
         productId: product.id,
         referCode: referCode,
       );
       await Share.share(
-        'Check out this product: ${Uri.parse(productLink)}',
+        'Check out this product: $productLink',
       );
       debugPrint('Error sharing product: $e');
     }
