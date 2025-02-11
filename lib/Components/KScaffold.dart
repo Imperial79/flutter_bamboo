@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Resources/colors.dart';
@@ -73,27 +74,41 @@ class KScaffold extends StatelessWidget {
               child: Center(
                 child: KCard(
                   width: 300,
-                  color: KColor.secondary,
+                  color: Colors.transparent,
                   padding: const EdgeInsets.all(30),
                   child: Column(
                     spacing: 30,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(
-                        height: 25,
-                        width: 25,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 4,
-                          backgroundColor: kOpacity(KColor.scaffold, .1),
-                          color: KColor.primary,
-                        ),
+                      // SizedBox(
+                      //   height: 25,
+                      //   width: 25,
+                      //   child: CircularProgressIndicator(
+                      //     strokeWidth: 3,
+                      //     backgroundColor: kOpacity(KColor.scaffold, .1),
+                      //     color: Colors.black,
+                      //   ),
+                      // ),
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          SizedBox(
+                            height: 70,
+                            width: 70,
+                            child: CircularProgressIndicator(),
+                          ),
+                          SvgPicture.asset(
+                            "$kIconPath/loading-panda.svg",
+                            height: 50,
+                          ),
+                        ],
                       ),
-                      Label(
-                        "Please Wait",
-                        fontSize: 17,
-                        weight: 600,
-                        color: KColor.scaffold,
-                      ).title,
+                      // Label(
+                      //   "Please Wait",
+                      //   fontSize: 17,
+                      //   weight: 550,
+                      //   color: Colors.black,
+                      // ).title,
                     ],
                   ),
                 ),

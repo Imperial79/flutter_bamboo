@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ngf_organic/Models/Response_Model.dart';
@@ -63,6 +65,7 @@ KSnackbar(
   SnackBarAction? action,
   ResponseModel? res,
 }) {
+  log("$message");
   final error0 = res != null ? res.error : error;
   final message0 = res != null ? res.message : message;
   ScaffoldMessenger.of(context).removeCurrentSnackBar();

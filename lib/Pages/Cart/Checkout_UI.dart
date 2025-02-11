@@ -9,6 +9,7 @@ import 'package:ngf_organic/Components/kButton.dart';
 import 'package:ngf_organic/Models/Response_Model.dart';
 import 'package:ngf_organic/Repository/address_repo.dart';
 import 'package:ngf_organic/Repository/cart_repo.dart';
+import 'package:ngf_organic/Repository/coupon_repo.dart';
 import 'package:ngf_organic/Resources/app_config.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
@@ -138,6 +139,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
 
       if (!res.error) {
         final masterdata = widget.checkoutData.data as Map<String, dynamic>;
+        ref.read(selectedCouponProvider.notifier).state = null;
         context.go(
           "/cart/confirmation",
           extra: {
@@ -148,7 +150,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
         );
       }
     } catch (e) {
-      KSnackbar(context, message: "$e", error: true);
+      KSnackbar(context, message: "Chechkout UI. $e", error: true);
     } finally {
       isLoading.value = false;
     }

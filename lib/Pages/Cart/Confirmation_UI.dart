@@ -26,28 +26,31 @@ class Confirmation_UI extends StatefulWidget {
 class _Confirmation_UIState extends State<Confirmation_UI> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Lottie.asset(
-            "assets/animations/success.json",
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-          ),
-          body(),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(kPadding),
-          child: KButton(
-            onPressed: () => context.go("/"),
-            label: "Go Home",
-            backgroundColor: kScheme.tertiaryContainer,
-            foregroundColor: kScheme.tertiary,
-            style: KButtonStyle.expanded,
+    return PopScope(
+      onPopInvokedWithResult: (didPop, result) => context.go("/"),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            Lottie.asset(
+              "assets/animations/success.json",
+              fit: BoxFit.cover,
+              height: double.infinity,
+              width: double.infinity,
+            ),
+            body(),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(kPadding),
+            child: KButton(
+              onPressed: () => context.go("/"),
+              label: "Go Home",
+              backgroundColor: kScheme.tertiaryContainer,
+              foregroundColor: kScheme.tertiary,
+              style: KButtonStyle.expanded,
+            ),
           ),
         ),
       ),

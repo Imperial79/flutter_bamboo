@@ -127,10 +127,6 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
             couponDiscount = coupon.maxDiscount;
           }
         } else {
-          KSnackbar(context,
-              message:
-                  "Coupon Removed! Min. purchase must be ${kCurrencyFormat(coupon.minPurchase)}",
-              error: true);
           ref.read(selectedCouponProvider.notifier).state = null;
         }
       }
