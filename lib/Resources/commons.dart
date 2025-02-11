@@ -107,7 +107,7 @@ Widget googleLoginButton({required void Function()? onPressed}) {
           "$kIconPath/glogo.svg",
           height: 25,
         ),
-        Label("Continue with Google", fontSize: 17, weight: 600).regular,
+        Label("Google", fontSize: 17, weight: 600).regular,
       ],
     ),
   );

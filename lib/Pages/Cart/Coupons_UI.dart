@@ -6,6 +6,7 @@ import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Components/kWidgets.dart';
 import 'package:ngf_organic/Repository/coupon_repo.dart';
+import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,9 +53,18 @@ class _Coupons_UIState extends ConsumerState<Coupons_UI> {
                             child: Row(
                               spacing: 20,
                               children: [
-                                Label("${(data[index].offPercent * 100).round()}%",
-                                        fontSize: 25)
-                                    .title,
+                                KCard(
+                                  color: KColor.scaffold,
+                                  padding: EdgeInsets.all(15),
+                                  width: 70,
+                                  height: 70,
+                                  child: FittedBox(
+                                    child: Label(
+                                            "${(data[index].offPercent * 100).round()}%",
+                                            fontSize: 25)
+                                        .title,
+                                  ),
+                                ),
                                 Expanded(
                                     child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

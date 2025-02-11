@@ -8,7 +8,7 @@ class CouponModel {
   String description = "";
   double minPurchase = 0;
   double offPercent = 0;
-  double uptoAmount = 0;
+  double maxDiscount = 0;
   String startDate = "";
   String endDate = "";
   CouponModel({
@@ -17,7 +17,7 @@ class CouponModel {
     required this.description,
     required this.minPurchase,
     required this.offPercent,
-    required this.uptoAmount,
+    required this.maxDiscount,
     required this.startDate,
     required this.endDate,
   });
@@ -28,7 +28,7 @@ class CouponModel {
     String? description,
     double? minPurchase,
     double? offPercent,
-    double? uptoAmount,
+    double? maxDiscount,
     String? startDate,
     String? endDate,
   }) {
@@ -38,7 +38,7 @@ class CouponModel {
       description: description ?? this.description,
       minPurchase: minPurchase ?? this.minPurchase,
       offPercent: offPercent ?? this.offPercent,
-      uptoAmount: uptoAmount ?? this.uptoAmount,
+      maxDiscount: maxDiscount ?? this.maxDiscount,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
     );
@@ -51,7 +51,7 @@ class CouponModel {
       'description': description,
       'minPurchase': minPurchase,
       'offPercent': offPercent,
-      'uptoAmount': uptoAmount,
+      'maxDiscount': maxDiscount,
       'startDate': startDate,
       'endDate': endDate,
     };
@@ -64,7 +64,7 @@ class CouponModel {
       description: map['description'] ?? '',
       minPurchase: parseToDouble(map['minPurchase']),
       offPercent: parseToDouble(map['offPercent']),
-      uptoAmount: parseToDouble(map['uptoAmount']),
+      maxDiscount: parseToDouble(map['maxDiscount']),
       startDate: map['startDate'] ?? '',
       endDate: map['endDate'] ?? '',
     );
@@ -77,7 +77,7 @@ class CouponModel {
 
   @override
   String toString() {
-    return 'CouponModel(id: $id, coupon: $coupon, description: $description, minPurchase: $minPurchase, offPercent: $offPercent, uptoAmount: $uptoAmount, startDate: $startDate, endDate: $endDate)';
+    return 'CouponModel(id: $id, coupon: $coupon, description: $description, minPurchase: $minPurchase, offPercent: $offPercent, maxDiscount: $maxDiscount, startDate: $startDate, endDate: $endDate)';
   }
 
   @override
@@ -90,7 +90,7 @@ class CouponModel {
         other.description == description &&
         other.minPurchase == minPurchase &&
         other.offPercent == offPercent &&
-        other.uptoAmount == uptoAmount &&
+        other.maxDiscount == maxDiscount &&
         other.startDate == startDate &&
         other.endDate == endDate;
   }
@@ -102,7 +102,7 @@ class CouponModel {
         description.hashCode ^
         minPurchase.hashCode ^
         offPercent.hashCode ^
-        uptoAmount.hashCode ^
+        maxDiscount.hashCode ^
         startDate.hashCode ^
         endDate.hashCode;
   }

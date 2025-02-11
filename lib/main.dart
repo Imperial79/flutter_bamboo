@@ -32,7 +32,7 @@ class MyApp extends ConsumerWidget {
     final routerConfig = ref.watch(goRouterProvider);
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      title: 'Bamboo Inc.',
+      title: 'NGF Organic - Sustainable Shop',
       color: KColor.scaffold,
       theme: kTheme(context),
       themeMode: ThemeMode.light,

@@ -98,31 +98,33 @@ class ProductPreviewCard extends ConsumerWidget {
                     ],
                   ),
                   height5,
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.end,
-                    spacing: 5,
-                    children: [
-                      Label(
-                        kCurrencyFormat(product.salePrice),
-                        weight: 600,
-                        height: 1.2,
-                        fontSize: 20,
-                      ).title,
-                      Label(
-                        "-${calculateDiscount(product.mrp, product.salePrice)}%",
-                        weight: 500,
-                        fontSize: 15,
-                        color: StatusText.danger,
-                      ).title,
-                      width5,
-                      Label(
-                        "MRP ${kCurrencyFormat(product.mrp)}",
-                        weight: 500,
-                        fontSize: 12,
-                        color: KColor.fadeText,
-                        decoration: TextDecoration.lineThrough,
-                      ).regular,
-                    ],
+                  FittedBox(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      spacing: 5,
+                      children: [
+                        Label(
+                          kCurrencyFormat(product.salePrice),
+                          weight: 600,
+                          height: 1.2,
+                          fontSize: 20,
+                        ).title,
+                        Label(
+                          "-${calculateDiscount(product.mrp, product.salePrice)}%",
+                          weight: 500,
+                          fontSize: 15,
+                          color: StatusText.danger,
+                        ).title,
+                        width5,
+                        Label(
+                          "MRP ${kCurrencyFormat(product.mrp)}",
+                          weight: 500,
+                          fontSize: 12,
+                          color: KColor.fadeText,
+                          decoration: TextDecoration.lineThrough,
+                        ).regular,
+                      ],
+                    ),
                   ),
                 ],
               ),

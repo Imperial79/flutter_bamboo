@@ -2,6 +2,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ngf_organic/Components/KScaffold.dart';
 import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kButton.dart';
@@ -122,8 +123,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
       if (coupon != null) {
         if (totalSalePrice >= coupon.minPurchase) {
           couponDiscount = totalSalePrice * coupon.offPercent;
-          if (couponDiscount > coupon.uptoAmount) {
-            couponDiscount = coupon.uptoAmount;
+          if (couponDiscount > coupon.maxDiscount) {
+            couponDiscount = coupon.maxDiscount;
           }
         } else {
           KSnackbar(context,
@@ -317,15 +318,18 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                           color: kOpacity(kScheme.primaryContainer, .1),
                           child: Center(
                             child: Column(
+                              spacing: 10,
                               children: [
-                                Icon(
-                                  Icons.add_circle_outline_rounded,
-                                  color: kOpacity(kScheme.primary, .5),
-                                  size: 30,
+                                SvgPicture.asset(
+                                  "$kIconPath/discount.svg",
+                                  height: 30,
+                                  colorFilter: kSvgColor(
+                                    kOpacity(kScheme.primary, .7),
+                                  ),
                                 ),
                                 Label(
                                   "Add a coupon",
-                                  color: kOpacity(kScheme.primary, .5),
+                                  color: kOpacity(kScheme.primary, .7),
                                   fontSize: 15,
                                 ).regular,
                               ],
@@ -661,32 +665,25 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                   spacing: 10,
                   children: [
                     if (int.parse("${data["stock"]}") > 0)
-                      KCard(
-                        borderWidth: 1,
-                        radius: 7,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                        child: DropdownButton(
-                          isDense: true,
-                          value: int.parse("${data["qty"]}"),
-                          icon: Icon(
-                            Icons.inventory,
-                            size: 15,
-                          ),
-                          menuMaxHeight: 300,
-                          borderRadius: kRadius(10),
-                          elevation: 1,
-                          underline: SizedBox(),
-                          items: List.generate(
-                            9,
-                            (index) => DropdownMenuItem(
-                                value: index + 1,
-                                child: Label("${index + 1}").regular),
-                          ),
-                          onChanged: (value) {
-                            updateCart(data["productVariantId"], value!, index);
-                          },
+                      DropdownButton(
+                        isDense: true,
+                        value: int.parse("${data["qty"]}"),
+                        icon: Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          size: 20,
                         ),
+                        menuMaxHeight: 300,
+                        borderRadius: kRadius(10),
+                        elevation: 1,
+                        items: List.generate(
+                          9,
+                          (index) => DropdownMenuItem(
+                              value: index + 1,
+                              child: Label("${index + 1}").regular),
+                        ),
+                        onChanged: (value) {
+                          updateCart(data["productVariantId"], value!, index);
+                        },
                       )
                     else
                       KCard(

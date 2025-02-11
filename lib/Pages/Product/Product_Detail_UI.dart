@@ -227,35 +227,58 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                     ],
                                   ),
                                 ),
-                                KCard(
-                                  borderWidth: 1,
-                                  radius: 10,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 5),
-                                  child: DropdownButton(
-                                    isDense: true,
-                                    value: selectedQty,
-                                    icon: Icon(
-                                      Icons.inventory,
-                                      size: 15,
-                                    ),
-                                    menuMaxHeight: 300,
-                                    borderRadius: kRadius(10),
-                                    elevation: 1,
-                                    underline: SizedBox(),
-                                    items: List.generate(
-                                      9,
-                                      (index) => DropdownMenuItem(
-                                          value: index + 1,
-                                          child: Label("${index + 1}").regular),
-                                    ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedQty = value!;
-                                      });
-                                    },
+                                // KCard(
+                                //   borderWidth: 1,
+                                //   radius: 10,
+                                //   padding: EdgeInsets.symmetric(
+                                //       horizontal: 15, vertical: 5),
+                                //   child: DropdownButton(
+                                //     isDense: true,
+                                //     value: selectedQty,
+                                //     icon: Icon(
+                                //       Icons.keyboard_arrow_down_rounded,
+                                //       size: 20,
+                                //     ),
+                                //     menuMaxHeight: 300,
+                                //     borderRadius: kRadius(10),
+                                //     elevation: 1,
+                                //     underline: SizedBox(),
+                                //     items: List.generate(
+                                //       9,
+                                //       (index) => DropdownMenuItem(
+                                //           value: index + 1,
+                                //           child: Label("${index + 1}").regular),
+                                //     ),
+                                //     onChanged: (value) {
+                                //       setState(() {
+                                //         selectedQty = value!;
+                                //       });
+                                //     },
+                                //   ),
+                                // )
+
+                                DropdownButton(
+                                  isDense: true,
+                                  value: selectedQty,
+                                  icon: Icon(
+                                    Icons.keyboard_arrow_down_rounded,
+                                    size: 20,
                                   ),
-                                )
+                                  menuMaxHeight: 300,
+                                  borderRadius: kRadius(10),
+                                  elevation: 1,
+                                  items: List.generate(
+                                    9,
+                                    (index) => DropdownMenuItem(
+                                        value: index + 1,
+                                        child: Label("${index + 1}").regular),
+                                  ),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      selectedQty = value!;
+                                    });
+                                  },
+                                ),
                               ],
                             ),
                             height5,
@@ -268,6 +291,29 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             Label("Inclusive of all taxes",
                                     color: KColor.fadeText, weight: 600)
                                 .subtitle,
+                            height20,
+                            Row(
+                              spacing: 5,
+                              children: [
+                                Label("Variant:", fontSize: 16, weight: 600)
+                                    .regular,
+                                Flexible(
+                                  child: selectedVariant.attributeType ==
+                                          "Color"
+                                      ? CircleAvatar(
+                                          radius: 10,
+                                          backgroundColor: Color(int.parse(
+                                              selectedVariant.attributeValue
+                                                  .replaceFirst('#', '0xff'))),
+                                        )
+                                      : Label(
+                                          selectedVariant.attributeValue,
+                                          fontSize: 16,
+                                          weight: 700,
+                                        ).regular,
+                                ),
+                              ],
+                            ),
                             height20,
                             KCard(
                               width: double.infinity,
@@ -296,29 +342,6 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                   _row("secure.svg", "Secure transaction"),
                                 ],
                               ),
-                            ),
-                            height20,
-                            Row(
-                              spacing: 5,
-                              children: [
-                                Label("Variant:", fontSize: 16, weight: 600)
-                                    .regular,
-                                Flexible(
-                                  child: selectedVariant.attributeType ==
-                                          "Color"
-                                      ? CircleAvatar(
-                                          radius: 10,
-                                          backgroundColor: Color(int.parse(
-                                              selectedVariant.attributeValue
-                                                  .replaceFirst('#', '0xff'))),
-                                        )
-                                      : Label(
-                                          selectedVariant.attributeValue,
-                                          fontSize: 16,
-                                          weight: 700,
-                                        ).regular,
-                                ),
-                              ],
                             ),
                           ],
                         ),
@@ -575,11 +598,11 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   0,
                   showLess
                       ? product.description.length
-                      : product.description.length < 50
+                      : product.description.length < 500
                           ? product.description.length
-                          : 50),
+                          : 500),
             ),
-            if (product.description.length > 50)
+            if (product.description.length > 500)
               TextSpan(
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
@@ -589,7 +612,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   },
                 text: showLess ? "...read less" : "...read more",
                 style: TextStyle(
-                    fontVariations: [FontVariation.weight(900)],
+                    fontVariations: [FontVariation.weight(700)],
                     color: kScheme.primary),
               ),
           ],

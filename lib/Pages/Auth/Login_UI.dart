@@ -190,33 +190,6 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                             Label("or continue with", weight: 550).subtitle,
                             height10,
                             googleLoginButton(onPressed: _signInWithGoogle),
-                            // height20,
-                            // Center(
-                            //   child: Text.rich(
-                            //     TextSpan(
-                            //       style: TextStyle(
-                            //         fontSize: 15,
-                            //         color: KColor.fadeText,
-                            //         fontVariations: [FontVariation.weight(600)],
-                            //       ),
-                            //       children: [
-                            //         const TextSpan(
-                            //             text: "Don't have an account? "),
-                            //         TextSpan(
-                            //           recognizer: TapGestureRecognizer()
-                            //             ..onTap = () => context.push("/register"),
-                            //           text: "Create Account",
-                            //           style: TextStyle(
-                            //             fontVariations: [
-                            //               FontVariation.weight(700)
-                            //             ],
-                            //             color: KColor.primary,
-                            //           ),
-                            //         ),
-                            //       ],
-                            //     ),
-                            //   ),
-                            // ),
                             height15,
                             kTermsAndPrivacy(),
                           ],
