@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:ngf_organic/Components/KScaffold.dart';
 import 'package:ngf_organic/Components/KSearchbar.dart';
 import 'package:ngf_organic/Components/Label.dart';
@@ -113,42 +114,25 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
                           : "Searching for \"${searchKey.text}\"")
                       .title,
                   height5,
-
-                  GridView.builder(
-                    shrinkWrap: true,
+                  MasonryGridView.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: products.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: .59,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemBuilder: (context, index) => ProductPreviewCard(
-                      cardWidth: double.infinity,
-                      product: products[index],
-                    ),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return ProductPreviewCard(
+                        product: products[index],
+                      );
+                    },
                   ),
-                  // MasonryGridView.count(
-                  //   crossAxisCount: 2,
-                  //   mainAxisSpacing: 10,
-                  //   crossAxisSpacing: 10,
-                  //   physics: NeverScrollableScrollPhysics(),
-                  //   itemCount: products.length,
-                  //   shrinkWrap: true,
-                  //   itemBuilder: (context, index) {
-                  //     return ProductPreviewCard(
-                  //       cardWidth: double.infinity,
-                  //       product: products[index],
-                  //     );
-                  //   },
-                  // ),
                 ] else ...[
                   Center(
                     child: Column(
                       children: [
                         Label("Sorry :(", weight: 500, fontSize: 25).title,
-                        Label("No products found!", color: KColor.fadeText)
+                        Label("No products found!", color: Kolor.fadeText)
                             .title,
                       ],
                     ),

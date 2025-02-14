@@ -25,7 +25,7 @@ class _ContactUsUIState extends State<ContactUsUI> {
       AndroidWebViewControllerCreationParams(),
     )
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(KColor.scaffold)
+      ..setBackgroundColor(Kolor.scaffold)
       ..setPlatformNavigationDelegate(
         PlatformNavigationDelegate(
           const PlatformNavigationDelegateCreationParams(),

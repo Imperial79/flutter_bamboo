@@ -7,6 +7,7 @@ import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kWidgets.dart';
 import 'package:ngf_organic/Pages/Home/Buy_Membership_Card.dart';
 import 'package:ngf_organic/Pages/Product/Product_Preview_Card.dart';
+import 'package:ngf_organic/Repository/auth_repo.dart';
 import 'package:ngf_organic/Repository/product_repo.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
@@ -51,14 +52,14 @@ class _Home_UIState extends ConsumerState<Home_UI> {
 
     final products = ref.watch(productsList);
     final offersData = ref.watch(offersFuture);
-
+    final user = ref.watch(userProvider)!;
     return KScaffold(
       isLoading: isLoading,
       body: SafeArea(
         child: Column(
           children: [
             KCard(
-              color: KColor.scaffold,
+              color: Kolor.scaffold,
               radius: 0,
               child: Row(
                 spacing: 10,
@@ -70,7 +71,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                           _refresh();
                         },
                       ),
-                      color: KColor.scaffold,
+                      color: Kolor.scaffold,
                       borderWidth: 1,
                       radius: 10,
                       child: Row(
@@ -79,14 +80,14 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                           SvgPicture.asset(
                             "$kIconPath/search.svg",
                             height: 20,
-                            colorFilter: kSvgColor(KColor.fadeText),
+                            colorFilter: kSvgColor(Kolor.fadeText),
                           ),
                           Flexible(
                             child: Label(
                               "Search products",
                               fontSize: 15,
                               weight: 600,
-                              color: KColor.fadeText,
+                              color: Kolor.fadeText,
                             ).title,
                           ),
                         ],
@@ -181,6 +182,33 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                         ],
                       ),
                     ),
+                    if (user.phone == null)
+                      KCard(
+                        onTap: () => context.push("/profile/edit"),
+                        margin: EdgeInsets.all(15),
+                        child: Row(
+                          spacing: 15,
+                          children: [
+                            Icon(
+                              Icons.add_circle_outline,
+                              size: 30,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Label("Add Phone Number",
+                                          fontSize: 16, weight: 650)
+                                      .title,
+                                  Label(
+                                    "Complete your profile by adding your phone number in profile section.",
+                                  ).subtitle,
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     KCard(
                       width: double.maxFinite,
                       padding: EdgeInsets.all(20),
@@ -200,8 +228,8 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                                     context.push("/search-products"),
                                 child: Label(
                                   "See More",
-                                  weight: 700,
-                                  // color: KColor.primary,
+                                  weight: 600,
+                                  color: kColor(context).primary,
                                 ).regular,
                               ),
                             ],

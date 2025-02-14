@@ -35,7 +35,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'NGF Organic - Sustainable Shop',
-      color: KColor.scaffold,
+      color: Kolor.scaffold,
       theme: kTheme(context),
       themeMode: ThemeMode.light,
       builder: (context, child) {

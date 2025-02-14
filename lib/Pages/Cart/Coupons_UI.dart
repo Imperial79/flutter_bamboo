@@ -54,7 +54,7 @@ class _Coupons_UIState extends ConsumerState<Coupons_UI> {
                               spacing: 20,
                               children: [
                                 KCard(
-                                  color: KColor.scaffold,
+                                  color: Kolor.scaffold,
                                   padding: EdgeInsets.all(15),
                                   width: 70,
                                   height: 70,

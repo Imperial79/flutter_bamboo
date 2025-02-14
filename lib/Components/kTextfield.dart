@@ -83,8 +83,8 @@ class KTextfield {
     this.prefixText,
     this.prefix,
     this.suffix,
-    this.fieldColor = KColor.scaffold,
-    this.cursorColor = KColor.primary,
+    this.fieldColor = Kolor.scaffold,
+    this.cursorColor = Kolor.primary,
     this.borderColor,
     this.textColor,
     this.hintTextColor = khintColor,
@@ -115,7 +115,7 @@ class KTextfield {
     fontVariations: [FontVariation.weight(550)],
     fontSize: kFontSize,
     height: kTextHeight,
-    color: KColor.fadeText,
+    color: Kolor.fadeText,
   );
 
   Widget get kLabel => Label(
@@ -127,7 +127,7 @@ class KTextfield {
   InputBorder borderStyle(Color? customBorder) => OutlineInputBorder(
         borderRadius: kRadius(10),
         borderSide:
-            BorderSide(color: borderColor ?? customBorder ?? KColor.border),
+            BorderSide(color: borderColor ?? customBorder ?? Kolor.border),
       );
 
   Widget get regular => Column(
@@ -204,7 +204,7 @@ class KTextfield {
               isDense: true,
               border: borderStyle(null),
               errorBorder: borderStyle(StatusText.danger),
-              focusedBorder: borderStyle(KColor.border),
+              focusedBorder: borderStyle(Kolor.border),
               enabledBorder: borderStyle(null),
               errorStyle: TextStyle(
                 color: StatusText.danger,
@@ -250,7 +250,7 @@ class KTextfield {
                   margin: const EdgeInsets.only(right: 10),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: KColor.primary,
+                    color: Kolor.primary,
                     borderRadius: kRadius(10),
                   ),
                   child: Text(
@@ -268,7 +268,7 @@ class KTextfield {
                   padding: const EdgeInsets.all(12),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: KColor.primary,
+                    color: Kolor.primary,
                     borderRadius: kRadius(10),
                   ),
                   child: prefix!,
@@ -289,12 +289,12 @@ class KTextfield {
                   inputFormatters: inputFormatters,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: KColor.card,
+                    fillColor: Kolor.card,
                     counterText: '',
                     isDense: true,
                     border: borderStyle(null),
                     errorBorder: borderStyle(StatusText.danger),
-                    focusedBorder: borderStyle(KColor.border),
+                    focusedBorder: borderStyle(Kolor.border),
                     enabledBorder: borderStyle(null),
                     hintText: hintText,
                     hintStyle: kHintTextstyle.copyWith(
@@ -353,13 +353,13 @@ class KTextfield {
           onSelected: onSelected,
           expandedInsets: EdgeInsets.zero,
           menuStyle: const MenuStyle(
-              backgroundColor: WidgetStatePropertyAll(KColor.card)),
+              backgroundColor: WidgetStatePropertyAll(Kolor.card)),
           inputDecorationTheme: InputDecorationTheme(
             errorStyle: const TextStyle(color: StatusText.danger),
-            activeIndicatorBorder: const BorderSide(color: KColor.border),
+            activeIndicatorBorder: const BorderSide(color: Kolor.border),
             border: borderStyle(null),
             errorBorder: borderStyle(StatusText.danger),
-            focusedBorder: borderStyle(KColor.border),
+            focusedBorder: borderStyle(Kolor.border),
             enabledBorder: borderStyle(null),
             filled: true,
             fillColor: fieldColor,

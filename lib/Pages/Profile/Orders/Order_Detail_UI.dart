@@ -151,10 +151,10 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                             lineSpace: 0,
                             lineLength: 140,
                             lineThickness: 3,
-                            unreachedLineColor: KColor.card,
-                            activeLineColor: KColor.card,
-                            defaultLineColor: KColor.border,
-                            finishedLineColor: KColor.primary,
+                            unreachedLineColor: Kolor.card,
+                            activeLineColor: Kolor.card,
+                            defaultLineColor: Kolor.border,
+                            finishedLineColor: Kolor.primary,
                           ),
                           finishedStepBackgroundColor: Colors.white,
                           activeStepBackgroundColor: kColor(context).tertiary,
@@ -172,7 +172,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                                 radius: active ? 20 : 5,
                                 backgroundColor:
                                     statusList.indexOf(data.status) >= index
-                                        ? KColor.primary
+                                        ? Kolor.primary
                                         : Colors.grey.shade300,
                               ),
                               customTitle: Label(
@@ -210,7 +210,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                                 height: 70,
                                 width: 70,
                                 decoration: BoxDecoration(
-                                  color: KColor.card,
+                                  color: Kolor.card,
                                   image: DecorationImage(
                                     image: NetworkImage(
                                       data.images[0],
@@ -360,7 +360,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                   label: "Share",
                   style: KButtonStyle.regular,
                   radius: 5,
-                  backgroundColor: KColor.secondary,
+                  backgroundColor: Kolor.secondary,
                   padding: EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                 ),
               ],

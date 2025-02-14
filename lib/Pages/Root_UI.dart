@@ -71,7 +71,7 @@ class _Root_UIState extends State<Root_UI> {
                 return FadeThroughTransition(
                   animation: animation,
                   secondaryAnimation: secondaryAnimation,
-                  fillColor: KColor.scaffold,
+                  fillColor: Kolor.scaffold,
                   child: child,
                 );
               },

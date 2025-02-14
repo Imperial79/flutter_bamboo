@@ -231,7 +231,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                               Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 12,
-                                color: KColor.fadeText,
+                                color: Kolor.fadeText,
                               ),
                             ],
                           ),
@@ -250,12 +250,12 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                             children: [
                               Icon(
                                 Icons.add,
-                                color: KColor.fadeText,
+                                color: Kolor.fadeText,
                                 size: 50,
                               ),
                               Label(
                                 "Add an address",
-                                color: KColor.fadeText,
+                                color: Kolor.fadeText,
                               ).regular,
                             ],
                           ),
@@ -264,12 +264,12 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                       Label("Products Summary", fontSize: 17).title,
                       KCard(
                         borderWidth: 1,
-                        color: KColor.scaffold,
+                        color: Kolor.scaffold,
                         child: cartData.when(
                           data: (data) => ListView.separated(
                             separatorBuilder: (context, index) => Divider(
                               height: 30,
-                              color: KColor.border,
+                              color: Kolor.border,
                             ),
                             itemCount: data.length,
                             shrinkWrap: true,
@@ -371,8 +371,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
             ? Container(
                 padding: EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                    color: KColor.card,
-                    border: Border(top: BorderSide(color: KColor.border))),
+                    color: Kolor.card,
+                    border: Border(top: BorderSide(color: Kolor.border))),
                 child: SafeArea(
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -468,12 +468,12 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                     },
                                     borderColor: selectedAddress == data[index]
                                         ? kColor(context).primary
-                                        : KColor.scaffold,
+                                        : Kolor.scaffold,
                                     borderWidth:
                                         selectedAddress == data[index] ? 1 : 0,
                                     color: selectedAddress == data[index]
                                         ? kColor(context).primaryContainer
-                                        : KColor.scaffold,
+                                        : Kolor.scaffold,
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -556,7 +556,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
             child: CircleAvatar(
               radius: 12,
               backgroundColor: kColor(context).primary,
-              foregroundColor: KColor.scaffold,
+              foregroundColor: Kolor.scaffold,
               child: Icon(
                 Icons.close,
                 size: 15,
@@ -600,7 +600,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                 child: Center(
                   child: Icon(
                     Icons.info_outline,
-                    color: KColor.fadeText,
+                    color: Kolor.fadeText,
                   ),
                 ),
               ),
@@ -609,7 +609,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                 width: 100,
                 decoration: BoxDecoration(
                   borderRadius: kRadius(10),
-                  color: KColor.card,
+                  color: Kolor.card,
                   image: DecorationImage(
                     image: imageProvider,
                   ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class KColor {
+class Kolor {
   static const Color scaffold = Colors.white;
   static const Color primary = Colors.lightGreen;
   static const Color secondary = Color(0xff2b2c43);

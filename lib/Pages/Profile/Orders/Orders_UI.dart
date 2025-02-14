@@ -107,7 +107,7 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
                   height5,
                   KCard(
                     color: kOpacity(
-                        statusColorMap[data["status"]] ?? KColor.secondary, .1),
+                        statusColorMap[data["status"]] ?? Kolor.secondary, .1),
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                     radius: 100,
                     child: Label(data["status"],
@@ -120,7 +120,7 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
             Icon(
               Icons.arrow_forward_ios,
               size: 12,
-              color: KColor.fadeText,
+              color: Kolor.fadeText,
             )
           ],
         ),

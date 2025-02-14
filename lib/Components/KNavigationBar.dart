@@ -17,7 +17,7 @@ class KNavigationBar extends StatelessWidget {
     return KCard(
       padding: EdgeInsets.all(10),
       borderWidth: 1,
-      color: KColor.scaffold,
+      color: Kolor.scaffold,
       radius: 0,
       child: SafeArea(
         child: Row(
@@ -58,14 +58,14 @@ class KNavigationBar extends StatelessWidget {
                       : "$navIconPath/$iconPath.svg",
                   height: 20,
                   colorFilter: ColorFilter.mode(
-                    selected ? KColor.primary : KColor.fadeText,
+                    selected ? Kolor.primary : Kolor.fadeText,
                     BlendMode.srcIn,
                   ),
                 ),
                 Label(
                   label,
                   weight: selected ? 700 : 600,
-                  color: selected ? null : KColor.fadeText,
+                  color: selected ? null : Kolor.fadeText,
                   fontSize: 13,
                 ).regular,
               ],

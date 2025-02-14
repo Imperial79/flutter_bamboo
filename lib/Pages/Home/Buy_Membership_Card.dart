@@ -185,7 +185,7 @@ class _BuyMembershipCardState extends ConsumerState<BuyMembershipCard> {
   successDialog() {
     return StatefulBuilder(
       builder: (context, setState) => Dialog(
-        backgroundColor: KColor.scaffold,
+        backgroundColor: Kolor.scaffold,
         child: ConstrainedBox(
           constraints: BoxConstraints(minHeight: 400),
           child: Padding(

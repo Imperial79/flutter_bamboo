@@ -142,7 +142,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                               children: [
                                 Icon(
                                   Icons.add_circle_outline,
-                                  color: KColor.fadeText,
+                                  color: Kolor.fadeText,
                                   size: 20,
                                 ),
                                 Label("Add phone", fontSize: 15, weight: 600)
@@ -155,7 +155,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                     height20,
                     KCard(
                       padding: EdgeInsets.all(7),
-                      color: KColor.scaffold,
+                      color: Kolor.scaffold,
                       borderWidth: 1,
                       width: double.infinity,
                       child: Column(
@@ -272,7 +272,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
     void Function()? onTap,
   }) {
     return KCard(
-      color: KColor.scaffold,
+      color: Kolor.scaffold,
       onTap: onTap ?? () => context.push(path),
       child: Row(
         spacing: 20,

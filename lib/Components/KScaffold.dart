@@ -70,7 +70,7 @@ class KScaffold extends StatelessWidget {
           ? Container(
               height: double.maxFinite,
               width: double.maxFinite,
-              color: kOpacity(KColor.scaffold, .8),
+              color: kOpacity(Kolor.scaffold, .8),
               child: Center(
                 child: KCard(
                   width: 300,

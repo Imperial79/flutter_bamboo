@@ -21,7 +21,7 @@ SizedBox kHeight(double height) => SizedBox(height: height);
 SizedBox kWidth(double width) => SizedBox(width: width);
 
 Widget get div => const Divider(
-      color: KColor.border,
+      color: Kolor.border,
       thickness: .5,
     );
 
@@ -91,13 +91,13 @@ Widget googleLoginButton({required void Function()? onPressed}) {
   return ElevatedButton(
     onPressed: onPressed,
     style: ElevatedButton.styleFrom(
-      backgroundColor: KColor.scaffold,
+      backgroundColor: Kolor.scaffold,
       foregroundColor: Colors.black,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: kRadius(15),
         side: BorderSide(
-          color: KColor.border,
+          color: Kolor.border,
         ),
       ),
       padding: EdgeInsets.all(15),

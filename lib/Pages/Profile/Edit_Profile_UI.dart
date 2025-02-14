@@ -22,6 +22,7 @@ class Edit_Profile_UI extends ConsumerStatefulWidget {
 class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
   final formKey = GlobalKey<FormState>();
   final phone = TextEditingController();
+  final isLoading = ValueNotifier(false);
 
   @override
   void dispose() {
@@ -39,6 +40,16 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
         setState(() {});
       },
     );
+  }
+
+  updateProfile() async {
+    try {
+      isLoading.value = true;
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   @override
@@ -86,6 +97,7 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
                 height20,
                 KTextfield(
                   controller: phone,
+                  autoFocus: phone.text.isEmpty,
                   label: "Phone (+91)",
                   hintText: "Eg. 909XXXXXX1",
                   showRequired: false,
@@ -97,11 +109,10 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
                 ).regular,
                 height20,
                 KButton(
-                  onPressed: () {},
-                  label: "Save",
+                  onPressed: updateProfile,
+                  label: "Update",
                   style: KButtonStyle.expanded,
-                  backgroundColor: kColor(context).tertiaryContainer,
-                  foregroundColor: kColor(context).tertiary,
+                  backgroundColor: kColor(context).tertiary,
                 )
               ],
             ),

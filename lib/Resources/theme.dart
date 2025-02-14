@@ -5,10 +5,10 @@ const String kFont = "Montserrat";
 
 ThemeData kTheme(context) => ThemeData(
       useMaterial3: true,
-      scaffoldBackgroundColor: KColor.scaffold,
+      scaffoldBackgroundColor: Kolor.scaffold,
       splashFactory: InkSplash.splashFactory,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: KColor.primary,
+        seedColor: Kolor.primary,
         dynamicSchemeVariant: DynamicSchemeVariant.tonalSpot,
         brightness: Brightness.light,
       ),
@@ -20,10 +20,10 @@ ThemeData kTheme(context) => ThemeData(
       ),
       appBarTheme: const AppBarTheme(
         actionsIconTheme: IconThemeData(
-          color: KColor.fadeText,
+          color: Kolor.fadeText,
         ),
-        surfaceTintColor: KColor.primary,
-        backgroundColor: KColor.scaffold,
+        surfaceTintColor: Kolor.primary,
+        backgroundColor: Kolor.scaffold,
         elevation: 0,
       ),
       chipTheme: ChipThemeData(
@@ -41,14 +41,14 @@ ThemeData kTheme(context) => ThemeData(
         ),
       ),
       textSelectionTheme: TextSelectionThemeData(
-        selectionHandleColor: KColor.primary,
+        selectionHandleColor: Kolor.primary,
         cursorColor: kColor(context).primary,
         selectionColor: kColor(context).secondaryContainer,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: KColor.secondary,
-        linearTrackColor: KColor.card,
-        circularTrackColor: KColor.card,
-        refreshBackgroundColor: KColor.card,
+        color: Kolor.secondary,
+        linearTrackColor: Kolor.card,
+        circularTrackColor: Kolor.card,
+        refreshBackgroundColor: Kolor.card,
       ),
     );

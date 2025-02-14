@@ -45,7 +45,7 @@ class Label {
         text,
         style: TextStyle(
             fontSize: fontSize ?? 14,
-            color: color ?? KColor.fadeText,
+            color: color ?? Kolor.fadeText,
             fontVariations: [FontVariation.weight(weight ?? 500)],
             fontStyle: fontStyle,
             height: height,
@@ -66,7 +66,7 @@ class Label {
             fontSize: 14,
             fontStyle: fontStyle,
             height: height,
-            color: color ?? KColor.fadeText,
+            color: color ?? Kolor.fadeText,
             fontFamily: kFont,
           ),
           textAlign: textAlign,

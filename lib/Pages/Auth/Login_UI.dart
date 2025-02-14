@@ -105,7 +105,7 @@ class _Login_UIState extends ConsumerState<Login_UI> {
             child: Label(
               "Skip",
               weight: 600,
-              color: KColor.primary,
+              color: Kolor.primary,
             ).regular,
           ),
         ],
@@ -143,8 +143,8 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                         height5,
                         KCard(
                           radius: 15,
-                          borderColor: KColor.border,
-                          color: KColor.scaffold,
+                          borderColor: Kolor.border,
+                          color: Kolor.scaffold,
                           borderWidth: 1,
                           padding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 2),

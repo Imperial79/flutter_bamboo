@@ -181,7 +181,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                   .title,
               KCard(
                 borderWidth: 1,
-                color: KColor.scaffold,
+                color: Kolor.scaffold,
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -234,13 +234,13 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                   children: [
                     Icon(
                       Icons.security_rounded,
-                      color: KColor.fadeText,
+                      color: Kolor.fadeText,
                       size: 30,
                     ),
                     Expanded(
                       child: Label(
                               "Safe and Secure Payments. Easy returns. 100% Authentic products.",
-                              color: KColor.fadeText)
+                              color: Kolor.fadeText)
                           .regular,
                     ),
                   ],
@@ -251,7 +251,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                 TextSpan(
                   style: TextStyle(
                     fontSize: 12,
-                    color: KColor.fadeText,
+                    color: Kolor.fadeText,
                     fontVariations: [FontVariation.weight(600)],
                   ),
                   children: [
@@ -316,7 +316,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
               ),
             ),
           KCard(
-            color: KColor.card,
+            color: Kolor.card,
             radius: 0,
             child: SafeArea(
               child: Row(
@@ -378,7 +378,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                 width: 60,
                 decoration: BoxDecoration(
                   borderRadius: kRadius(10),
-                  color: KColor.card,
+                  color: Kolor.card,
                   image: DecorationImage(
                     image: imageProvider,
                     fit: BoxFit.cover,

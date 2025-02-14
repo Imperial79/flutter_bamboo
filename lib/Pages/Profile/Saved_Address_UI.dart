@@ -14,8 +14,6 @@ import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../Components/kTextfield.dart';
 
 class Saved_Address_UI extends ConsumerStatefulWidget {
@@ -148,9 +146,9 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
                       label: "Add Address",
                       icon: Icon(Icons.add),
                       style: KButtonStyle.outlined,
-                      backgroundColor: KColor.scaffold,
+                      backgroundColor: Kolor.scaffold,
                       radius: 10,
-                      foregroundColor: KColor.secondary,
+                      foregroundColor: Kolor.secondary,
                     );
                   },
                 ),
@@ -194,7 +192,7 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
           valueListenable: isLoading,
           builder: (context, loading, _) {
             return Dialog(
-              backgroundColor: KColor.card,
+              backgroundColor: Kolor.card,
               insetPadding: const EdgeInsets.all(20),
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(kPadding),
@@ -312,7 +310,7 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
           makePrimary(address.id!);
         }
       },
-      color: KColor.scaffold,
+      color: Kolor.scaffold,
       borderWidth: 1,
       width: double.infinity,
       child: Column(

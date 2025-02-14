@@ -34,7 +34,7 @@ class ProductPreviewCard extends ConsumerWidget {
                 height: 150,
                 decoration: BoxDecoration(
                   borderRadius: kRadius(15),
-                  color: kOpacity(KColor.fadeText, .5),
+                  color: kOpacity(Kolor.fadeText, .5),
                   image: DecorationImage(
                     image: imageProvider,
                     fit: BoxFit.cover,
@@ -42,23 +42,23 @@ class ProductPreviewCard extends ConsumerWidget {
                 ),
               ),
               placeholder: (context, url) => KCard(
-                color: KColor.scaffold,
+                color: Kolor.scaffold,
                 height: 150,
                 child: Center(
                   child: Icon(
                     Icons.image,
-                    color: KColor.fadeText,
+                    color: Kolor.fadeText,
                     size: 30,
                   ),
                 ),
               ),
               errorWidget: (context, url, error) => KCard(
-                color: KColor.scaffold,
+                color: Kolor.scaffold,
                 height: 150,
                 child: Center(
                   child: Icon(
                     Icons.info_outline_rounded,
-                    color: KColor.fadeText,
+                    color: Kolor.fadeText,
                     size: 30,
                   ),
                 ),
@@ -74,7 +74,7 @@ class ProductPreviewCard extends ConsumerWidget {
                     product.category,
                     weight: 500,
                     fontSize: 12,
-                    color: KColor.fadeText,
+                    color: Kolor.fadeText,
                   ).subtitle,
                   Label(
                     "${product.name}\n",
@@ -93,7 +93,7 @@ class ProductPreviewCard extends ConsumerWidget {
                         "${product.totalRatings} | ${thousandToK(product.totalSell)}",
                         weight: 600,
                         fontSize: 12,
-                        color: KColor.fadeText,
+                        color: Kolor.fadeText,
                       ).regular,
                     ],
                   ),
@@ -120,7 +120,7 @@ class ProductPreviewCard extends ConsumerWidget {
                           "MRP ${kCurrencyFormat(product.mrp)}",
                           weight: 500,
                           fontSize: 12,
-                          color: KColor.fadeText,
+                          color: Kolor.fadeText,
                           decoration: TextDecoration.lineThrough,
                         ).regular,
                       ],

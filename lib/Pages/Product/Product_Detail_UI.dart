@@ -164,13 +164,13 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                 Icon(
                                   kCatgeoryMap[product.category] ?? Icons.apps,
                                   size: 20,
-                                  color: KColor.fadeText,
+                                  color: Kolor.fadeText,
                                 ),
                                 Label(
                                   product.category,
                                   fontSize: 15,
                                   weight: 600,
-                                  color: KColor.fadeText,
+                                  color: Kolor.fadeText,
                                 ).regular,
                               ],
                             ),
@@ -191,7 +191,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                     "${product.totalRatings} Ratings • ${thousandToK(product.totalReviews)} Reviews • ${thousandToK(product.totalSell)} Sold",
                                     weight: 500,
                                     fontSize: 15,
-                                    color: KColor.fadeText,
+                                    color: Kolor.fadeText,
                                   ).title,
                                 ),
                               ],
@@ -286,11 +286,11 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             Label(
                               "MRP ${kCurrencyFormat(selectedVariant.mrp)}",
                               weight: 600,
-                              color: KColor.fadeText,
+                              color: Kolor.fadeText,
                               decoration: TextDecoration.lineThrough,
                             ).regular,
                             Label("Inclusive of all taxes",
-                                    color: KColor.fadeText, weight: 600)
+                                    color: Kolor.fadeText, weight: 600)
                                 .subtitle,
                             height20,
                             Row(
@@ -319,7 +319,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                             KCard(
                               width: double.infinity,
                               borderWidth: 1,
-                              color: KColor.scaffold,
+                              color: Kolor.scaffold,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 spacing: 15,
@@ -430,10 +430,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         return Container(
           padding: EdgeInsets.all(kPadding),
           decoration: BoxDecoration(
-            color: KColor.scaffold,
+            color: Kolor.scaffold,
             boxShadow: [
               BoxShadow(
-                color: kOpacity(KColor.secondary, .1),
+                color: kOpacity(Kolor.secondary, .1),
                 blurRadius: 20,
                 spreadRadius: 20,
                 offset: Offset(0, 10),
@@ -456,7 +456,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         ),
                         weight: 700,
                         fontSize: 20,
-                        color: KColor.secondary,
+                        color: Kolor.secondary,
                       ).title,
                     ],
                   ),
@@ -474,7 +474,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     decoration: BoxDecoration(
-                      color: KColor.primary,
+                      color: Kolor.primary,
                       borderRadius: BorderRadius.horizontal(
                         left: Radius.circular(7),
                       ),
@@ -513,7 +513,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                     decoration: BoxDecoration(
-                      color: KColor.secondary,
+                      color: Kolor.secondary,
                       borderRadius: BorderRadius.horizontal(
                         right: Radius.circular(7),
                       ),
@@ -760,10 +760,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         child: Container(
           padding: EdgeInsets.only(bottom: 10, left: 20),
           decoration: BoxDecoration(
-            color: KColor.scaffold,
+            color: Kolor.scaffold,
             border: Border(
               bottom: BorderSide(
-                color: selected ? KColor.primary : Colors.grey.shade300,
+                color: selected ? Kolor.primary : Colors.grey.shade300,
                 width: selected ? 3 : 2,
               ),
             ),
@@ -771,7 +771,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
           child: Label(
             label,
             weight: selected ? 700 : 500,
-            color: selected ? KColor.primary : KColor.fadeText,
+            color: selected ? Kolor.primary : Kolor.fadeText,
           ).title,
         ),
       ),

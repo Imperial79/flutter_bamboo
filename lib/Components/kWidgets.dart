@@ -127,7 +127,7 @@ Widget KCartIcon() {
                   : "$kIconPath/shopping-bag.svg",
               height: 20,
               colorFilter: kSvgColor(
-                data.isNotEmpty ? KColor.primary : Colors.black,
+                data.isNotEmpty ? Kolor.primary : Colors.black,
               ),
             ),
           ),

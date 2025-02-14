@@ -23,7 +23,7 @@ class KCard extends StatelessWidget {
     this.margin,
     this.width,
     this.height,
-    this.color = KColor.card,
+    this.color = Kolor.card,
     this.borderColor,
     this.borderWidth = 0,
   });
@@ -42,7 +42,7 @@ class KCard extends StatelessWidget {
             color: color,
             border: borderWidth > 0
                 ? Border.all(
-                    color: borderColor ?? KColor.border,
+                    color: borderColor ?? Kolor.border,
                     width: borderWidth,
                   )
                 : null),

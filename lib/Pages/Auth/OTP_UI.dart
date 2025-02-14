@@ -175,8 +175,8 @@ class _OTP_UIState extends ConsumerState<OTP_UI> {
   Widget buildOtpField() {
     return KCard(
       radius: 15,
-      borderColor: KColor.border,
-      color: KColor.scaffold,
+      borderColor: Kolor.border,
+      color: Kolor.scaffold,
       borderWidth: 1,
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       child: Row(
@@ -208,7 +208,7 @@ class _OTP_UIState extends ConsumerState<OTP_UI> {
                 ),
                 label: Label(
                   "One Time Password (OTP)",
-                  color: KColor.fadeText,
+                  color: Kolor.fadeText,
                   weight: 600,
                 ).regular,
                 border: InputBorder.none,
