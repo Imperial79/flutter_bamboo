@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:ngf_organic/Components/KScaffold.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
-import 'package:ngf_organic/Resources/theme.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
@@ -109,8 +108,8 @@ Page resource error:
               height: 25,
               child: CircularProgressIndicator(
                 value: _progress,
-                color: kScheme.primary,
-                backgroundColor: kScheme.primaryContainer,
+                color: kColor(context).primary,
+                backgroundColor: kColor(context).primaryContainer,
               ),
             ),
           width20,

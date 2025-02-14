@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ngf_organic/Resources/theme.dart';
 
 import '../Resources/colors.dart';
 import '../Resources/commons.dart';
@@ -34,6 +35,7 @@ class Label {
           fontVariations: [FontVariation.weight(weight ?? 700)],
           fontStyle: fontStyle,
           height: height,
+          fontFamily: kFont,
         ),
         textAlign: textAlign,
         maxLines: maxLines,
@@ -47,7 +49,8 @@ class Label {
             fontVariations: [FontVariation.weight(weight ?? 500)],
             fontStyle: fontStyle,
             height: height,
-            decoration: decoration),
+            decoration: decoration,
+            fontFamily: kFont),
         textAlign: textAlign,
         maxLines: maxLines,
         overflow: maxLines != null ? TextOverflow.ellipsis : null,
@@ -64,6 +67,7 @@ class Label {
             fontStyle: fontStyle,
             height: height,
             color: color ?? KColor.fadeText,
+            fontFamily: kFont,
           ),
           textAlign: textAlign,
         ),
@@ -77,6 +81,7 @@ class Label {
           fontSize: fontSize,
           fontStyle: fontStyle,
           height: height,
+          fontFamily: kFont,
           decoration: decoration,
         ),
         maxLines: maxLines,
@@ -95,6 +100,7 @@ class Label {
               fontStyle: fontStyle,
               height: height,
               fontVariations: [FontVariation.weight(weight ?? 500)],
+              fontFamily: kFont,
             ),
             textAlign: textAlign,
           ),

@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ngf_organic/Helper/api_config.dart';
 import 'package:ngf_organic/Models/Product_Detail_Model.dart';
 import 'package:ngf_organic/Models/Product_Model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:ngf_organic/Models/Response_Model.dart';
 
 final productsList = StateProvider<List<ProductModel>>(
   (ref) => [],
@@ -12,11 +14,24 @@ final searchedProductsList = StateProvider<List<ProductModel>>(
   (ref) => [],
 );
 
-final offersFuture = FutureProvider<Map?>(
+final offersFuture = FutureProvider.autoDispose<Map?>(
   (ref) async {
-    final res = await apiCallBack(path: "/app-config/fetch");
-    if (!res.error) return res.data;
-    return null;
+    ResponseModel res = ResponseModel(error: false, message: "message");
+    final hiveBox = Hive.box('hiveBox');
+    final hiveBanner = hiveBox.get('banners') ?? {};
+    if ((hiveBanner['data'] == null && hiveBanner['date'] == null) ||
+        DateTime.now().difference(hiveBanner['date']).inHours > 24) {
+      res = await apiCallBack(path: "/app-config/fetch");
+      if (!res.error) {
+        await hiveBox
+            .put('banners', {'data': res.data, 'date': DateTime.now()});
+        return res.data;
+      }
+    } else {
+      res.data = hiveBanner['data'];
+    }
+
+    return res.data;
   },
 );
 
@@ -24,7 +39,12 @@ final productReviewsFuture = FutureProvider.autoDispose.family<List, int>(
   (ref, productId) async {
     final res = await apiCallBack(
         path: "/products/reviews", body: {"productId": productId});
-    if (!res.error) return res.data as List;
+    if (!res.error) {
+      // res.data["banners"]
+
+      return res.data as List;
+    }
+
     return [];
   },
 );

@@ -8,7 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../Components/Label.dart';
 import 'colors.dart';
-import 'theme.dart';
 
 const SizedBox width5 = SizedBox(width: 5);
 const SizedBox width10 = SizedBox(width: 10);
@@ -73,12 +72,13 @@ KSnackbar(
     SnackBar(
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: kRadius(10)),
-      backgroundColor:
-          error0 ? kScheme.errorContainer : kScheme.primaryContainer,
+      backgroundColor: error0
+          ? kColor(context).errorContainer
+          : kColor(context).primaryContainer,
       content: Label("$message0",
               color: error0
-                  ? kScheme.onErrorContainer
-                  : kScheme.onPrimaryContainer)
+                  ? kColor(context).onErrorContainer
+                  : kColor(context).onPrimaryContainer)
           .regular,
       action: action,
       behavior: SnackBarBehavior.floating,

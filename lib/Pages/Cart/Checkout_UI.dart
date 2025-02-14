@@ -21,7 +21,6 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../Components/kCard.dart';
 import '../../Components/kWidgets.dart';
-import '../../Resources/theme.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class Checkout_UI extends ConsumerStatefulWidget {
@@ -267,7 +266,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                       text: "Terms & Conditions",
                       style: TextStyle(
                         fontVariations: [FontVariation.weight(700)],
-                        color: kScheme.primary,
+                        color: kColor(context).primary,
                       ),
                     ),
                     const TextSpan(text: " and "),
@@ -279,7 +278,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                       text: "Privacy Policy",
                       style: TextStyle(
                         fontVariations: [FontVariation.weight(700)],
-                        color: kScheme.primary,
+                        color: kColor(context).primary,
                       ),
                     ),
                   ],

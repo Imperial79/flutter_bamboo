@@ -3,22 +3,21 @@ import 'package:ngf_organic/Resources/colors.dart';
 
 const String kFont = "Montserrat";
 
-ColorScheme get kScheme => ColorScheme.fromSeed(
-      seedColor: KColor.primary,
-      brightness: Brightness.light,
-    );
-
 ThemeData kTheme(context) => ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: KColor.scaffold,
       splashFactory: InkSplash.splashFactory,
       colorScheme: ColorScheme.fromSeed(
         seedColor: KColor.primary,
+        dynamicSchemeVariant: DynamicSchemeVariant.tonalSpot,
         brightness: Brightness.light,
       ),
       fontFamily: kFont,
       textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(foregroundColor: kScheme.tertiary)),
+        style: TextButton.styleFrom(
+          foregroundColor: kColor(context).primary,
+        ),
+      ),
       appBarTheme: const AppBarTheme(
         actionsIconTheme: IconThemeData(
           color: KColor.fadeText,
@@ -28,13 +27,13 @@ ThemeData kTheme(context) => ThemeData(
         elevation: 0,
       ),
       chipTheme: ChipThemeData(
-        selectedColor: kScheme.secondary,
+        selectedColor: kColor(context).secondary,
         labelStyle: const TextStyle(
           color: Colors.black,
         ),
       ),
       badgeTheme: BadgeThemeData(
-        backgroundColor: kScheme.primary,
+        backgroundColor: kColor(context).primary,
         largeSize: 20,
         textStyle: TextStyle(
           fontSize: 15,
@@ -43,8 +42,8 @@ ThemeData kTheme(context) => ThemeData(
       ),
       textSelectionTheme: TextSelectionThemeData(
         selectionHandleColor: KColor.primary,
-        cursorColor: kScheme.primary,
-        selectionColor: kScheme.secondaryContainer,
+        cursorColor: kColor(context).primary,
+        selectionColor: kColor(context).secondaryContainer,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: KColor.secondary,

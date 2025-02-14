@@ -31,6 +31,24 @@ class _Root_UIState extends State<Root_UI> {
     {"label": "Profile", "iconPath": "profile", "index": 3},
   ];
 
+  bool canPop = false;
+
+  Future<void> onWillPop(didPop, result) async {
+    setState(() {
+      canPop = true;
+    });
+    KSnackbar(context, message: "Press back again to exit");
+
+    await Future.delayed(
+      Duration(seconds: 3),
+      () {
+        setState(() {
+          canPop = false;
+        });
+      },
+    );
+  }
+
   @override
   void dispose() {
     Hive.close();
@@ -40,25 +58,30 @@ class _Root_UIState extends State<Root_UI> {
   @override
   Widget build(BuildContext context) {
     systemColors();
-    return Scaffold(
-      body: ValueListenableBuilder(
-        valueListenable: activePageNotifier,
-        builder: (context, activePage, _) {
-          return PageTransitionSwitcher(
-            transitionBuilder: (child, animation, secondaryAnimation) {
-              return FadeThroughTransition(
-                animation: animation,
-                secondaryAnimation: secondaryAnimation,
-                fillColor: KColor.scaffold,
-                child: child,
-              );
-            },
-            child: _screens[activePage],
-          );
-        },
-      ),
-      bottomNavigationBar: KNavigationBar(
-        navList: _navs,
+
+    return PopScope(
+      canPop: canPop,
+      onPopInvokedWithResult: onWillPop,
+      child: Scaffold(
+        body: ValueListenableBuilder(
+          valueListenable: activePageNotifier,
+          builder: (context, activePage, _) {
+            return PageTransitionSwitcher(
+              transitionBuilder: (child, animation, secondaryAnimation) {
+                return FadeThroughTransition(
+                  animation: animation,
+                  secondaryAnimation: secondaryAnimation,
+                  fillColor: KColor.scaffold,
+                  child: child,
+                );
+              },
+              child: _screens[activePage],
+            );
+          },
+        ),
+        bottomNavigationBar: KNavigationBar(
+          navList: _navs,
+        ),
       ),
     );
   }

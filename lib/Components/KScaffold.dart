@@ -128,7 +128,6 @@ AppBar KAppBar(
   List<Widget>? actions,
 }) {
   return AppBar(
-    backgroundColor: KColor.scaffold,
     automaticallyImplyLeading: false,
     titleSpacing: showBack ? 0 : kPadding,
     leadingWidth: 50,

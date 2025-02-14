@@ -8,7 +8,6 @@ import 'package:ngf_organic/Components/kTextfield.dart';
 import 'package:ngf_organic/Helper/pdf_invoice.dart';
 import 'package:ngf_organic/Models/order_detail_model.dart';
 import 'package:ngf_organic/Repository/auth_repo.dart';
-import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/material.dart';
@@ -103,18 +102,14 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
           title: "Order Details",
           actions: finalData != null
               ? [
-                  IconButton(
-                    icon: Icon(Icons.pause_presentation),
-                    onPressed: () {
-                      _generateInvoice(finalData);
-                    },
-                  ),
                   PopupMenuButton(
                     elevation: 0,
                     shape: RoundedRectangleBorder(borderRadius: kRadius(10)),
                     itemBuilder: (context) => [
                       PopupMenuItem(
-                        onTap: () {},
+                        onTap: () {
+                          _generateInvoice(finalData);
+                        },
                         child: Label("Invoice").regular,
                       ),
                       PopupMenuItem(
@@ -162,7 +157,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                             finishedLineColor: KColor.primary,
                           ),
                           finishedStepBackgroundColor: Colors.white,
-                          activeStepBackgroundColor: kScheme.tertiary,
+                          activeStepBackgroundColor: kColor(context).tertiary,
                           fitWidth: true,
                           disableScroll: true,
                           internalPadding: 5,
@@ -273,6 +268,11 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
         _row(
           "Selling Price (${data.qty} Items)",
           kCurrencyFormat(data.subTotal, decimalDigits: 2),
+        ),
+        height5,
+        _row(
+          "Delivery Charges",
+          kCurrencyFormat(200, decimalDigits: 2),
         ),
         height5,
         _row("Coupon Discount",

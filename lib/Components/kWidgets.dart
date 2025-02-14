@@ -4,7 +4,6 @@ import 'package:ngf_organic/Components/KNavigationBar.dart';
 import 'package:ngf_organic/Repository/cart_repo.dart';
 import 'package:ngf_organic/Resources/app_config.dart';
 import 'package:ngf_organic/Resources/constants.dart';
-import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -47,8 +46,8 @@ Widget kNoData(
               style: KButtonStyle.regular,
               radius: 100,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              backgroundColor: kScheme.tertiaryContainer,
-              foregroundColor: kScheme.tertiary,
+              backgroundColor: kColor(context).tertiaryContainer,
+              foregroundColor: kColor(context).tertiary,
             ),
           if (action != null) action
         ],
@@ -82,7 +81,7 @@ Widget kLoginRequired(BuildContext context, {String redirectPath = ""}) {
             },
             label: "Login",
             radius: 7,
-            backgroundColor: kScheme.tertiary,
+            backgroundColor: kColor(context).tertiary,
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
           ),
         ],

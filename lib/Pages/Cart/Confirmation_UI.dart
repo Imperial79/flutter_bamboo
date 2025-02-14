@@ -3,11 +3,12 @@ import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kButton.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
-import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
+
+import '../../Resources/colors.dart';
 
 class Confirmation_UI extends StatefulWidget {
   final String orderId;
@@ -47,8 +48,8 @@ class _Confirmation_UIState extends State<Confirmation_UI> {
             child: KButton(
               onPressed: () => context.go("/"),
               label: "Go Home",
-              backgroundColor: kScheme.tertiaryContainer,
-              foregroundColor: kScheme.tertiary,
+              backgroundColor: kColor(context).tertiaryContainer,
+              foregroundColor: kColor(context).tertiary,
               style: KButtonStyle.expanded,
             ),
           ),

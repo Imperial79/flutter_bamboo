@@ -10,7 +10,6 @@ import 'package:ngf_organic/Resources/app_config.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
-import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -230,7 +229,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
           label: "No",
           radius: 100,
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-          backgroundColor: kScheme.error,
+          backgroundColor: kColor(context).error,
         ),
         KButton(
           onPressed: () {
@@ -240,7 +239,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
           label: "Yes",
           radius: 100,
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-          backgroundColor: kScheme.tertiary,
+          backgroundColor: kColor(context).tertiary,
         ),
       ],
     );

@@ -13,7 +13,6 @@ import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:go_router/go_router.dart';
-import '../../Resources/theme.dart';
 import 'package:smart_auth/smart_auth.dart';
 
 class OTP_UI extends ConsumerStatefulWidget {
@@ -150,7 +149,7 @@ class _OTP_UIState extends ConsumerState<OTP_UI> {
                 "+91 ${widget.phone}",
                 weight: 600,
                 fontSize: 15,
-                color: kScheme.primary,
+                color: kColor(context).primary,
               ).subtitle,
               height20,
               buildOtpField(),
@@ -159,8 +158,8 @@ class _OTP_UIState extends ConsumerState<OTP_UI> {
                 onPressed: otp.text.isNotEmpty ? _loginWithPhone : null,
                 label: "Continue",
                 fontSize: 17,
-                backgroundColor: kScheme.primaryContainer,
-                foregroundColor: kScheme.primary,
+                backgroundColor: kColor(context).primaryContainer,
+                foregroundColor: kColor(context).primary,
                 padding: EdgeInsets.all(17),
                 style: KButtonStyle.expanded,
               ),

@@ -8,8 +8,9 @@ import 'package:ngf_organic/Components/kTextfield.dart';
 import 'package:ngf_organic/Repository/auth_repo.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
-import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../Resources/colors.dart';
 
 class Edit_Profile_UI extends ConsumerStatefulWidget {
   const Edit_Profile_UI({super.key});
@@ -99,8 +100,8 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
                   onPressed: () {},
                   label: "Save",
                   style: KButtonStyle.expanded,
-                  backgroundColor: kScheme.tertiaryContainer,
-                  foregroundColor: kScheme.tertiary,
+                  backgroundColor: kColor(context).tertiaryContainer,
+                  foregroundColor: kColor(context).tertiary,
                 )
               ],
             ),

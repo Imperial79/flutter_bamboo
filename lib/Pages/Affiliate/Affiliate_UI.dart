@@ -1,7 +1,6 @@
 // ignore_for_file: unused_result
 
 import 'dart:convert';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ngf_organic/Components/KScaffold.dart';
@@ -13,12 +12,9 @@ import 'package:ngf_organic/Components/kWidgets.dart';
 import 'package:ngf_organic/Models/affiliate_model.dart';
 import 'package:ngf_organic/Repository/affiliate_repo.dart';
 import 'package:ngf_organic/Repository/auth_repo.dart';
-import 'package:ngf_organic/Resources/app_config.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
-import 'package:ngf_organic/Resources/theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 import '../../Resources/colors.dart';
 
 class Affiliate_UI extends ConsumerStatefulWidget {
@@ -302,41 +298,7 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
             validator: (val) => KValidation.pan(val),
           ).regular,
           height20,
-          Text.rich(
-            TextSpan(
-              style: TextStyle(
-                fontSize: 15,
-                color: KColor.fadeText,
-                fontVariations: [FontVariation.weight(500)],
-              ),
-              children: [
-                const TextSpan(text: "By proceeding you agree to our "),
-                TextSpan(
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () async {
-                      await launchUrlString(termsConditionLink);
-                    },
-                  text: "Terms & Conditions",
-                  style: TextStyle(
-                    fontVariations: [FontVariation.weight(700)],
-                    color: kScheme.primary,
-                  ),
-                ),
-                const TextSpan(text: " and "),
-                TextSpan(
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () async {
-                      await launchUrlString(privacyPolicyLink);
-                    },
-                  text: "Privacy Policy",
-                  style: TextStyle(
-                    fontVariations: [FontVariation.weight(700)],
-                    color: kScheme.primary,
-                  ),
-                ),
-              ],
-            ),
-          ),
+          kTermsAndPrivacy(),
           height20,
           Center(
             child: KButton(
@@ -347,7 +309,7 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
               },
               label: "Apply Now",
               radius: 5,
-              backgroundColor: kScheme.primary,
+              backgroundColor: kColor(context).tertiary,
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             ),
           ),

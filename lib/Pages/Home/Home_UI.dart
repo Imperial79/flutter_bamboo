@@ -201,7 +201,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                                 child: Label(
                                   "See More",
                                   weight: 700,
-                                  color: KColor.primary,
+                                  // color: KColor.primary,
                                 ).regular,
                               ),
                             ],

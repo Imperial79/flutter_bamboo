@@ -24,8 +24,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../Resources/theme.dart';
-
 class Product_Detail_UI extends ConsumerStatefulWidget {
   final int id;
   final String? referCode;
@@ -225,7 +223,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                         fontSize: 20,
                                         height: 1,
                                         weight: 500,
-                                        color: kScheme.error,
+                                        color: kColor(context).error,
                                       ).title,
                                     ],
                                   ),
@@ -543,8 +541,8 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
   //       selectedVariant = data;
   //     }),
   //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-  //     borderColor: selected ? kScheme.primary : KColor.card,
-  //     color: selected ? kOpacity(kScheme.primaryContainer, .7) : KColor.card,
+  //     borderColor: selected ? kColor(context).primary : KColor.card,
+  //     color: selected ? kOpacity(kColor(context).primaryContainer, .7) : KColor.card,
   //     borderWidth: 1.5,
   //     radius: 10,
   //     width: 200,
@@ -616,7 +614,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 text: showLess ? "...read less" : "...read more",
                 style: TextStyle(
                     fontVariations: [FontVariation.weight(700)],
-                    color: kScheme.primary),
+                    color: kColor(context).primary),
               ),
           ],
         ),

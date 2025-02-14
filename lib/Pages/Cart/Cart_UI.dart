@@ -19,8 +19,6 @@ import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../Resources/theme.dart';
-
 class Cart_UI extends ConsumerStatefulWidget {
   const Cart_UI({super.key});
 
@@ -310,8 +308,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                             }
                           },
                           borderWidth: 1,
-                          borderColor: kOpacity(kScheme.primary, .5),
-                          color: kOpacity(kScheme.primaryContainer, .1),
+                          borderColor: kOpacity(kColor(context).primary, .5),
+                          color: kOpacity(kColor(context).primaryContainer, .1),
                           child: Center(
                             child: Column(
                               spacing: 10,
@@ -320,12 +318,12 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                   "$kIconPath/discount.svg",
                                   height: 30,
                                   colorFilter: kSvgColor(
-                                    kOpacity(kScheme.primary, .7),
+                                    kOpacity(kColor(context).primary, .7),
                                   ),
                                 ),
                                 Label(
                                   "Add a coupon",
-                                  color: kOpacity(kScheme.primary, .7),
+                                  color: kOpacity(kColor(context).primary, .7),
                                   fontSize: 15,
                                 ).regular,
                               ],
@@ -444,9 +442,10 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                 children: [
                                   Icon(
                                     Icons.add,
-                                    color: kScheme.primary,
+                                    color: kColor(context).primary,
                                   ),
-                                  Label("Add", color: kScheme.primary).regular,
+                                  Label("Add", color: kColor(context).primary)
+                                      .regular,
                                 ],
                               ))
                         ],
@@ -468,12 +467,12 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                       Navigator.pop(context);
                                     },
                                     borderColor: selectedAddress == data[index]
-                                        ? kScheme.primary
+                                        ? kColor(context).primary
                                         : KColor.scaffold,
                                     borderWidth:
                                         selectedAddress == data[index] ? 1 : 0,
                                     color: selectedAddress == data[index]
-                                        ? kScheme.primaryContainer
+                                        ? kColor(context).primaryContainer
                                         : KColor.scaffold,
                                     child: Row(
                                       crossAxisAlignment:
@@ -533,18 +532,18 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
         children: [
           KCard(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            color: kScheme.primaryContainer,
+            color: kColor(context).primaryContainer,
             child: Row(
               spacing: 15,
               children: [
                 Icon(
                   Icons.local_offer,
-                  color: kScheme.primary,
+                  color: kColor(context).primary,
                 ),
                 Expanded(
                   child: Label(
                     "Offer Applied! ${selectedCoupon?.description ?? ""}",
-                    color: kScheme.primary,
+                    color: kColor(context).primary,
                     weight: 600,
                     fontSize: 15,
                   ).regular,
@@ -556,7 +555,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
             onTap: () => ref.read(selectedCouponProvider.notifier).state = null,
             child: CircleAvatar(
               radius: 12,
-              backgroundColor: kScheme.primary,
+              backgroundColor: kColor(context).primary,
               foregroundColor: KColor.scaffold,
               child: Icon(
                 Icons.close,
@@ -686,16 +685,16 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                           radius: 100,
                           padding:
                               EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                          color: kScheme.errorContainer,
+                          color: kColor(context).errorContainer,
                           child: Label("Out of stock",
-                                  color: kScheme.error, fontSize: 12)
+                                  color: kColor(context).error, fontSize: 12)
                               .regular),
                     KCard(
                       onTap: () => deleteItem(data["productVariantId"]),
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                       radius: 7,
-                      color: kScheme.errorContainer,
+                      color: kColor(context).errorContainer,
                       child: Icon(
                         Icons.delete,
                         size: 15,

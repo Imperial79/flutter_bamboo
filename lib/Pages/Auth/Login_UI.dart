@@ -15,7 +15,6 @@ import 'package:go_router/go_router.dart';
 import 'package:smart_auth/smart_auth.dart';
 import '../../Models/User_Model.dart';
 import '../../Repository/auth_repo.dart';
-import '../../Resources/theme.dart';
 
 class Login_UI extends ConsumerStatefulWidget {
   final String? redirectPath;
@@ -176,8 +175,8 @@ class _Login_UIState extends ConsumerState<Login_UI> {
                           onPressed: _signInWithPhone,
                           label: "Continue",
                           fontSize: 17,
-                          backgroundColor: kScheme.primaryContainer,
-                          foregroundColor: kScheme.primary,
+                          backgroundColor: kColor(context).primaryContainer,
+                          foregroundColor: kColor(context).primary,
                           padding: EdgeInsets.all(17),
                           style: KButtonStyle.expanded,
                         ),

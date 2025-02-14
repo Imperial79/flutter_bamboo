@@ -7,7 +7,7 @@ import 'package:ngf_organic/Components/kWidgets.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../Resources/theme.dart';
+import '../../Resources/colors.dart';
 
 class Register_UI extends ConsumerStatefulWidget {
   final String? redirectPath;
@@ -119,8 +119,8 @@ class _Login_UIState extends ConsumerState<Register_UI> {
                           onPressed: _register,
                           label: "Register",
                           fontSize: 17,
-                          backgroundColor: kScheme.primaryContainer,
-                          foregroundColor: kScheme.primary,
+                          backgroundColor: kColor(context).primaryContainer,
+                          foregroundColor: kColor(context).primary,
                           padding: EdgeInsets.all(17),
                           style: KButtonStyle.expanded,
                         ),
@@ -216,7 +216,7 @@ class _Login_UIState extends ConsumerState<Register_UI> {
               //             //         text: "Terms & Conditions",
               //             //         style: TextStyle(
               //             //           fontVariations: [FontVariation.weight(800)],
-              //             //           color: kScheme.primary,
+              //             //           color: kColor(context).primary,
               //             //         ),
               //             //       ),
               //             //       const TextSpan(text: " and "),
@@ -228,7 +228,7 @@ class _Login_UIState extends ConsumerState<Register_UI> {
               //             //         text: "Privacy Policy",
               //             //         style: TextStyle(
               //             //           fontVariations: [FontVariation.weight(800)],
-              //             //           color: kScheme.primary,
+              //             //           color: kColor(context).primary,
               //             //         ),
               //             //       ),
               //             //     ],

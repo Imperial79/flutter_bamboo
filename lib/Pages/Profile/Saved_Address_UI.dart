@@ -9,6 +9,7 @@ import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Components/kWidgets.dart';
 import 'package:ngf_organic/Models/address_model.dart';
 import 'package:ngf_organic/Repository/address_repo.dart';
+import 'package:ngf_organic/Resources/app-data.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
@@ -16,7 +17,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../Components/kTextfield.dart';
-import '../../Resources/theme.dart';
 
 class Saved_Address_UI extends ConsumerStatefulWidget {
   const Saved_Address_UI({super.key});
@@ -278,7 +278,7 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
                         autofillHints: [AutofillHints.addressCity],
                         validator: (val) => KValidation.required(val),
                       ).dropdown(
-                          dropdownMenuEntries: ["West Bengal"]
+                          dropdownMenuEntries: indianStates
                               .map(
                                 (e) => DropdownMenuEntry(
                                   value: e,
@@ -319,41 +319,28 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
         spacing: 10,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: 20,
             children: [
-              SvgPicture.asset(
-                "$kIconPath/location.svg",
-                height: 60,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (address.isPrimary!) ...[
-                      KCard(
-                        radius: 100,
-                        color: kScheme.primaryContainer,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                        child: Label("Primary", fontSize: 12).regular,
-                      ),
-                      height5,
-                    ],
-                    Label(address.name!).title,
-                    Label("+91 ${address.phone}").regular,
-                    Label(
-                      "${address.address!} - ${address.pincode}",
-                      weight: 500,
-                    ).subtitle,
-                    Label(
-                      "${address.city!}, ${address.state}",
-                      weight: 500,
-                    ).subtitle,
-                  ],
+              if (address.isPrimary!) ...[
+                KCard(
+                  radius: 100,
+                  color: kColor(context).primaryContainer,
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                  child: Label("Primary", fontSize: 12).regular,
                 ),
-              ),
+                height5,
+              ],
+              Label(address.name!).title,
+              Label("+91 ${address.phone}").regular,
+              Label(
+                "${address.address!} - ${address.pincode}",
+                weight: 500,
+              ).subtitle,
+              Label(
+                "${address.city!}, ${address.state}",
+                weight: 500,
+              ).subtitle,
             ],
           ),
           Row(
@@ -362,7 +349,11 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
               GestureDetector(
                 onTap: () => deleteAddress(address.id!),
                 child: Chip(
-                  label: Label("Delete").regular,
+                  backgroundColor: kColor(context).errorContainer,
+                  side: BorderSide.none,
+                  label:
+                      Label("Delete", color: kColor(context).error, weight: 600)
+                          .regular,
                 ),
               ),
               if (!address.isPrimary!)
