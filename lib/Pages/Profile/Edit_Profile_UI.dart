@@ -22,13 +22,9 @@ class Edit_Profile_UI extends ConsumerStatefulWidget {
 class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
   final formKey = GlobalKey<FormState>();
   final phone = TextEditingController();
+  final email = TextEditingController();
+  final name = TextEditingController();
   final isLoading = ValueNotifier(false);
-
-  @override
-  void dispose() {
-    phone.dispose();
-    super.dispose();
-  }
 
   @override
   void initState() {
@@ -36,15 +32,28 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
 
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        phone.text = ref.read(userProvider)?.phone ?? "";
-        setState(() {});
+        final user = ref.read(userProvider);
+        if (user != null) {
+          phone.text = ref.read(userProvider)?.phone ?? "";
+          email.text = user.email ?? "";
+          name.text = user.name;
+          setState(() {});
+        }
       },
     );
   }
 
   updateProfile() async {
     try {
+      FocusScope.of(context).unfocus();
       isLoading.value = true;
+      final res = await ref.read(authRepository).updateProfile({
+        "phone": phone.text,
+        "email": email.text,
+        "name": name.text,
+      });
+      await ref.read(authRepository).auth(ref);
+      KSnackbar(context, res: res);
     } catch (e) {
       KSnackbar(context, message: "$e", error: true);
     } finally {
@@ -53,9 +62,18 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
   }
 
   @override
+  void dispose() {
+    phone.dispose();
+    email.dispose();
+    name.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
     return KScaffold(
+      isLoading: isLoading,
       appBar: KAppBar(
         context,
         title: "Edit Profile",
@@ -93,7 +111,7 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
                       ),
                 height10,
                 Label(user.name).title,
-                Label(user.email, weight: 500).regular,
+                Label(user.email ?? user.phone!, weight: 500).regular,
                 height20,
                 KTextfield(
                   controller: phone,
@@ -106,6 +124,27 @@ class _Edit_Profile_UIState extends ConsumerState<Edit_Profile_UI> {
                   autofillHints: [AutofillHints.telephoneNumber],
                   keyboardType: TextInputType.phone,
                   validator: (val) => KValidation.phone(val),
+                ).regular,
+                height20,
+                KTextfield(
+                  controller: email,
+                  label: "Email",
+                  hintText: "Eg. john@mail.com",
+                  prefix: Icon(Icons.alternate_email_outlined),
+                  showRequired: false,
+                  autofillHints: [AutofillHints.email],
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (val) => KValidation.email(val),
+                ).regular,
+                height20,
+                KTextfield(
+                  controller: name,
+                  label: "Name",
+                  hintText: "Eg. John Doe",
+                  showRequired: false,
+                  autofillHints: [AutofillHints.name],
+                  keyboardType: TextInputType.name,
+                  validator: (val) => KValidation.required(val),
                 ).regular,
                 height20,
                 KButton(

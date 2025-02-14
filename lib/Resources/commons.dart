@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
 import 'package:ngf_organic/Models/Response_Model.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -74,15 +75,37 @@ KSnackbar(
       shape: RoundedRectangleBorder(borderRadius: kRadius(10)),
       backgroundColor: error0
           ? kColor(context).errorContainer
-          : kColor(context).primaryContainer,
+          : kColor(context).tertiaryContainer,
       content: Label("$message0",
               color: error0
                   ? kColor(context).onErrorContainer
-                  : kColor(context).onPrimaryContainer)
+                  : kColor(context).onTertiaryContainer)
           .regular,
       action: action,
       behavior: SnackBarBehavior.floating,
       dismissDirection: DismissDirection.horizontal,
+    ),
+  );
+}
+
+KErrorAlert(context, {required dynamic message}) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      backgroundColor: Kolor.card,
+      title: Label("An Error Occurred!", color: StatusText.danger).title,
+      icon: const Icon(
+        Icons.dangerous,
+        color: StatusText.danger,
+        size: 50,
+      ),
+      content: Label("$message").regular,
+      actions: [
+        TextButton(
+          onPressed: () => context.pop(),
+          child: Label("Back to cart").regular,
+        ),
+      ],
     ),
   );
 }

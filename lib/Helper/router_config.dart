@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:ngf_organic/Models/Response_Model.dart';
 import 'package:ngf_organic/Pages/Affiliate/Affiliate_UI.dart';
 import 'package:ngf_organic/Pages/Auth/OTP_UI.dart';
@@ -37,7 +35,6 @@ final goRouterProvider = Provider<GoRouter>(
 
     return GoRouter(
       redirect: (context, state) {
-        log("${state.fullPath}");
         if (authState.isLoading) return "/splash";
         if (authState.hasError) return "/error";
         return null;

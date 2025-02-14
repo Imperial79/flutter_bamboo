@@ -139,4 +139,33 @@ class AuthRepo {
       rethrow;
     }
   }
+
+  Future<ResponseModel> updateProfile(Map<String, dynamic> body) async {
+    try {
+      final res = await apiCallBack(path: "/user/update-profile", body: body);
+      if (res.error) throw res.message;
+      return res;
+    } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> auth(WidgetRef ref) async {
+    try {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+
+      final res = await apiCallBack(
+        path: "/user/auth",
+        body: {
+          "fcmToken": fcmToken,
+        },
+      );
+
+      if (!res.error) {
+        ref.read(userProvider.notifier).state = UserModel.fromMap(res.data);
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

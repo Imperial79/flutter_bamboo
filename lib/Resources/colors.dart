@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class Kolor {
   static const Color scaffold = Colors.white;
-  static const Color primary = Colors.lightGreen;
+  static const Color primary = Color(0xFFE91E63); // pink
+  // static const Color primary = Color(0xFF8BC34A); // light green
   static const Color secondary = Color(0xff2b2c43);
   static const Color tertiary = Color(0xFFE91E63);
   static const Color card = Color(0XFFf6f6f6);

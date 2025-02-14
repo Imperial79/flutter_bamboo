@@ -52,7 +52,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
 
     final products = ref.watch(productsList);
     final offersData = ref.watch(offersFuture);
-    final user = ref.watch(userProvider)!;
+    final user = ref.watch(userProvider);
     return KScaffold(
       isLoading: isLoading,
       body: SafeArea(
@@ -182,7 +182,7 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                         ],
                       ),
                     ),
-                    if (user.phone == null)
+                    if (user != null && user.phone == null)
                       KCard(
                         onTap: () => context.push("/profile/edit"),
                         margin: EdgeInsets.all(15),

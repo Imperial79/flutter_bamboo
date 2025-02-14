@@ -149,7 +149,8 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
         );
       }
     } catch (e) {
-      KSnackbar(context, message: "Chechkout UI. $e", error: true);
+      // KSnackbar(context, message: "Chechkout UI. $e", error: true);
+      KErrorAlert(context, message: "$e");
     } finally {
       isLoading.value = false;
     }

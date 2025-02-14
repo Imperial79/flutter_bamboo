@@ -122,11 +122,9 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                               child: Row(
                                 spacing: 5,
                                 children: [
-                                  Icon(
-                                    Icons.edit,
-                                    size: 15,
-                                  ),
-                                  Label("Edit").regular
+                                  Icon(Icons.edit,
+                                      size: 15, color: StatusText.info),
+                                  Label("Edit", color: StatusText.info).regular
                                 ],
                               ),
                             )
@@ -142,11 +140,15 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                               children: [
                                 Icon(
                                   Icons.add_circle_outline,
-                                  color: Kolor.fadeText,
+                                  color: StatusText.info,
                                   size: 20,
                                 ),
-                                Label("Add phone", fontSize: 15, weight: 600)
-                                    .subtitle,
+                                Label(
+                                  "Add phone",
+                                  fontSize: 15,
+                                  weight: 600,
+                                  color: StatusText.info,
+                                ).subtitle,
                               ],
                             ),
                           ),

@@ -7,7 +7,7 @@ class UserModel {
   String name = "";
   String image = "";
   String? phone = "";
-  String email = "";
+  String? email = "";
   String? googleId = "";
   String? appleId = "";
   String? referrerCode = "";
@@ -98,7 +98,7 @@ class UserModel {
       name: map['name'] ?? '',
       image: map['image'] ?? '',
       phone: map['phone'],
-      email: map['email'] ?? '',
+      email: map['email'],
       googleId: map['googleId'],
       appleId: map['appleId'],
       referrerCode: map['referrerCode'],

@@ -158,6 +158,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
             "checkoutData": res,
             "discountCoupon": discountCoupon,
           },
+        ).then(
+          (value) => _refresh(),
         );
       }
     } catch (e) {
@@ -388,24 +390,26 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                           ],
                         ),
                       ),
-                      KButton(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-                        onPressed: () {
-                          if (selectedAddress != null) {
-                            checkout(
-                              shippingState: selectedAddress.state!,
-                              discountCoupon: selectedCoupon?.coupon,
-                            );
-                          } else {
-                            KSnackbar(context,
-                                message: "Please select an address",
-                                error: true);
-                          }
-                        },
-                        label: "Proceed",
-                        radius: 5,
-                      ),
+                      if (breakdown["subTotal"] > 0)
+                        KButton(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                          onPressed: () {
+                            if (selectedAddress != null) {
+                              checkout(
+                                shippingState: selectedAddress.state!,
+                                discountCoupon: selectedCoupon?.coupon,
+                              );
+                            } else {
+                              KSnackbar(context,
+                                  message: "Please select an address",
+                                  error: true);
+                            }
+                          },
+                          backgroundColor: Kolor.tertiary,
+                          label: "Proceed",
+                          radius: 5,
+                        ),
                     ],
                   ),
                 ),
@@ -590,7 +594,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
         children: [
           GestureDetector(
             onTap: () => context
-                .push("/product/${data["name"]}/${data["productVariantId"]}"),
+                .push("/product/abcd/${data["productId"]}?sku=${data["sku"]}"),
             child: CachedNetworkImage(
               imageUrl: data["images"].split("#_#")[0],
               errorWidget: (context, url, error) => KCard(
@@ -662,7 +666,10 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                     if (int.parse("${data["stock"]}") > 0)
                       DropdownButton(
                         isDense: true,
-                        value: int.parse("${data["qty"]}"),
+                        value: int.parse("${data["qty"]}") >
+                                int.parse("${data["stock"]}")
+                            ? int.parse("${data["stock"]}")
+                            : int.parse("${data["qty"]}"),
                         icon: Icon(
                           Icons.keyboard_arrow_down_rounded,
                           size: 20,
@@ -671,10 +678,13 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                         borderRadius: kRadius(10),
                         elevation: 1,
                         items: List.generate(
-                          9,
+                          int.parse("${data["stock"]}") > 10
+                              ? 10
+                              : int.parse("${data["stock"]}"),
                           (index) => DropdownMenuItem(
-                              value: index + 1,
-                              child: Label("${index + 1}").regular),
+                            value: index + 1,
+                            child: Label("${index + 1}").regular,
+                          ),
                         ),
                         onChanged: (value) {
                           updateCart(data["productVariantId"], value!, index);
