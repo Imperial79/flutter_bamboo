@@ -8,6 +8,7 @@ import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kButton.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Components/kWidgets.dart';
+import 'package:ngf_organic/Models/Cart/Cart_Model.dart';
 import 'package:ngf_organic/Models/Cart/coupon_model.dart';
 import 'package:ngf_organic/Models/address_model.dart';
 import 'package:ngf_organic/Repository/address_repo.dart';
@@ -104,13 +105,13 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
       totalItems = 0;
       final cartData = await ref.read(cartFuture.future);
       for (var element in cartData) {
-        if (int.parse("${element["stock"]}") > 0) {
+        if (int.parse("${element.stock}") > 0) {
           totalMrp +=
-              (parseToDouble(element["mrp"]) * int.parse("${element["qty"]}"));
-          totalSalePrice += (parseToDouble(element["salePrice"]) *
-              int.parse("${element["qty"]}"));
+              (parseToDouble(element.mrp) * int.parse("${element.qty}"));
+          totalSalePrice +=
+              (parseToDouble(element.salePrice) * int.parse("${element.qty}"));
 
-          totalItems += int.parse("${element["qty"]}");
+          totalItems += int.parse("${element.qty}");
         }
       }
       final discount = totalMrp - totalSalePrice;
@@ -200,6 +201,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                     spacing: 10,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // Label("$data".replaceAll(",", "\n")).regular,
                       Label("Shipping Address", fontSize: 17).title,
                       if (selectedAddress != null)
                         KCard(
@@ -586,17 +588,17 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
         ],
       );
 
-  Widget buildCartItem(int index, Map data) {
+  Widget buildCartItem(int index, CartModel data) {
     return SizedBox(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 20,
         children: [
           GestureDetector(
-            onTap: () => context
-                .push("/product/abcd/${data["productId"]}?sku=${data["sku"]}"),
+            onTap: () =>
+                context.push("/product/abcd/${data.productId}?sku=sku"),
             child: CachedNetworkImage(
-              imageUrl: data["images"].split("#_#")[0],
+              imageUrl: data.images[0],
               errorWidget: (context, url, error) => KCard(
                 height: 100,
                 width: 100,
@@ -626,7 +628,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
               crossAxisAlignment: CrossAxisAlignment.start,
               spacing: 5,
               children: [
-                Label(data["name"], maxLines: 2, weight: 600, fontSize: 13)
+                Label(data.name, maxLines: 2, weight: 600, fontSize: 13)
                     .regular,
                 height5,
                 Row(
@@ -636,8 +638,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          kAmount(data["salePrice"]),
-                          Label("MRP ${kCurrencyFormat(data["mrp"])}",
+                          kAmount(data.salePrice),
+                          Label("MRP ${kCurrencyFormat(data.mrp)}",
                                   height: 1,
                                   weight: 600,
                                   fontSize: 12,
@@ -653,7 +655,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                           color: Colors.amber.shade800,
                           size: 17,
                         ),
-                        Label(data["totalRatings"]).regular,
+                        Label("${data.totalRatings}").regular,
                       ],
                     ),
                   ],
@@ -663,13 +665,13 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   spacing: 10,
                   children: [
-                    if (int.parse("${data["stock"]}") > 0)
+                    if (int.parse("${data.stock}") > 0)
                       DropdownButton(
                         isDense: true,
-                        value: int.parse("${data["qty"]}") >
-                                int.parse("${data["stock"]}")
-                            ? int.parse("${data["stock"]}")
-                            : int.parse("${data["qty"]}"),
+                        value: int.parse("${data.qty}") >
+                                int.parse("${data.stock}")
+                            ? int.parse("${data.stock}")
+                            : int.parse("${data.qty}"),
                         icon: Icon(
                           Icons.keyboard_arrow_down_rounded,
                           size: 20,
@@ -678,16 +680,16 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                         borderRadius: kRadius(10),
                         elevation: 1,
                         items: List.generate(
-                          int.parse("${data["stock"]}") > 10
+                          int.parse("${data.stock}") > 10
                               ? 10
-                              : int.parse("${data["stock"]}"),
+                              : int.parse("${data.stock}"),
                           (index) => DropdownMenuItem(
                             value: index + 1,
                             child: Label("${index + 1}").regular,
                           ),
                         ),
                         onChanged: (value) {
-                          updateCart(data["productVariantId"], value!, index);
+                          updateCart(data.productVariantId, value!, index);
                         },
                       )
                     else
@@ -700,7 +702,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                   color: kColor(context).error, fontSize: 12)
                               .regular),
                     KCard(
-                      onTap: () => deleteItem(data["productVariantId"]),
+                      onTap: () => deleteItem(data.productVariantId),
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                       radius: 7,

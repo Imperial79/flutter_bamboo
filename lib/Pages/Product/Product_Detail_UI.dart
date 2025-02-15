@@ -577,8 +577,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   },
                 text: showLess ? "...read less" : "...read more",
                 style: TextStyle(
-                    fontVariations: [FontVariation.weight(700)],
-                    color: kColor(context).primary),
+                  fontVariations: [FontVariation.weight(660)],
+                  color: Kolor.primary,
+                ),
               ),
           ],
         ),
@@ -634,8 +635,9 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                         Label(
                           "Reviews & Ratings",
                         ).regular,
+                        height10,
                         ...data.map(
-                          (e) => KCard(
+                          (review) => KCard(
                             margin: EdgeInsets.only(bottom: 10),
                             radius: 0,
                             child: Column(
@@ -647,8 +649,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                   children: [
                                     CircleAvatar(
                                       radius: 15,
-                                      child: Label(e["name"][0].toUpperCase(),
-                                              fontSize: 12, weight: 500)
+                                      child: Label(
+                                              review["name"][0].toUpperCase(),
+                                              fontSize: 12,
+                                              weight: 500)
                                           .regular,
                                     ),
                                     width5,
@@ -658,10 +662,10 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Label(
-                                          e["name"],
+                                          review["name"],
                                           fontSize: 15,
                                         ).regular,
-                                        Label(kDateFormat(e["date"]),
+                                        Label(kDateFormat(review["date"]),
                                                 fontSize: 10)
                                             .subtitle
                                       ],
@@ -673,23 +677,23 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                         RatingBar.builder(
                                           itemSize: 15,
                                           initialRating:
-                                              parseToDouble(e["rating"]),
+                                              parseToDouble(review["rating"]),
                                           itemBuilder: (context, index) => Icon(
                                             Icons.star,
-                                            color: Colors.amber.shade800,
+                                            color: Kolor.primary,
                                           ),
                                           unratedColor: Colors.grey.shade300,
                                           onRatingUpdate: (value) {},
                                         ),
                                         Label(
-                                          "${e["rating"]}",
-                                          fontSize: 15,
+                                          "${review["rating"]}",
+                                          fontSize: 10,
                                         ).regular
                                       ],
                                     ),
                                   ],
                                 ),
-                                Label("\"${e["feedback"]}\"",
+                                Label("\"${review["feedback"]}\"",
                                         fontSize: 13, weight: 600)
                                     .subtitle,
                               ],

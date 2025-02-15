@@ -1,11 +1,16 @@
 import 'package:ngf_organic/Helper/api_config.dart';
+import 'package:ngf_organic/Models/Cart/Cart_Model.dart';
 import 'package:ngf_organic/Models/Response_Model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final cartFuture = FutureProvider.autoDispose<List>((ref) async {
+final cartFuture = FutureProvider.autoDispose<List<CartModel>>((ref) async {
   final res = await apiCallBack(path: "/cart/fetch-details");
   if (!res.error) {
-    return res.data;
+    return (res.data as List)
+        .map(
+          (e) => CartModel.fromMap(e),
+        )
+        .toList();
   }
   return [];
 });
