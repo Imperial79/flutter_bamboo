@@ -196,10 +196,7 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
           decoration: BoxDecoration(
             color: Kolor.card,
             image: DecorationImage(
-              image: NetworkImage(
-                data.images[0],
-              ),
-            ),
+                image: NetworkImage(data.images[0]), fit: BoxFit.cover),
           ),
         ),
         Expanded(

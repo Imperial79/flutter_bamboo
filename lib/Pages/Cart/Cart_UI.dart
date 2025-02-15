@@ -617,9 +617,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                 decoration: BoxDecoration(
                   borderRadius: kRadius(10),
                   color: Kolor.card,
-                  image: DecorationImage(
-                    image: imageProvider,
-                  ),
+                  image:
+                      DecorationImage(image: imageProvider, fit: BoxFit.cover),
                 ),
               ),
             ),

@@ -90,10 +90,10 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
               width: 70,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(
-                    data["images"].split("#_#")[0],
-                  ),
-                ),
+                    image: NetworkImage(
+                      data["images"].split("#_#")[0],
+                    ),
+                    fit: BoxFit.cover),
               ),
             ),
             Expanded(
