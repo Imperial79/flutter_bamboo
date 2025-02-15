@@ -101,7 +101,7 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
                 spacing: 2,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Label(data["name"]).regular,
+                  Label(data["name"], maxLines: 2).regular,
                   Label("Ordered on - ${kDateFormat(data["orderDate"])}")
                       .subtitle,
                   height5,

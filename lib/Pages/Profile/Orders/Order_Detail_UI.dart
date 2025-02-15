@@ -305,7 +305,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
         height5,
         _row(
           "Delivery Charges",
-          kCurrencyFormat(200, decimalDigits: 2),
+          kCurrencyFormat(data.deliveryCharges, decimalDigits: 2),
         ),
         height5,
         _row("Coupon Discount",

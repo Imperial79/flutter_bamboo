@@ -24,12 +24,9 @@ class Transactions_UI extends ConsumerStatefulWidget {
 class _TransactionsUIState extends ConsumerState<Transactions_UI> {
   String selectedType = "All";
   int pageNo = 0;
-  String filter = "All";
   final List<String> _statusList = [
     "All",
-    "Success",
-    "Failed",
-    "Pending",
+    "Refunds",
   ];
 
   _refresh() async {
@@ -53,6 +50,7 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
         appBar: KAppBar(context, title: "Your Transactions"),
         body: SafeArea(
           child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.all(kPadding).copyWith(top: 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,7 +132,10 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
                   style: TextStyle(fontVariations: [FontVariation.weight(600)]),
                   TextSpan(
                     children: [
-                      TextSpan(text: "Transaction "),
+                      TextSpan(
+                          text: selectedType == "Refunds"
+                              ? "Refund "
+                              : "Transaction "),
                       TextSpan(
                         text: data["status"],
                         style: TextStyle(
@@ -144,13 +145,17 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
                     ],
                   ),
                 ),
-                Label(kDateFormat(data["date"], showTime: true),
-                        weight: 600, fontSize: 12)
-                    .subtitle,
+                Label(
+                  kDateFormat(data["date"], showTime: true),
+                  weight: 600,
+                  fontSize: 12,
+                ).subtitle,
                 height5,
-                Label("#${data[selectedType == "Refunds" ? "refundId" : "orderId"]}",
-                        fontSize: 12, weight: 600)
-                    .subtitle,
+                Label(
+                  "#${data[selectedType == "Refunds" ? "refundId" : "orderId"]}",
+                  fontSize: 12,
+                  weight: 600,
+                ).subtitle,
               ],
             ),
           ),
@@ -204,7 +209,7 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
   }
 
   Widget _buildFilterChip(String label) {
-    final isActive = label == filter;
+    final isActive = label == selectedType;
 
     return Padding(
       padding: const EdgeInsets.only(right: 5.0),
@@ -221,7 +226,7 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
         onSelected: (isSelected) {
           setState(() {
             pageNo = 0;
-            filter = label;
+            selectedType = label;
           });
         },
         checkmarkColor: Colors.white,

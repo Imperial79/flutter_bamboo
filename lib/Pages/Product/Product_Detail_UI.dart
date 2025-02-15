@@ -141,17 +141,36 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          double aspectRatio = 1 / 1; // Custom aspect ratio
+                          double height = constraints.maxWidth / aspectRatio;
+                          return KCarousel(
+                            isLooped: false,
+                            height: height,
+                            children: product.images
+                                .map(
+                                  (e) => Container(
+                                    decoration: BoxDecoration(
+                                      color: Kolor.card,
+                                      image: DecorationImage(
+                                        image: NetworkImage(e),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          );
+                        },
+                      ),
+
+                      height20,
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: kPadding),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            KCarousel(
-                              isLooped: false,
-                              images: product.images,
-                              height: 300,
-                            ),
-                            height20,
                             Row(
                               spacing: 5,
                               children: [

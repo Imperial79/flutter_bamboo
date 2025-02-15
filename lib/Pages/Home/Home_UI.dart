@@ -28,6 +28,7 @@ class Home_UI extends ConsumerStatefulWidget {
 }
 
 class _Home_UIState extends ConsumerState<Home_UI> {
+  final carouselKey = GlobalKey();
   final isLoading = ValueNotifier(false);
   int pageNo = 0;
   String selectedCategory = "All";
@@ -53,6 +54,8 @@ class _Home_UIState extends ConsumerState<Home_UI> {
     final products = ref.watch(productsList);
     final offersData = ref.watch(offersFuture);
     final user = ref.watch(userProvider);
+
+    // log("${carouselKey.currentContext?.size}");
     return KScaffold(
       isLoading: isLoading,
       body: SafeArea(
@@ -144,22 +147,30 @@ class _Home_UIState extends ConsumerState<Home_UI> {
                     ),
                     offersData.when(
                       data: (data) => data != null
-                          ? KCarousel(
-                              height: 250,
-                              isLooped: true,
-                              children: List.generate(
-                                data["banners"].length,
-                                (index) => Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                        data["banners"][index]["image"],
+                          ? LayoutBuilder(
+                              builder: (context, constraints) {
+                                double aspectRatio =
+                                    16 / 9; // Custom aspect ratio
+                                double height =
+                                    constraints.maxWidth / aspectRatio;
+                                return KCarousel(
+                                  height: height,
+                                  isLooped: true,
+                                  children: List.generate(
+                                    data["banners"].length,
+                                    (index) => Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                            data["banners"][index]["image"],
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                      fit: BoxFit.cover,
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              },
                             )
                           : SizedBox(),
                       error: (error, stackTrace) => SizedBox(),

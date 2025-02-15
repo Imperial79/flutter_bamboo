@@ -19,6 +19,7 @@ class OrderDetailModel {
   int qty = 0;
   double couponDiscount = 0;
   double subTotal = 0;
+  double deliveryCharges = 0;
   double netPayable = 0;
   String orderDate = "";
   String shippingName = "";
@@ -47,6 +48,7 @@ class OrderDetailModel {
     required this.qty,
     required this.couponDiscount,
     required this.subTotal,
+    required this.deliveryCharges,
     required this.netPayable,
     required this.orderDate,
     required this.shippingName,
@@ -77,6 +79,7 @@ class OrderDetailModel {
     int? qty,
     double? couponDiscount,
     double? subTotal,
+    double? deliveryCharges,
     double? netPayable,
     String? orderDate,
     String? shippingName,
@@ -106,6 +109,7 @@ class OrderDetailModel {
       qty: qty ?? this.qty,
       couponDiscount: couponDiscount ?? this.couponDiscount,
       subTotal: subTotal ?? this.subTotal,
+      deliveryCharges: deliveryCharges ?? this.deliveryCharges,
       netPayable: netPayable ?? this.netPayable,
       orderDate: orderDate ?? this.orderDate,
       shippingName: shippingName ?? this.shippingName,
@@ -138,6 +142,7 @@ class OrderDetailModel {
       'qty': qty,
       'couponDiscount': couponDiscount,
       'subTotal': subTotal,
+      'deliveryCharges': deliveryCharges,
       'netPayable': netPayable,
       'orderDate': orderDate,
       'shippingName': shippingName,
@@ -170,6 +175,7 @@ class OrderDetailModel {
       qty: map['qty']?.toInt() ?? 0,
       couponDiscount: parseToDouble(map['couponDiscount']),
       subTotal: parseToDouble(map['subTotal']),
+      deliveryCharges: parseToDouble(map['deliveryCharges']),
       netPayable: parseToDouble(map['netPayable']),
       orderDate: map['orderDate'] ?? '',
       shippingName: map['shippingName'] ?? '',
@@ -193,7 +199,7 @@ class OrderDetailModel {
 
   @override
   String toString() {
-    return 'OrderDetailModel(id: $id, productId: $productId, shoppingOrderId: $shoppingOrderId, name: $name, sku: $sku, attributeType: $attributeType, attributeValue: $attributeValue, status: $status, mrp: $mrp, salePrice: $salePrice, taxRate: $taxRate, qty: $qty, couponDiscount: $couponDiscount, subTotal: $subTotal, netPayable: $netPayable, orderDate: $orderDate, shippingName: $shippingName, shippingPhone: $shippingPhone, shippingAddress: $shippingAddress, shippingState: $shippingState, rating: $rating, feedback: $feedback, deliveredOn: $deliveredOn, returnDays: $returnDays, returnReason: $returnReason, paymentId: $paymentId, images: $images)';
+    return 'OrderDetailModel(id: $id, productId: $productId, shoppingOrderId: $shoppingOrderId, name: $name, sku: $sku, attributeType: $attributeType, attributeValue: $attributeValue, status: $status, mrp: $mrp, salePrice: $salePrice, taxRate: $taxRate, qty: $qty, couponDiscount: $couponDiscount, subTotal: $subTotal, deliveryCharges: $deliveryCharges, netPayable: $netPayable, orderDate: $orderDate, shippingName: $shippingName, shippingPhone: $shippingPhone, shippingAddress: $shippingAddress, shippingState: $shippingState, rating: $rating, feedback: $feedback, deliveredOn: $deliveredOn, returnDays: $returnDays, returnReason: $returnReason, paymentId: $paymentId, images: $images)';
   }
 
   @override
@@ -215,6 +221,7 @@ class OrderDetailModel {
         other.qty == qty &&
         other.couponDiscount == couponDiscount &&
         other.subTotal == subTotal &&
+        other.deliveryCharges == deliveryCharges &&
         other.netPayable == netPayable &&
         other.orderDate == orderDate &&
         other.shippingName == shippingName &&
@@ -246,6 +253,7 @@ class OrderDetailModel {
         qty.hashCode ^
         couponDiscount.hashCode ^
         subTotal.hashCode ^
+        deliveryCharges.hashCode ^
         netPayable.hashCode ^
         orderDate.hashCode ^
         shippingName.hashCode ^
