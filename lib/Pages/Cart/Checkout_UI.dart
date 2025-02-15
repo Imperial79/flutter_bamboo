@@ -192,11 +192,26 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                   itemCount: masterdata["checkoutProducts"].length,
                 ),
               ),
-              Label(
-                "Your products will be delivered by ${DateFormat("dd, MMM yyyy").format(DateTime.now().add(Duration(days: paymentBreakdown["deliveryDays"])))}.",
-                color: StatusText.success,
-                fontSize: 15,
-              ).regular,
+              KCard(
+                color: StatusText.success.lighten(.7),
+                child: Row(
+                  spacing: 10,
+                  children: [
+                    Icon(
+                      Icons.info_outline,
+                      size: 20,
+                      color: StatusText.success.darken(),
+                    ),
+                    Expanded(
+                      child: Label(
+                        "Your products will be delivered by ${DateFormat("dd, MMM yyyy").format(DateTime.now().add(Duration(days: paymentBreakdown["deliveryDays"])))}.",
+                        color: StatusText.success.darken(),
+                        fontSize: 14,
+                      ).regular,
+                    )
+                  ],
+                ),
+              ),
               height10,
               Label('Price Breakdown', fontSize: 17).title,
               KCard(
@@ -330,9 +345,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                         Label(kCurrencyFormat(paymentBreakdown["totalMrp"]),
                                 decoration: TextDecoration.lineThrough)
                             .subtitle,
-                        Label(
-                          kCurrencyFormat(paymentBreakdown["netPayable"]),
-                        ).title
+                        kAmount(paymentBreakdown["netPayable"], symbolSize: 15),
                       ],
                     ),
                   ),
@@ -370,6 +383,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
       spacing: 15,
       children: [
         Column(
+          spacing: 10,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CachedNetworkImage(
@@ -387,7 +401,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                 ),
               ),
             ),
-            Label("QTY: ${productData["qty"]}", fontSize: 12).regular
+            Label("QTY: ${productData["qty"]}", fontSize: 10).regular
           ],
         ),
         Expanded(
@@ -397,7 +411,6 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
             children: [
               Label(productData["name"], maxLines: 1, weight: 600, fontSize: 13)
                   .regular,
-              // height5,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -405,14 +418,15 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        kAmount(productData["salePrice"], fontSize: 20),
+                        kAmount(productData["salePrice"], fontSize: 15),
                         height5,
-                        Label("MRP ${kCurrencyFormat(productData["mrp"])}",
-                                height: 1,
-                                weight: 500,
-                                fontSize: 17,
-                                decoration: TextDecoration.lineThrough)
-                            .subtitle,
+                        Label(
+                          "MRP ${kCurrencyFormat(productData["mrp"])}",
+                          height: 1,
+                          weight: 500,
+                          fontSize: 12,
+                          decoration: TextDecoration.lineThrough,
+                        ).subtitle,
                       ],
                     ),
                   ),
@@ -423,7 +437,7 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                         color: Colors.amber.shade800,
                         size: 17,
                       ),
-                      Label(productData["totalRatings"]).regular,
+                      Label(productData["avgRatings"]).regular,
                     ],
                   ),
                 ],

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 
@@ -13,7 +12,7 @@ class CartModel {
   int qty = 0;
   int productId = 0;
   String name = "";
-  double totalRatings = 0;
+  double avgRatings = 0;
   int totalReviews = 0;
   List<String> images = [];
   CartModel({
@@ -26,7 +25,7 @@ class CartModel {
     required this.qty,
     required this.productId,
     required this.name,
-    required this.totalRatings,
+    required this.avgRatings,
     required this.totalReviews,
     required this.images,
   });
@@ -41,7 +40,7 @@ class CartModel {
     int? qty,
     int? productId,
     String? name,
-    double? totalRatings,
+    double? avgRatings,
     int? totalReviews,
     List<String>? images,
   }) {
@@ -55,7 +54,7 @@ class CartModel {
       qty: qty ?? this.qty,
       productId: productId ?? this.productId,
       name: name ?? this.name,
-      totalRatings: totalRatings ?? this.totalRatings,
+      avgRatings: avgRatings ?? this.avgRatings,
       totalReviews: totalReviews ?? this.totalReviews,
       images: images ?? this.images,
     );
@@ -72,7 +71,7 @@ class CartModel {
       'qty': qty,
       'productId': productId,
       'name': name,
-      'totalRatings': totalRatings,
+      'avgRatings': avgRatings,
       'totalReviews': totalReviews,
       'images': images,
     };
@@ -89,7 +88,7 @@ class CartModel {
       qty: int.parse("${map['qty']}"),
       productId: int.parse("${map['productId']}"),
       name: map['name'] ?? '',
-      totalRatings: parseToDouble(map['totalRatings']),
+      avgRatings: parseToDouble(map['avgRatings']),
       totalReviews: int.parse("${map['totalReviews']}"),
       images: List<String>.from(map['images'].split("#_#")),
     );
@@ -102,7 +101,7 @@ class CartModel {
 
   @override
   String toString() {
-    return 'CartModel(productVariantId: $productVariantId, attributeType: $attributeType, attributeValue: $attributeValue, mrp: $mrp, salePrice: $salePrice, stock: $stock, qty: $qty, productId: $productId, name: $name, totalRatings: $totalRatings, totalReviews: $totalReviews, images: $images)';
+    return 'CartModel(productVariantId: $productVariantId, attributeType: $attributeType, attributeValue: $attributeValue, mrp: $mrp, salePrice: $salePrice, stock: $stock, qty: $qty, productId: $productId, name: $name, avgRatings: $avgRatings, totalReviews: $totalReviews, images: $images)';
   }
 
   @override
@@ -119,7 +118,7 @@ class CartModel {
         other.qty == qty &&
         other.productId == productId &&
         other.name == name &&
-        other.totalRatings == totalRatings &&
+        other.avgRatings == avgRatings &&
         other.totalReviews == totalReviews &&
         listEquals(other.images, images);
   }
@@ -135,7 +134,7 @@ class CartModel {
         qty.hashCode ^
         productId.hashCode ^
         name.hashCode ^
-        totalRatings.hashCode ^
+        avgRatings.hashCode ^
         totalReviews.hashCode ^
         images.hashCode;
   }

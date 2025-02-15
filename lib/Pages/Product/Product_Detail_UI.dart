@@ -10,6 +10,7 @@ import 'package:ngf_organic/Components/kCarousel.dart';
 import 'package:ngf_organic/Components/kWidgets.dart';
 import 'package:ngf_organic/Helper/data.dart';
 import 'package:ngf_organic/Helper/share_product.dart';
+import 'package:ngf_organic/Models/Cart/Cart_Model.dart';
 import 'package:ngf_organic/Models/Product_Detail_Model.dart';
 import 'package:ngf_organic/Models/Product_Variant_Model.dart';
 import 'package:ngf_organic/Repository/auth_repo.dart';
@@ -181,7 +182,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                                 ),
                                 Expanded(
                                   child: Label(
-                                    "${product.totalRatings} Ratings • ${thousandToK(product.totalReviews)} Reviews • ${thousandToK(product.totalSell)} Sold",
+                                    "${product.avgRatings} Ratings • ${thousandToK(product.totalReviews)} Reviews • ${thousandToK(product.totalSell)} Sold",
                                     weight: 500,
                                     fontSize: 15,
                                     color: Kolor.fadeText,
@@ -385,11 +386,11 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
     );
   }
 
-  Widget footer(ProductDetailModel product, List cart) {
+  Widget footer(ProductDetailModel product, List<CartModel> cart) {
     return Consumer(
       builder: (context, ref, child) {
         final inCart =
-            cart.any((item) => item["productVariantId"] == selectedVariant.id);
+            cart.any((item) => item.productVariantId == selectedVariant.id);
         final user = ref.watch(userProvider);
         return Container(
           padding: EdgeInsets.all(kPadding),
@@ -603,7 +604,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 spacing: 10,
                 children: [
                   Label(
-                    "${product.totalRatings}",
+                    "${product.avgRatings}",
                     fontSize: 40,
                     height: 1,
                     weight: 800,
@@ -615,7 +616,7 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
                 ],
               ),
               StarRating(
-                rating: product.totalRatings,
+                rating: product.avgRatings,
                 allowHalfRating: false,
                 color: Colors.amber.shade800,
               ),

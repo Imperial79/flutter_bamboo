@@ -18,6 +18,7 @@ class KButton extends StatelessWidget {
   final bool isLoading;
   final VisualDensity? visualDensity;
   final KButtonStyle style;
+  final double? buttonWidth;
 
   const KButton({
     super.key,
@@ -34,14 +35,18 @@ class KButton extends StatelessWidget {
     this.isLoading = false,
     this.visualDensity,
     this.style = KButtonStyle.regular,
+    this.buttonWidth,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: !isLoading ? onPressed : null,
-      style: customStyle ?? _buttonStyle(context),
-      child: _buildChild(),
+    return SizedBox(
+      width: buttonWidth,
+      child: ElevatedButton(
+        onPressed: !isLoading ? onPressed : null,
+        style: customStyle ?? _buttonStyle(context),
+        child: _buildChild(),
+      ),
     );
   }
 
@@ -65,7 +70,6 @@ class KButton extends StatelessWidget {
           disabledBackgroundColor: Kolor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
-            // letterSpacing: .7,
             fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
@@ -97,7 +101,6 @@ class KButton extends StatelessWidget {
           disabledBackgroundColor: Kolor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
-            // letterSpacing: .7,
             fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
@@ -118,7 +121,6 @@ class KButton extends StatelessWidget {
           alignment: Alignment.center,
           textStyle: TextStyle(
             fontSize: fontSize,
-            // letterSpacing: .7,
             fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
@@ -139,7 +141,6 @@ class KButton extends StatelessWidget {
           disabledBackgroundColor: Kolor.card,
           textStyle: TextStyle(
             fontSize: fontSize,
-            // letterSpacing: .7,
             fontVariations: [FontVariation.weight(weight)],
             fontFamily: kFont,
           ),
@@ -175,7 +176,6 @@ class KButton extends StatelessWidget {
       case KButtonStyle.pill:
       case KButtonStyle.thickPill:
         return Row(
-          spacing: 10,
           mainAxisSize: MainAxisSize.min,
           children: [
             if (icon != null) icon!,

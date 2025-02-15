@@ -48,8 +48,8 @@ class _Confirmation_UIState extends State<Confirmation_UI> {
             child: KButton(
               onPressed: () => context.go("/"),
               label: "Go Home",
-              backgroundColor: kColor(context).tertiaryContainer,
-              foregroundColor: kColor(context).tertiary,
+              backgroundColor: kColor(context).primaryContainer,
+              foregroundColor: kColor(context).onPrimaryContainer,
               style: KButtonStyle.expanded,
             ),
           ),
@@ -66,6 +66,11 @@ class _Confirmation_UIState extends State<Confirmation_UI> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SvgPicture.asset(
+                "$kIconPath/success.svg",
+                height: 100,
+              ),
+              height20,
               Label("Thank you!", fontSize: 27, weight: 700).title,
               height20,
               Row(

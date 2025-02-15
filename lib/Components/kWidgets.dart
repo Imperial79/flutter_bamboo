@@ -90,11 +90,15 @@ Widget kLoginRequired(BuildContext context, {String redirectPath = ""}) {
   );
 }
 
-Widget kAmount(dynamic amount, {double? fontSize = 25}) {
+Widget kAmount(
+  dynamic amount, {
+  double fontSize = 25,
+  double? symbolSize,
+}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Label("₹", fontSize: 15, height: 1.2).regular,
+      Label("₹", fontSize: symbolSize ?? (fontSize - 5), height: 1.1).regular,
       Expanded(
         child: Label(
           kCurrencyFormat(

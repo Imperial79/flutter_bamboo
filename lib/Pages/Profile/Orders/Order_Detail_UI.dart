@@ -1,7 +1,5 @@
 // ignore_for_file: unused_result
 
-import 'dart:developer';
-
 import 'package:ngf_organic/Components/kButton.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Components/kTextfield.dart';
@@ -15,6 +13,7 @@ import 'package:ngf_organic/Components/KScaffold.dart';
 import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kWidgets.dart';
 import 'package:ngf_organic/Repository/orderHistory_repo.dart';
+import 'package:ngf_organic/Resources/app-data.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
@@ -37,6 +36,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
   double selectedRating = 0;
   final isLoading = ValueNotifier(false);
   final feedback = TextEditingController();
+  List<String> selectedReasons = [];
 
   @override
   void dispose() {
@@ -48,8 +48,11 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
     "Ordered",
     "Shipped",
     "Delivered",
-    // "Return Pending",
-    // "Refunded",
+  ];
+
+  List<String> returnStatusList = [
+    "Return Pending",
+    "Refunded",
   ];
 
   _shareRatings() async {
@@ -81,9 +84,26 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
       final pdfFile = await PdfInvoiceApi.generate(orderDetails: invoiceData);
       await PdfInvoiceApi.openFile(pdfFile);
     } catch (e) {
-      log("$e");
       KSnackbar(context,
           message: "Error while generating invoice! $e", error: true);
+    }
+  }
+
+  returnItem(int orderedItemId) async {
+    try {
+      isLoading.value = true;
+      Navigator.pop(context);
+      final res = await ref.read(orderHistoryRepo).requestReturn(
+            orderedItemId: orderedItemId,
+            returnReason: selectedReasons.join("\n"),
+          );
+      selectedReasons.clear();
+      _refresh();
+      KSnackbar(context, res: res);
+    } catch (e) {
+      KSnackbar(context, message: "$e", error: true);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -142,48 +162,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                               .subtitle,
                         div,
                         kHeight(50),
-                        EasyStepper(
-                          enableStepTapping: false,
-                          activeStep: statusList.indexOf(data.status),
-                          lineStyle: LineStyle(
-                            lineType: LineType.normal,
-                            lineWidth: 0,
-                            lineSpace: 0,
-                            lineLength: 140,
-                            lineThickness: 3,
-                            unreachedLineColor: Kolor.card,
-                            activeLineColor: Kolor.card,
-                            defaultLineColor: Kolor.border,
-                            finishedLineColor: Kolor.primary,
-                          ),
-                          finishedStepBackgroundColor: Colors.white,
-                          activeStepBackgroundColor: kColor(context).tertiary,
-                          fitWidth: true,
-                          disableScroll: true,
-                          internalPadding: 5,
-                          showLoadingAnimation: false,
-                          stepRadius: 8,
-                          showStepBorder: false,
-                          steps: List.generate(statusList.length, (index) {
-                            bool active =
-                                statusList.indexOf(data.status) == index;
-                            return EasyStep(
-                              customStep: CircleAvatar(
-                                radius: active ? 20 : 5,
-                                backgroundColor:
-                                    statusList.indexOf(data.status) >= index
-                                        ? Kolor.primary
-                                        : Colors.grey.shade300,
-                              ),
-                              customTitle: Label(
-                                statusList[index],
-                                fontSize: 12,
-                                textAlign: TextAlign.center,
-                              ).regular,
-                              topTitle: index % 2 == 0,
-                            );
-                          }),
-                        ),
+                        _stepper(data.status),
                         height20,
                         Label("Product Details").regular,
                         div,
@@ -236,6 +215,14 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                         ...priceDetails(data),
                         height20,
                         ...paymentDetails(data),
+                        if (data.status == "Delivered" &&
+                            data.deliveredOn != null &&
+                            DateTime.now().isBefore(
+                                DateTime.parse(data.deliveredOn!)
+                                    .add(Duration(days: data.returnDays)))) ...[
+                          height20,
+                          ...returnDetails(data),
+                        ]
                       ],
                     ),
                   )
@@ -248,12 +235,58 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
     );
   }
 
+  Widget _stepper(String status) {
+    bool isReturn = ["Return Pending", "Refunded"].contains(status);
+    final statusList0 = isReturn ? returnStatusList : statusList;
+    final color0 = isReturn ? StatusText.warning : Kolor.primary;
+    return EasyStepper(
+      enableStepTapping: false,
+      activeStep: statusList0.indexOf(status),
+      lineStyle: LineStyle(
+        lineType: LineType.normal,
+        lineWidth: 0,
+        lineSpace: 0,
+        lineLength: 140,
+        lineThickness: 3,
+        unreachedLineColor: Kolor.card,
+        activeLineColor: Kolor.card,
+        defaultLineColor: Kolor.border,
+        finishedLineColor: color0,
+      ),
+      finishedStepBackgroundColor: Colors.white,
+      activeStepBackgroundColor: kColor(context).tertiary,
+      fitWidth: true,
+      disableScroll: true,
+      internalPadding: 5,
+      showLoadingAnimation: false,
+      stepRadius: 8,
+      showStepBorder: false,
+      steps: List.generate(statusList0.length, (index) {
+        bool active = statusList0.indexOf(status) == index;
+        return EasyStep(
+          customStep: CircleAvatar(
+            radius: active ? 20 : 5,
+            backgroundColor: statusList0.indexOf(status) >= index
+                ? color0
+                : Colors.grey.shade300,
+          ),
+          customTitle: Label(
+            statusList0[index],
+            fontSize: 12,
+            textAlign: TextAlign.center,
+          ).regular,
+          topTitle: index % 2 == 0,
+        );
+      }),
+    );
+  }
+
   List<Widget> shippingDetails(OrderDetailModel data) => [
         Label("Shipping Details").regular,
         div,
         Label(data.shippingName).subtitle,
         Label(data.shippingAddress).subtitle,
-        Label("Phone number - ${data.shippingPhone}").subtitle,
+        Label("Contact - +91 ${data.shippingPhone}").subtitle,
       ];
 
   List<Widget> priceDetails(OrderDetailModel data) => [
@@ -291,6 +324,109 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
         div,
         Label("PAYMENT ID - ${data.paymentId}").subtitle
       ];
+
+  List<Widget> returnDetails(OrderDetailModel data) => [
+        Label("Want to request return/replacement ?").regular,
+        div,
+        Label("Returnable by", fontSize: 12, weight: 500).regular,
+        Label(
+          kDateFormat(DateTime.parse(data.deliveredOn!)
+              .add(Duration(days: data.returnDays))
+              .toString()),
+          fontSize: 15,
+          weight: 700,
+        ).regular,
+        height10,
+        KButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                useSafeArea: true,
+                backgroundColor: Kolor.scaffold,
+                builder: (context) => returnModal(data));
+          },
+          radius: 10,
+          buttonWidth: double.infinity,
+          style: KButtonStyle.outlined,
+          backgroundColor: Kolor.scaffold,
+          foregroundColor: Kolor.primary,
+          label: "Return/Replace Items",
+        )
+      ];
+
+  Widget returnModal(OrderDetailModel data) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Padding(
+          padding: EdgeInsets.all(kPadding).copyWith(bottom: 0),
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Label("Select a reason").title,
+                          Label("You can select multiple reasons that match your concerns.")
+                              .subtitle,
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                height15,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: returnReasons
+                          .map(
+                            (e) => Row(
+                              spacing: 10,
+                              children: [
+                                Checkbox(
+                                  value: selectedReasons.any(
+                                    (element) => element == e,
+                                  ),
+                                  onChanged: (value) {
+                                    if (value!) {
+                                      setState(() {
+                                        selectedReasons.add(e);
+                                      });
+                                    } else {
+                                      setState(() {
+                                        selectedReasons.remove(e);
+                                      });
+                                    }
+                                  },
+                                ),
+                                Expanded(child: Label(e).regular)
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  ),
+                ),
+                height15,
+                KButton(
+                  onPressed: () => returnItem(data.id),
+                  label: "Submit Request",
+                  radius: 5,
+                  buttonWidth: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   Widget ratingsAndReview(OrderDetailModel data) =>
       Consumer(builder: (context, ref, child) {

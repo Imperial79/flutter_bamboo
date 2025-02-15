@@ -85,8 +85,7 @@ class Label {
           decoration: decoration,
         ),
         maxLines: maxLines,
-        overflow:
-            maxLines != null && maxLines! > 1 ? TextOverflow.ellipsis : null,
+        overflow: maxLines != null ? TextOverflow.ellipsis : null,
         textAlign: textAlign,
       );
   Widget get withDivider => Row(

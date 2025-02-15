@@ -106,13 +106,19 @@ class _Orders_UIState extends ConsumerState<Orders_UI> {
                       .subtitle,
                   height5,
                   KCard(
-                    color: kOpacity(
-                        statusColorMap[data["status"]] ?? Kolor.secondary, .1),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                    color: (statusColors[data["status"]] ?? Colors.white)
+                        .lighten(.4),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 5,
+                    ),
                     radius: 100,
-                    child: Label(data["status"],
-                            color: statusColorMap[data["status"]], fontSize: 12)
-                        .regular,
+                    child: Label(
+                      data["status"],
+                      color: (statusColors[data["status"]] ?? Colors.white)
+                          .darken(.3),
+                      fontSize: 12,
+                    ).regular,
                   ),
                 ],
               ),

@@ -8,7 +8,7 @@ class ProductModel {
   String name = "";
   String description = "";
   String category = "";
-  double totalRatings = 0;
+  double avgRatings = 0;
   int totalReviews = 0;
   int totalSell = 0;
   int returnDays = 0;
@@ -20,7 +20,7 @@ class ProductModel {
     required this.name,
     required this.description,
     required this.category,
-    required this.totalRatings,
+    required this.avgRatings,
     required this.totalReviews,
     required this.totalSell,
     required this.returnDays,
@@ -34,7 +34,7 @@ class ProductModel {
     String? name,
     String? description,
     String? category,
-    double? totalRatings,
+    double? avgRatings,
     int? totalReviews,
     int? totalSell,
     int? returnDays,
@@ -47,7 +47,7 @@ class ProductModel {
       name: name ?? this.name,
       description: description ?? this.description,
       category: category ?? this.category,
-      totalRatings: totalRatings ?? this.totalRatings,
+      avgRatings: avgRatings ?? this.avgRatings,
       totalReviews: totalReviews ?? this.totalReviews,
       totalSell: totalSell ?? this.totalSell,
       returnDays: returnDays ?? this.returnDays,
@@ -63,7 +63,7 @@ class ProductModel {
       'name': name,
       'description': description,
       'category': category,
-      'totalRatings': totalRatings,
+      'avgRatings': avgRatings,
       'totalReviews': totalReviews,
       'totalSell': totalSell,
       'returnDays': returnDays,
@@ -79,7 +79,7 @@ class ProductModel {
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       category: map['category'] ?? '',
-      totalRatings: parseToDouble(map['totalRatings']),
+      avgRatings: parseToDouble(map['avgRatings']),
       totalReviews: map['totalReviews']?.toInt() ?? 0,
       totalSell: map['totalSell']?.toInt() ?? 0,
       returnDays: map['returnDays']?.toInt() ?? 0,
@@ -96,7 +96,7 @@ class ProductModel {
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, name: $name, description: $description, category: $category, totalRatings: $totalRatings, totalReviews: $totalReviews, totalSell: $totalSell, returnDays: $returnDays, mrp: $mrp, salePrice: $salePrice, images: $images)';
+    return 'ProductModel(id: $id, name: $name, description: $description, category: $category, avgRatings: $avgRatings, totalReviews: $totalReviews, totalSell: $totalSell, returnDays: $returnDays, mrp: $mrp, salePrice: $salePrice, images: $images)';
   }
 
   @override
@@ -108,7 +108,7 @@ class ProductModel {
         other.name == name &&
         other.description == description &&
         other.category == category &&
-        other.totalRatings == totalRatings &&
+        other.avgRatings == avgRatings &&
         other.totalReviews == totalReviews &&
         other.totalSell == totalSell &&
         other.returnDays == returnDays &&
@@ -123,7 +123,7 @@ class ProductModel {
         name.hashCode ^
         description.hashCode ^
         category.hashCode ^
-        totalRatings.hashCode ^
+        avgRatings.hashCode ^
         totalReviews.hashCode ^
         totalSell.hashCode ^
         returnDays.hashCode ^

@@ -40,3 +40,32 @@ List<String> indianStates = [
   "Uttarakhand",
   "West Bengal"
 ];
+
+final List<String> returnReasons = [
+  "Damaged or Defective Item",
+  "Received Wrong Product",
+  "Item Not as Described",
+  "Size/Dimension Mismatch",
+  "Quality Not as Expected",
+  "Received an Incomplete Product",
+  "Product Has Manufacturing Defects",
+  "Color or Design Variation Issue",
+  "Item is Broken or Cracked",
+  "Material Feels Different Than Expected",
+  "Product Has a Strong Odor",
+  "Excessive Wear and Tear on Arrival",
+  "Item Warped or Misshapen",
+  "Mold or Fungus Growth on Item",
+  "Item Feels Weak or Not Sturdy",
+  "Product Not Suitable for Intended Use",
+  "Delayed Delivery, No Longer Needed",
+  "Better Alternative Found Elsewhere",
+  "Duplicate Order Placed by Mistake",
+  "Gift Purchase Not Suitable for Recipient",
+  "Item Causing Allergic Reaction",
+  "Packaging Was Open or Tampered",
+  "Received an Expired or Old Stock",
+  "Product is Too Heavy/Light Than Expected",
+  "Personal Preference Change",
+  "Accidental Purchase",
+];

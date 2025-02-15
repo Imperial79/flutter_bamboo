@@ -58,4 +58,26 @@ class OrderhistoryRepo {
       rethrow;
     }
   }
+
+  Future<ResponseModel> requestReturn({
+    required int orderedItemId,
+    required String returnReason,
+  }) async {
+    try {
+      final res = await apiCallBack(
+        path: "/shopping/request-return",
+        body: {
+          "orderedItemId": orderedItemId,
+          "returnReason": returnReason,
+        },
+      );
+
+      if (res.error) {
+        throw res.message;
+      }
+      return res;
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

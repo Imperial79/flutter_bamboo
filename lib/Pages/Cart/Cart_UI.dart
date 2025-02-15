@@ -538,20 +538,21 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
         children: [
           KCard(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            color: kColor(context).primaryContainer,
+            color: StatusText.success.lighten(.7),
             child: Row(
               spacing: 15,
               children: [
                 Icon(
                   Icons.local_offer,
-                  color: kColor(context).primary,
+                  color: StatusText.success,
+                  size: 20,
                 ),
                 Expanded(
                   child: Label(
                     "Offer Applied! ${selectedCoupon?.description ?? ""}",
-                    color: kColor(context).primary,
+                    color: StatusText.success,
                     weight: 600,
-                    fontSize: 15,
+                    fontSize: 13,
                   ).regular,
                 ),
               ],
@@ -561,7 +562,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
             onTap: () => ref.read(selectedCouponProvider.notifier).state = null,
             child: CircleAvatar(
               radius: 12,
-              backgroundColor: kColor(context).primary,
+              backgroundColor: Kolor.secondary,
               foregroundColor: Kolor.scaffold,
               child: Icon(
                 Icons.close,
@@ -655,7 +656,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                           color: Colors.amber.shade800,
                           size: 17,
                         ),
-                        Label("${data.totalRatings}").regular,
+                        Label("${data.avgRatings}").regular,
                       ],
                     ),
                   ],
@@ -705,12 +706,13 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                       onTap: () => deleteItem(data.productVariantId),
                       padding:
                           EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                      radius: 7,
+                      radius: 5,
                       color: kColor(context).errorContainer,
-                      child: Icon(
-                        Icons.delete,
-                        size: 15,
-                      ),
+                      child: Label(
+                        "Remove",
+                        fontSize: 10,
+                        color: kColor(context).error,
+                      ).regular,
                     )
                   ],
                 ),

@@ -138,7 +138,7 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
                       TextSpan(
                         text: data["status"],
                         style: TextStyle(
-                          color: statusColorMap[data["status"]],
+                          color: statusColors[data["status"]],
                         ),
                       ),
                     ],
@@ -225,7 +225,7 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
           });
         },
         checkmarkColor: Colors.white,
-        selectedColor: statusColorMap[label] ?? Kolor.secondary,
+        selectedColor: statusColors[label] ?? Kolor.secondary,
         backgroundColor: Kolor.scaffold,
       ),
     );
