@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Resources/colors.dart';
@@ -69,80 +68,13 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
                 height10,
                 transactionsList.when(
                   data: (data) => data.isNotEmpty
-                      ? ListView.builder(
+                      ? ListView.separated(
+                          separatorBuilder: (context, index) => height10,
                           itemCount: data.length,
                           padding: EdgeInsets.only(bottom: 100),
                           physics: NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) => GestureDetector(
-                            onTap: () async {
-                              await Clipboard.setData(ClipboardData(
-                                text:
-                                    "#${data[index][selectedType == "Refunds" ? "refundId" : "orderId"]}",
-                              ));
-                            },
-                            child: Card(
-                              color: Kolor.scaffold,
-                              margin: EdgeInsets.only(bottom: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: kRadius(15),
-                                side: BorderSide(
-                                  color: Kolor.border,
-                                ),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(15),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text.rich(
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(text: "Transaction "),
-                                                TextSpan(
-                                                  text: data[index]["status"],
-                                                  style: TextStyle(
-                                                    color: statusColorMap[
-                                                        data[index]["status"]],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Text(
-                                            "${DateFormat("dd-MM-yyyy").format(DateTime.parse(data[index]["date"]))} • ${DateFormat("hh:mm a").format(DateTime.parse(data[index]["date"]))}",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          height5,
-                                          Text(
-                                            "#${data[index][selectedType == "Refunds" ? "refundId" : "orderId"]}",
-                                            style: TextStyle(
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    width10,
-                                    Text(
-                                      kCurrencyFormat(data[index]["amount"]),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          itemBuilder: (context, index) =>
+                              buildTransactionTile(data[index]),
                           shrinkWrap: true,
                         )
                       : kNoData(
@@ -178,6 +110,55 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildTransactionTile(Map<String, dynamic> data) {
+    return KCard(
+      onTap: () async {
+        await Clipboard.setData(ClipboardData(
+          text: "#${data[selectedType == "Refunds" ? "refundId" : "orderId"]}",
+        ));
+
+        KSnackbar(context, message: "Order Id copied to clipboard!");
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text.rich(
+                  style: TextStyle(fontVariations: [FontVariation.weight(600)]),
+                  TextSpan(
+                    children: [
+                      TextSpan(text: "Transaction "),
+                      TextSpan(
+                        text: data["status"],
+                        style: TextStyle(
+                          color: statusColorMap[data["status"]],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Label(kDateFormat(data["date"], showTime: true),
+                        weight: 600, fontSize: 12)
+                    .subtitle,
+                height5,
+                Label("#${data[selectedType == "Refunds" ? "refundId" : "orderId"]}",
+                        fontSize: 12, weight: 600)
+                    .subtitle,
+              ],
+            ),
+          ),
+          width10,
+          Label(
+            kCurrencyFormat(data["amount"]),
+          ).regular,
+        ],
       ),
     );
   }
@@ -228,12 +209,10 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
     return Padding(
       padding: const EdgeInsets.only(right: 5.0),
       child: ChoiceChip(
-        label: Text(
+        label: Label(
           label,
-          style: TextStyle(
-            color: isActive ? Colors.white : Colors.black,
-          ),
-        ),
+          color: isActive ? Colors.white : Colors.black,
+        ).regular,
         shape: RoundedRectangleBorder(
           borderRadius: kRadius(100),
           side: BorderSide(color: Kolor.border),
@@ -251,48 +230,4 @@ class _TransactionsUIState extends ConsumerState<Transactions_UI> {
       ),
     );
   }
-
-  // Widget _filterBtns() {
-  //   return Row(
-  //     children: [
-  //       GestureDetector(
-  //         onTap: () {
-  //           setState(() {
-  //             selectedType = "All";
-  //             pageNo = 0;
-  //           });
-  //         },
-  //         child: Chip(
-  //           label: Text(
-  //             "All",
-  //             style: TextStyle(
-  //               color: selectedType == "All" ? Colors.white : Colors.black,
-  //             ),
-  //           ),
-  //           backgroundColor:
-  //               selectedType == "All" ? Kolor.secondary : Kolor.scaffold,
-  //         ),
-  //       ),
-  //       width10,
-  //       GestureDetector(
-  //         onTap: () {
-  //           setState(() {
-  //             selectedType = "Refunds";
-  //             pageNo = 0;
-  //           });
-  //         },
-  //         child: Chip(
-  //           label: Text(
-  //             "Refunds",
-  //             style: TextStyle(
-  //               color: selectedType == "Refunds" ? Colors.white : Colors.black,
-  //             ),
-  //           ),
-  //           backgroundColor:
-  //               selectedType == "Refunds" ? Kolor.secondary : Kolor.scaffold,
-  //         ),
-  //       ),
-  //     ],
-  //   );
-  // }
 }

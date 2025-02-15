@@ -1,5 +1,22 @@
 import 'package:flutter/material.dart';
 
+extension ColorUtils on Color {
+  Color lighten([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+    final hsl = HSLColor.fromColor(this);
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+    return hslLight.toColor();
+  }
+
+  Color darken([double amount = .1]) {
+    assert(amount >= 0 && amount <= 1);
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+    return hslDark.toColor();
+  }
+}
+
 class Kolor {
   static const Color scaffold = Colors.white;
   static const Color primary = Color(0xFFE91E63); // pink
@@ -29,6 +46,7 @@ ColorFilter kSvgColor(Color color) => ColorFilter.mode(color, BlendMode.srcIn);
 
 final Map<String, Color> statusColorMap = {
   "Ordered": StatusText.success,
+  "Success": StatusText.success,
   "Shipped": StatusText.success,
   "Delivered": StatusText.success,
   "Return Pending": StatusText.warning,

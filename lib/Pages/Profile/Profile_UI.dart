@@ -44,7 +44,19 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
 
     return KScaffold(
       isLoading: isLoading,
-      appBar: KAppBar(context, showBack: false, title: "Profile"),
+      appBar: KAppBar(context, showBack: false, title: "Profile", actions: [
+        TextButton(
+          onPressed: () => context.push("/profile/edit"),
+          child: Row(
+            spacing: 5,
+            children: [
+              Icon(Icons.edit, size: 15, color: StatusText.info),
+              Label("Edit", color: StatusText.info).regular
+            ],
+          ),
+        ),
+        width10,
+      ]),
       body: SafeArea(
         child: user != null
             ? SingleChildScrollView(
@@ -108,27 +120,12 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
                         child: Label(user.name).title,
                       ),
                       if (user.phone != null)
-                        Row(
-                          spacing: 5,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Label(
-                              "+91 ${user.phone!}",
-                              weight: 500,
-                              color: Colors.black,
-                            ).subtitle,
-                            InkWell(
-                              onTap: () => context.push("/profile/edit"),
-                              child: Row(
-                                spacing: 5,
-                                children: [
-                                  Icon(Icons.edit,
-                                      size: 15, color: StatusText.info),
-                                  Label("Edit", color: StatusText.info).regular
-                                ],
-                              ),
-                            )
-                          ],
+                        Center(
+                          child: Label(
+                            "+91 ${user.phone!}",
+                            weight: 500,
+                            color: Colors.black,
+                          ).subtitle,
                         )
                       else
                         Center(
@@ -219,6 +216,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
 
   Widget logoutDialog() {
     return AlertDialog(
+      backgroundColor: Kolor.scaffold,
       title: Label("Do you want to logout?").title,
       content: Label(
               "Logging out will stop all the notifications for offers and promotions.")
@@ -241,7 +239,7 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
           label: "Yes",
           radius: 100,
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-          backgroundColor: kColor(context).tertiary,
+          backgroundColor: Kolor.secondary,
         ),
       ],
     );
