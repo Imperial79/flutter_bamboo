@@ -15,6 +15,7 @@ import 'kButton.dart';
 
 Widget kNoData(
   BuildContext context, {
+  String? imagePath,
   String? title,
   Widget? action,
   String? subtitle,
@@ -25,7 +26,7 @@ Widget kNoData(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(
-            "$kIconPath/panda.svg",
+            imagePath ?? "$kIconPath/panda.svg",
             height: 200,
           ),
           height10,

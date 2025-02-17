@@ -3,7 +3,7 @@ import 'package:ngf_organic/Resources/colors.dart';
 
 const String kFont = "Montserrat";
 
-ThemeData kTheme(context) => ThemeData(
+ThemeData kTheme(BuildContext context) => ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: Kolor.scaffold,
       splashFactory: InkSplash.splashFactory,
@@ -15,7 +15,7 @@ ThemeData kTheme(context) => ThemeData(
       fontFamily: kFont,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: kColor(context).primary,
+          foregroundColor: Kolor.primary,
         ),
       ),
       appBarTheme: const AppBarTheme(

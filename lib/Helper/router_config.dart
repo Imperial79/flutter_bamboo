@@ -6,7 +6,7 @@ import 'package:ngf_organic/Pages/Cart/Cart_UI.dart';
 import 'package:ngf_organic/Pages/Cart/Checkout_UI.dart';
 import 'package:ngf_organic/Pages/Cart/Confirmation_UI.dart';
 import 'package:ngf_organic/Pages/Cart/Coupons_UI.dart';
-import 'package:ngf_organic/Pages/Error/Error_UI.dart';
+import 'package:ngf_organic/Pages/Error/Server_Error_UI.dart';
 import 'package:ngf_organic/Pages/Error/Path_Error_UI.dart';
 import 'package:ngf_organic/Pages/Auth/Login_UI.dart';
 import 'package:ngf_organic/Pages/Product/Product_Detail_UI.dart';
@@ -36,7 +36,7 @@ final goRouterProvider = Provider<GoRouter>(
     return GoRouter(
       redirect: (context, state) {
         if (authState.isLoading) return "/splash";
-        // if (authState.hasError) return "/error";
+        if (authState.hasError) return "/server-error";
         return null;
       },
       redirectLimit: 1,
@@ -44,8 +44,8 @@ final goRouterProvider = Provider<GoRouter>(
       errorBuilder: (context, state) => Path_Error_UI(),
       routes: [
         GoRoute(
-          path: '/error',
-          builder: (context, state) => const Error_UI(),
+          path: '/server-error',
+          builder: (context, state) => const Server_Error_UI(),
         ),
         GoRoute(
           path: '/splash',
