@@ -377,18 +377,25 @@ class _Product_Detail_UIState extends ConsumerState<Product_Detail_UI> {
         ),
       ),
       bottomNavigationBar: productData.hasValue && productData.value != null
-          ? selectedVariant.stock == 0
-              ? KCard(
-                  width: double.infinity,
-                  child: SafeArea(
-                      child: Label(
-                    "Out Of Stock",
-                    textAlign: TextAlign.center,
-                    color: StatusText.danger,
-                  ).regular),
-                )
-              : footer(productData.value!, cartData.value ?? [])
-          : null,
+          ? Visibility(
+              visible: selectedVariant.stock == 0,
+              replacement: footer(
+                productData.value!,
+                cartData.hasValue && cartData.value != null
+                    ? cartData.value!
+                    : [],
+              ),
+              child: KCard(
+                width: double.infinity,
+                child: SafeArea(
+                    child: Label(
+                  "Out Of Stock",
+                  textAlign: TextAlign.center,
+                  color: StatusText.danger,
+                ).regular),
+              ),
+            )
+          : SizedBox(),
     );
   }
 

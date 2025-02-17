@@ -36,7 +36,7 @@ final goRouterProvider = Provider<GoRouter>(
     return GoRouter(
       redirect: (context, state) {
         if (authState.isLoading) return "/splash";
-        if (authState.hasError) return "/error";
+        // if (authState.hasError) return "/error";
         return null;
       },
       redirectLimit: 1,

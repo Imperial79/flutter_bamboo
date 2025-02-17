@@ -80,7 +80,6 @@ Widget kLoginRequired(BuildContext context, {String redirectPath = ""}) {
               context.push("/login", extra: {"redirectPath": redirectPath});
             },
             label: "Login",
-            radius: 7,
             backgroundColor: kColor(context).tertiary,
             padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
           ),

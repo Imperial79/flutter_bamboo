@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Resources/colors.dart';
+import 'package:ngf_organic/main.dart';
 import '../Resources/commons.dart';
 import '../Resources/constants.dart';
 import 'Label.dart';
@@ -55,6 +56,42 @@ class KScaffold extends StatelessWidget {
                 bottomNavigationBar: bottomNavigationBar,
               ),
               _fullLoading(isLoading: loading),
+              ValueListenableBuilder(
+                valueListenable: hasConnection,
+                builder: (context, hasInternet, child) => AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  child: !hasInternet
+                      ? Align(
+                          alignment: Alignment.topCenter,
+                          child: SafeArea(
+                            child: KCard(
+                              borderColor: StatusText.danger,
+                              color: StatusText.danger.lighten(.47),
+                              margin: EdgeInsets.all(kPadding),
+                              radius: 10,
+                              borderWidth: 1,
+                              child: Row(
+                                spacing: 20,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SvgPicture.asset(
+                                    "$kIconPath/no-internet.svg",
+                                    height: 20,
+                                    colorFilter:
+                                        kSvgColor(StatusText.danger.darken()),
+                                  ),
+                                  Label("No Internet!",
+                                          color: StatusText.danger.darken(),
+                                          fontSize: 17)
+                                      .regular,
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox(),
+                ),
+              )
             ],
           );
         },
@@ -89,6 +126,12 @@ class KScaffold extends StatelessWidget {
                       //     color: Colors.black,
                       //   ),
                       // ),
+                      // Label(
+                      //   "Please Wait",
+                      //   fontSize: 17,
+                      //   weight: 550,
+                      //   color: Colors.black,
+                      // ).title,
                       Stack(
                         alignment: Alignment.center,
                         children: [
@@ -103,12 +146,6 @@ class KScaffold extends StatelessWidget {
                           ),
                         ],
                       ),
-                      // Label(
-                      //   "Please Wait",
-                      //   fontSize: 17,
-                      //   weight: 550,
-                      //   color: Colors.black,
-                      // ).title,
                     ],
                   ),
                 ),

@@ -19,6 +19,7 @@ import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class Cart_UI extends ConsumerStatefulWidget {
   const Cart_UI({super.key});
@@ -282,7 +283,19 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                 buildCartItem(index, data[index]),
                           ),
                           error: (error, stackTrace) => kNoData(context),
-                          loading: () => kSmallLoading,
+                          loading: () => Skeletonizer(
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) => Divider(
+                                height: 30,
+                                color: Kolor.border,
+                              ),
+                              itemCount: data.length,
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) =>
+                                  buildCartItem(index, data[index]),
+                            ),
+                          ),
                         ),
                       ),
                       height10,
@@ -403,9 +416,15 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                                 discountCoupon: selectedCoupon?.coupon,
                               );
                             } else {
-                              KSnackbar(context,
-                                  message: "Please select an address",
-                                  error: true);
+                              // KSnackbar(context,
+                              //     message: "Please select an address",
+                              //     error: true);
+                              showModalBottomSheet(
+                                context: context,
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                                builder: (context) => addressModal(),
+                              );
                             }
                           },
                           backgroundColor: Kolor.tertiary,
@@ -590,136 +609,134 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
       );
 
   Widget buildCartItem(int index, CartModel data) {
-    return SizedBox(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 20,
-        children: [
-          GestureDetector(
-            onTap: () =>
-                context.push("/product/abcd/${data.productId}?sku=sku"),
-            child: CachedNetworkImage(
-              imageUrl: data.images[0],
-              errorWidget: (context, url, error) => KCard(
-                height: 100,
-                width: 100,
-                radius: 10,
-                child: Center(
-                  child: Icon(
-                    Icons.info_outline,
-                    color: Kolor.fadeText,
-                  ),
-                ),
-              ),
-              imageBuilder: (context, imageProvider) => Container(
-                height: 100,
-                width: 100,
-                decoration: BoxDecoration(
-                  borderRadius: kRadius(10),
-                  color: Kolor.card,
-                  image:
-                      DecorationImage(image: imageProvider, fit: BoxFit.cover),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 20,
+      children: [
+        GestureDetector(
+          onTap: () => context.push("/product/abcd/${data.productId}?sku=sku"),
+          child: CachedNetworkImage(
+            imageUrl: data.images[0],
+            placeholder: (context, url) => SizedBox(
+              height: 100,
+              width: 100,
+            ),
+            errorWidget: (context, url, error) => KCard(
+              height: 100,
+              width: 100,
+              radius: 10,
+              child: Center(
+                child: Icon(
+                  Icons.info_outline,
+                  color: Kolor.fadeText,
                 ),
               ),
             ),
+            imageBuilder: (context, imageProvider) => Container(
+              height: 100,
+              width: 100,
+              decoration: BoxDecoration(
+                borderRadius: kRadius(10),
+                color: Kolor.card,
+                image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+              ),
+            ),
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 5,
-              children: [
-                Label(data.name, maxLines: 2, weight: 600, fontSize: 13)
-                    .regular,
-                height5,
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          kAmount(data.salePrice),
-                          Label("MRP ${kCurrencyFormat(data.mrp)}",
-                                  height: 1,
-                                  weight: 600,
-                                  fontSize: 12,
-                                  decoration: TextDecoration.lineThrough)
-                              .subtitle,
-                        ],
-                      ),
-                    ),
-                    Row(
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 5,
+            children: [
+              Label(data.name, maxLines: 2, weight: 600, fontSize: 13).regular,
+              height5,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.amber.shade800,
-                          size: 17,
-                        ),
-                        Label("${data.avgRatings}").regular,
+                        kAmount(data.salePrice),
+                        Label("MRP ${kCurrencyFormat(data.mrp)}",
+                                height: 1,
+                                weight: 600,
+                                fontSize: 12,
+                                decoration: TextDecoration.lineThrough)
+                            .subtitle,
                       ],
                     ),
-                  ],
-                ),
-                height5,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  spacing: 10,
-                  children: [
-                    if (int.parse("${data.stock}") > 0)
-                      DropdownButton(
-                        isDense: true,
-                        value: int.parse("${data.qty}") >
-                                int.parse("${data.stock}")
-                            ? int.parse("${data.stock}")
-                            : int.parse("${data.qty}"),
-                        icon: Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          size: 20,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.star,
+                        color: Colors.amber.shade800,
+                        size: 17,
+                      ),
+                      Label("${data.avgRatings}").regular,
+                    ],
+                  ),
+                ],
+              ),
+              height5,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                spacing: 10,
+                children: [
+                  if (int.parse("${data.stock}") > 0)
+                    DropdownButton(
+                      isDense: true,
+                      value:
+                          int.parse("${data.qty}") > int.parse("${data.stock}")
+                              ? int.parse("${data.stock}")
+                              : int.parse("${data.qty}"),
+                      icon: Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        size: 20,
+                      ),
+                      menuMaxHeight: 300,
+                      borderRadius: kRadius(10),
+                      elevation: 1,
+                      items: List.generate(
+                        int.parse("${data.stock}") > 10
+                            ? 10
+                            : int.parse("${data.stock}"),
+                        (index) => DropdownMenuItem(
+                          value: index + 1,
+                          child: Label("${index + 1}").regular,
                         ),
-                        menuMaxHeight: 300,
-                        borderRadius: kRadius(10),
-                        elevation: 1,
-                        items: List.generate(
-                          int.parse("${data.stock}") > 10
-                              ? 10
-                              : int.parse("${data.stock}"),
-                          (index) => DropdownMenuItem(
-                            value: index + 1,
-                            child: Label("${index + 1}").regular,
-                          ),
-                        ),
-                        onChanged: (value) {
-                          updateCart(data.productVariantId, value!, index);
-                        },
-                      )
-                    else
-                      KCard(
-                          radius: 100,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                          color: kColor(context).errorContainer,
-                          child: Label("Out of stock",
-                                  color: kColor(context).error, fontSize: 12)
-                              .regular),
-                    KCard(
-                      onTap: () => deleteItem(data.productVariantId),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                      radius: 5,
-                      color: kColor(context).errorContainer,
-                      child: Label(
-                        "Remove",
-                        fontSize: 10,
-                        color: kColor(context).error,
-                      ).regular,
+                      ),
+                      onChanged: (value) {
+                        updateCart(data.productVariantId, value!, index);
+                      },
                     )
-                  ],
-                ),
-              ],
-            ),
+                  else
+                    KCard(
+                        radius: 100,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                        color: kColor(context).errorContainer,
+                        child: Label("Out of stock",
+                                color: kColor(context).error, fontSize: 12)
+                            .regular),
+                  KCard(
+                    onTap: () => deleteItem(data.productVariantId),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                    radius: 5,
+                    color: kColor(context).errorContainer,
+                    child: Label(
+                      "Remove",
+                      fontSize: 10,
+                      color: kColor(context).error,
+                    ).regular,
+                  )
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

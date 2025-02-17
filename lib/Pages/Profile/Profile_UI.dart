@@ -5,6 +5,7 @@ import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kButton.dart';
 import 'package:ngf_organic/Components/kCard.dart';
 import 'package:ngf_organic/Components/kWidgets.dart';
+import 'package:ngf_organic/Models/User_Model.dart';
 import 'package:ngf_organic/Repository/auth_repo.dart';
 import 'package:ngf_organic/Resources/app_config.dart';
 import 'package:ngf_organic/Resources/colors.dart';
@@ -45,173 +46,267 @@ class _Profile_UIState extends ConsumerState<Profile_UI> {
     return KScaffold(
       isLoading: isLoading,
       appBar: KAppBar(context, showBack: false, title: "Profile", actions: [
-        TextButton(
-          onPressed: () => context.push("/profile/edit"),
-          child: Row(
-            spacing: 5,
-            children: [
-              Icon(Icons.edit, size: 15, color: StatusText.info),
-              Label("Edit", color: StatusText.info).regular
-            ],
+        if (user != null)
+          TextButton(
+            onPressed: () => context.push("/profile/edit"),
+            child: Row(
+              spacing: 5,
+              children: [
+                Icon(Icons.edit, size: 15, color: StatusText.info),
+                Label("Edit", color: StatusText.info).regular
+              ],
+            ),
           ),
-        ),
         width10,
       ]),
       body: SafeArea(
-        child: user != null
-            ? SingleChildScrollView(
-                padding: EdgeInsets.all(kPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (user.isMember)
-                      Container(
-                        padding: EdgeInsets.all(kPadding),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: kRadius(15),
-                          image: DecorationImage(
-                            image: AssetImage("$kImagePath/premium-bg.jpg"),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: user.image.isNotEmpty
-                                  ? NetworkImage(user.image)
-                                  : null,
-                              child: user.image.isEmpty
-                                  ? Label(user.name[0].toUpperCase(),
-                                          fontSize: 22)
-                                      .regular
-                                  : null,
-                            ),
-                            height10,
-                            Label(
-                              user.name,
-                              color: Colors.white,
-                            ).title,
-                            Label(
-                              "Member",
-                              fontSize: 13,
-                              weight: 600,
-                              color: Colors.white,
-                            ).title,
-                          ],
-                        ),
-                      )
-                    else ...[
-                      Center(
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundImage: user.image.isNotEmpty
-                              ? NetworkImage(user.image)
-                              : null,
-                          child: user.image.isEmpty
-                              ? Label(user.name[0].toUpperCase(), fontSize: 22)
-                                  .regular
-                              : null,
-                        ),
-                      ),
-                      height10,
-                      Center(
-                        child: Label(user.name).title,
-                      ),
-                      if (user.phone != null)
-                        Center(
-                          child: Label(
-                            "+91 ${user.phone!}",
-                            weight: 500,
-                            color: Colors.black,
-                          ).subtitle,
-                        )
-                      else
-                        Center(
-                          child: InkWell(
-                            onTap: () => context.push("/profile/edit"),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              spacing: 5,
-                              children: [
-                                Icon(
-                                  Icons.add_circle_outline,
-                                  color: StatusText.info,
-                                  size: 20,
-                                ),
-                                Label(
-                                  "Add phone",
-                                  fontSize: 15,
-                                  weight: 600,
-                                  color: StatusText.info,
-                                ).subtitle,
-                              ],
-                            ),
-                          ),
-                        ),
-                    ],
-                    height20,
-                    KCard(
-                      padding: EdgeInsets.all(7),
-                      color: Kolor.scaffold,
-                      borderWidth: 1,
-                      width: double.infinity,
-                      child: Column(
-                        children: [
-                          _profileBtn(
-                            icon: Icons.location_on_outlined,
-                            label: "Saved Address",
-                            path: "/profile/saved-address",
-                          ),
-                          div,
-                          _profileBtn(
-                            icon: Icons.inventory_2_outlined,
-                            label: "Orders",
-                            path: "/profile/orders",
-                          ),
-                          div,
-                          _profileBtn(
-                            icon: Icons.receipt_long,
-                            label: "Transactions",
-                            path: "/profile/transactions",
-                          ),
-                          div,
-                          _profileBtn(
-                            icon: Icons.help,
-                            label: "Help",
-                            path: "/help",
-                          ),
-                          div,
-                          _profileBtn(
-                            icon: Icons.exit_to_app,
-                            label: "Logout",
-                            path: "",
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => logoutDialog(),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    height10,
-                    Label("Version $kAppVersion", weight: 600).subtitle,
-                    _appLogo(),
-                  ],
-                ),
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+          child: SingleChildScrollView(
+        padding: EdgeInsets.all(kPadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // if (user.isMember)
+            //   Container(
+            //     padding: EdgeInsets.all(kPadding),
+            //     width: double.infinity,
+            //     decoration: BoxDecoration(
+            //       borderRadius: kRadius(15),
+            //       image: DecorationImage(
+            //         image: AssetImage("$kImagePath/premium-bg.jpg"),
+            //         fit: BoxFit.cover,
+            //       ),
+            //     ),
+            //     child: Column(
+            //       children: [
+            //         CircleAvatar(
+            //           radius: 30,
+            //           backgroundImage: user.image.isNotEmpty
+            //               ? NetworkImage(user.image)
+            //               : null,
+            //           child: user.image.isEmpty
+            //               ? Label(user.name[0].toUpperCase(),
+            //                       fontSize: 22)
+            //                   .regular
+            //               : null,
+            //         ),
+            //         height10,
+            //         Label(
+            //           user.name,
+            //           color: Colors.white,
+            //         ).title,
+            //         Label(
+            //           "Member",
+            //           fontSize: 13,
+            //           weight: 600,
+            //           color: Colors.white,
+            //         ).title,
+            //       ],
+            //     ),
+            //   )
+            // else ...[
+            //   Center(
+            //     child: CircleAvatar(
+            //       radius: 30,
+            //       backgroundImage: user.image.isNotEmpty
+            //           ? NetworkImage(user.image)
+            //           : null,
+            //       child: user.image.isEmpty
+            //           ? Label(user.name[0].toUpperCase(), fontSize: 22)
+            //               .regular
+            //           : null,
+            //     ),
+            //   ),
+            //   height10,
+            //   Center(
+            //     child: Label(user.name).title,
+            //   ),
+            //   if (user.phone != null)
+            //     Center(
+            //       child: Label(
+            //         "+91 ${user.phone!}",
+            //         weight: 500,
+            //         color: Colors.black,
+            //       ).subtitle,
+            //     )
+            //   else
+            //     Center(
+            //       child: InkWell(
+            //         onTap: () => context.push("/profile/edit"),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           spacing: 5,
+            //           children: [
+            //             Icon(
+            //               Icons.add_circle_outline,
+            //               color: StatusText.info,
+            //               size: 20,
+            //             ),
+            //             Label(
+            //               "Add phone",
+            //               fontSize: 15,
+            //               weight: 600,
+            //               color: StatusText.info,
+            //             ).subtitle,
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            // ],
+            if (user != null) userCard(user) else kLoginRequired(context),
+            height20,
+            KCard(
+              padding: EdgeInsets.all(7),
+              color: Kolor.scaffold,
+              borderWidth: 1,
+              width: double.infinity,
+              child: Column(
                 children: [
-                  kLoginRequired(context),
-                  _appLogo(),
+                  if (user != null) ...[
+                    _profileBtn(
+                      icon: Icons.location_on_outlined,
+                      label: "Saved Address",
+                      path: "/profile/saved-address",
+                    ),
+                    div,
+                    _profileBtn(
+                      icon: Icons.inventory_2_outlined,
+                      label: "Orders",
+                      path: "/profile/orders",
+                    ),
+                    div,
+                    _profileBtn(
+                      icon: Icons.receipt_long,
+                      label: "Transactions",
+                      path: "/profile/transactions",
+                    ),
+                    div,
+                  ],
+                  _profileBtn(
+                    icon: Icons.help,
+                    label: "Help",
+                    path: "/help",
+                  ),
+                  if (user != null) ...[
+                    div,
+                    _profileBtn(
+                      icon: Icons.exit_to_app,
+                      label: "Logout",
+                      path: "",
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => logoutDialog(),
+                        );
+                      },
+                    ),
+                  ]
                 ],
               ),
-      ),
+            ),
+            height10,
+            Label("Version $kAppVersion", weight: 600).subtitle,
+            _appLogo(),
+          ],
+        ),
+      )
+          // : Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       kLoginRequired(context),
+          //       _appLogo(),
+          //     ],
+          //   ),
+          ),
     );
+  }
+
+  Widget userCard(UserModel user) {
+    if (user.isMember) {
+      return Container(
+        padding: EdgeInsets.all(kPadding),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          borderRadius: kRadius(15),
+          image: DecorationImage(
+            image: AssetImage("$kImagePath/premium-bg.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Column(
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundImage:
+                  user.image.isNotEmpty ? NetworkImage(user.image) : null,
+              child: user.image.isEmpty
+                  ? Label(user.name[0].toUpperCase(), fontSize: 22).regular
+                  : null,
+            ),
+            height10,
+            Label(
+              user.name,
+              color: Colors.white,
+            ).title,
+            Label(
+              "Member",
+              fontSize: 13,
+              weight: 600,
+              color: Colors.white,
+            ).title,
+          ],
+        ),
+      );
+    } else {
+      return Column(
+        children: [
+          Center(
+            child: CircleAvatar(
+              radius: 30,
+              backgroundImage:
+                  user.image.isNotEmpty ? NetworkImage(user.image) : null,
+              child: user.image.isEmpty
+                  ? Label(user.name[0].toUpperCase(), fontSize: 22).regular
+                  : null,
+            ),
+          ),
+          height10,
+          Center(
+            child: Label(user.name).title,
+          ),
+          if (user.phone != null)
+            Center(
+              child: Label(
+                "+91 ${user.phone!}",
+                weight: 500,
+                color: Colors.black,
+              ).subtitle,
+            )
+          else
+            Center(
+              child: InkWell(
+                onTap: () => context.push("/profile/edit"),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: 5,
+                  children: [
+                    Icon(
+                      Icons.add_circle_outline,
+                      color: StatusText.info,
+                      size: 20,
+                    ),
+                    Label(
+                      "Add phone",
+                      fontSize: 15,
+                      weight: 600,
+                      color: StatusText.info,
+                    ).subtitle,
+                  ],
+                ),
+              ),
+            ),
+        ],
+      );
+    }
   }
 
   Widget logoutDialog() {

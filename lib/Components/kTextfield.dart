@@ -345,6 +345,7 @@ class KTextfield {
             ),
           ),
         DropdownMenu(
+          requestFocusOnTap: true,
           controller: controller,
           hintText: hintText,
           errorText: errorText,

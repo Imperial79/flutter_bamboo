@@ -1,7 +1,6 @@
 // ignore_for_file: unused_result
 
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -12,7 +11,9 @@ import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
+import '../../Components/kCard.dart';
 import '../../Repository/product_repo.dart';
 import 'Product_Preview_Card.dart';
 
@@ -35,7 +36,11 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
   @override
   void initState() {
     super.initState();
+
     _scrollController.addListener(_scrollListener);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) => _refresh(),
+    );
   }
 
   void _scrollListener() {
@@ -47,7 +52,6 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
           'searchKey': searchKey.text.trim(),
           'category': widget.category,
         })).future);
-        log("${pageNo.value}");
       }
     }
   }
@@ -106,42 +110,139 @@ class _Search_Products_UIState extends ConsumerState<Search_Products_UI> {
                     _refresh();
                   },
                 ),
-                if (asyncData.isLoading) LinearProgressIndicator(),
-                height10,
-                if (products.isNotEmpty) ...[
-                  Label(searchKey.text.isEmpty
-                          ? "Top rated products"
-                          : "Searching for \"${searchKey.text}\"")
-                      .title,
-                  height5,
-                  MasonryGridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: products.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return ProductPreviewCard(
-                        product: products[index],
-                      );
-                    },
-                  ),
-                ] else ...[
-                  Center(
-                    child: Column(
-                      children: [
-                        Label("Sorry :(", weight: 500, fontSize: 25).title,
-                        Label("No products found!", color: Kolor.fadeText)
-                            .title,
-                      ],
+                if (asyncData.isLoading)
+                  loadingProducts()
+                else ...[
+                  height10,
+                  if (products.isNotEmpty) ...[
+                    Label(searchKey.text.isEmpty
+                            ? "Top rated products"
+                            : "Searching for \"${searchKey.text}\"")
+                        .title,
+                    height5,
+                    MasonryGridView.count(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: products.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return ProductPreviewCard(
+                          product: products[index],
+                        );
+                      },
                     ),
-                  )
+                  ] else ...[
+                    Center(
+                      child: Column(
+                        children: [
+                          Label("Sorry :(", weight: 500, fontSize: 25).title,
+                          Label("No products found!", color: Kolor.fadeText)
+                              .title,
+                        ],
+                      ),
+                    )
+                  ]
                 ]
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget loadingProducts() {
+    return Skeletonizer(
+      effect: ShimmerEffect(),
+      child: MasonryGridView.count(
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: 10,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          return KCard(
+            padding: EdgeInsets.all(0),
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                KCard(
+                  color: Kolor.card,
+                  height: 150,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Label(
+                        "category",
+                        weight: 500,
+                        fontSize: 12,
+                        color: Kolor.fadeText,
+                      ).subtitle,
+                      Label(
+                        "name",
+                        maxLines: 2,
+                        weight: 600,
+                      ).regular,
+                      height10,
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.star,
+                            size: 20,
+                            color: Colors.amber.shade700,
+                          ),
+                          Label(
+                            "Ratings | Sale",
+                            weight: 600,
+                            fontSize: 12,
+                            color: Kolor.fadeText,
+                          ).regular,
+                        ],
+                      ),
+                      height5,
+                      FittedBox(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          spacing: 5,
+                          children: [
+                            Label(
+                              "Price",
+                              weight: 600,
+                              height: 1.2,
+                              fontSize: 20,
+                            ).title,
+                            Label(
+                              "-0%",
+                              weight: 500,
+                              fontSize: 15,
+                              color: StatusText.danger,
+                            ).title,
+                            width5,
+                            Label(
+                              "MRP 1000",
+                              weight: 500,
+                              fontSize: 12,
+                              color: Kolor.fadeText,
+                              decoration: TextDecoration.lineThrough,
+                            ).regular,
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }

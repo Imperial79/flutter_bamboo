@@ -14,6 +14,7 @@ import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import '../../Components/kTextfield.dart';
 
 class Saved_Address_UI extends ConsumerStatefulWidget {
@@ -175,10 +176,64 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
                     ];
                   },
                   error: (error, stackTrace) => [kNoData(context)],
-                  loading: () => [kSmallLoading],
+                  loading: () => [
+                    loadingAddress(),
+                  ],
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget loadingAddress() {
+    return Skeletonizer(
+      child: ListView.separated(
+        separatorBuilder: (context, index) => height10,
+        itemCount: 2,
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) => KCard(
+          color: Kolor.scaffold,
+          borderWidth: 1,
+          width: double.infinity,
+          child: Column(
+            spacing: 10,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Label("name").title,
+                  Label("+91 phone").regular,
+                  Label(
+                    "${"Address"} - ${"Pincode"}",
+                    weight: 500,
+                  ).subtitle,
+                  Label(
+                    "${"city"}, ${"State"}",
+                    weight: 500,
+                  ).subtitle,
+                ],
+              ),
+              Row(
+                spacing: 10,
+                children: [
+                  Chip(
+                    backgroundColor: kColor(context).errorContainer,
+                    side: BorderSide.none,
+                    label: Label("Delete",
+                            color: kColor(context).error, weight: 600)
+                        .regular,
+                  ),
+                  Chip(
+                    label: Label("Make Primary").regular,
+                  ),
+                ],
+              )
+            ],
           ),
         ),
       ),
@@ -268,6 +323,7 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
                       ).regular,
                       height20,
                       KTextfield(
+                        onTap: () => FocusScope.of(context).unfocus(),
                         controller: state,
                         readOnly: loading,
                         label: "State",
@@ -323,9 +379,13 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
               if (address.isPrimary!) ...[
                 KCard(
                   radius: 100,
-                  color: kColor(context).primaryContainer,
+                  color: StatusText.info.lighten(.45),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                  child: Label("Primary", fontSize: 12).regular,
+                  child: Label(
+                    "Primary",
+                    fontSize: 12,
+                    color: StatusText.info.darken(),
+                  ).regular,
                 ),
                 height5,
               ],

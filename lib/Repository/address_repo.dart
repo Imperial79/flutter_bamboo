@@ -7,7 +7,8 @@ final selectedAddressProvider = StateProvider<AddressModel?>(
   (ref) => null,
 );
 
-final addressFuture = FutureProvider<List<AddressModel>>((ref) async {
+final addressFuture =
+    FutureProvider.autoDispose<List<AddressModel>>((ref) async {
   final res = await apiCallBack(path: "/address/fetch");
 
   if (!res.error) {

@@ -29,7 +29,7 @@ class KButton extends StatelessWidget {
     this.fontSize = 15,
     this.weight = 600,
     this.icon,
-    this.radius = 15,
+    this.radius,
     this.padding,
     this.customStyle,
     this.isLoading = false,
@@ -112,7 +112,7 @@ class KButton extends StatelessWidget {
           iconColor: foregroundColor,
           padding: padding ?? const EdgeInsets.all(15),
           shape: RoundedRectangleBorder(
-            borderRadius: kRadius(radius ?? 15),
+            borderRadius: kRadius(radius ?? 7),
           ),
           visualDensity: visualDensity,
           elevation: 0,
