@@ -19,8 +19,19 @@ final offersFuture = FutureProvider.autoDispose<Map?>(
     ResponseModel res = ResponseModel(error: false, message: "message");
     final hiveBox = Hive.box('hiveBox');
     final hiveBanner = hiveBox.get('banners') ?? {};
-    if ((hiveBanner['data'] == null && hiveBanner['date'] == null) ||
-        DateTime.now().difference(hiveBanner['date']).inHours > 24) {
+
+    // Extracting stored data and date
+    final storedData = hiveBanner['data'];
+    final storedDate = hiveBanner['date'];
+
+    // Check if data is null or date is null or date is not today
+    if (storedData == null ||
+        storedDate == null ||
+        (storedDate is! DateTime) ||
+        storedDate.day != DateTime.now().day ||
+        storedDate.month != DateTime.now().month ||
+        storedDate.year != DateTime.now().year) {
+      // Fetch from API since data is missing or outdated
       res = await apiCallBack(path: "/app-config/fetch");
       if (!res.error) {
         await hiveBox
@@ -28,7 +39,8 @@ final offersFuture = FutureProvider.autoDispose<Map?>(
         return res.data;
       }
     } else {
-      res.data = hiveBanner['data'];
+      // Use the stored data
+      res.data = storedData;
     }
 
     return res.data;

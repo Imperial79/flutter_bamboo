@@ -77,6 +77,7 @@ class _KCarouselState extends State<KCarousel> {
             pageSnapping: true,
             showIndicator: false,
             floatingIndicator: true,
+            enableInfiniteScroll: true,
             autoPlay: widget.isLooped,
             onPageChanged: (index, reason) {
               setState(() {
