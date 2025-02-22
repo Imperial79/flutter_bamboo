@@ -1,12 +1,12 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=D:\Flutter SDK"
-export "FLUTTER_APPLICATION_PATH=D:\Flutter_Projects\flutter_bamboo"
+export "FLUTTER_ROOT=/Users/vivekverma/Documents/development/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/vivekverma/Documents/Flutter_Projects/flutter_bamboo"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
-export "FLUTTER_TARGET=lib\main.dart"
+export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
-export "FLUTTER_BUILD_NAME=1.1.1"
-export "FLUTTER_BUILD_NUMBER=3"
+export "FLUTTER_BUILD_NAME=1.3.1"
+export "FLUTTER_BUILD_NUMBER=8"
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=true"
 export "TREE_SHAKE_ICONS=false"
