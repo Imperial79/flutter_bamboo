@@ -130,6 +130,7 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                         onTap: () {
                           _generateInvoice(finalData);
                         },
+                        enabled: finalData.status == "Delivered",
                         child: Label("Invoice").regular,
                       ),
                       PopupMenuItem(
