@@ -379,7 +379,7 @@ class _Saved_Address_UIState extends ConsumerState<Saved_Address_UI> {
               if (address.isPrimary!) ...[
                 KCard(
                   radius: 100,
-                  color: StatusText.info.lighten(.45),
+                  color: StatusText.info.lighten(),
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                   child: Label(
                     "Primary",

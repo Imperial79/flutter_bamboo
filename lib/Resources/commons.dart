@@ -99,11 +99,13 @@ KErrorAlert(context, {required dynamic message}) {
         color: StatusText.danger,
         size: 50,
       ),
-      content: Label("$message").regular,
+      content: Label("$message", textAlign: TextAlign.center).regular,
       actions: [
         TextButton(
           onPressed: () => context.pop(),
-          child: Label("Back to cart").regular,
+          child: Label(
+            "Back to cart",
+          ).regular,
         ),
       ],
     ),

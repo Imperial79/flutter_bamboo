@@ -66,7 +66,7 @@ class KScaffold extends StatelessWidget {
                           child: SafeArea(
                             child: KCard(
                               borderColor: StatusText.danger,
-                              color: StatusText.danger.lighten(.47),
+                              color: kColor(context).errorContainer,
                               margin: EdgeInsets.all(kPadding),
                               radius: 10,
                               borderWidth: 1,

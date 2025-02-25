@@ -149,7 +149,6 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
         );
       }
     } catch (e) {
-      // KSnackbar(context, message: "Chechkout UI. $e", error: true);
       KErrorAlert(context, message: "$e");
     } finally {
       isLoading.value = false;
@@ -193,20 +192,20 @@ class _Checkout_UIState extends ConsumerState<Checkout_UI> {
                 ),
               ),
               KCard(
-                color: StatusText.success.lighten(.7),
+                color: StatusText.success.lighten(),
                 child: Row(
                   spacing: 10,
                   children: [
                     Icon(
-                      Icons.info_outline,
+                      Icons.local_shipping,
                       size: 20,
-                      color: StatusText.success.darken(),
+                      color: StatusText.success,
                     ),
                     Expanded(
                       child: Label(
                         "Your products will be delivered by ${DateFormat("dd, MMM yyyy").format(DateTime.now().add(Duration(days: paymentBreakdown["deliveryDays"])))}.",
-                        color: StatusText.success.darken(),
-                        fontSize: 14,
+                        color: StatusText.success,
+                        fontSize: 13,
                       ).regular,
                     )
                   ],

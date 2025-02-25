@@ -215,6 +215,14 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
                         height20,
                         ...priceDetails(data),
                         height20,
+                        _row(
+                          "Delivery Charges",
+                          kCurrencyFormat(data.deliveryCharges,
+                              decimalDigits: 2),
+                        ),
+                        Label("Delivery charge is non-refundable", fontSize: 10)
+                            .subtitle,
+                        height20,
                         ...paymentDetails(data),
                         if (data.status == "Delivered" &&
                             data.deliveredOn != null &&
@@ -302,11 +310,6 @@ class _Order_Detail_UIState extends ConsumerState<Order_Detail_UI> {
         _row(
           "Selling Price (${data.qty} Items)",
           kCurrencyFormat(data.subTotal, decimalDigits: 2),
-        ),
-        height5,
-        _row(
-          "Delivery Charges",
-          kCurrencyFormat(data.deliveryCharges, decimalDigits: 2),
         ),
         height5,
         _row("Coupon Discount",

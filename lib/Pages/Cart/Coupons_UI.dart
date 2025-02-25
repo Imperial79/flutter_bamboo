@@ -97,8 +97,7 @@ class _Coupons_UIState extends ConsumerState<Coupons_UI> {
             width: 70,
             height: 70,
             child: FittedBox(
-              child: Label("${(data.offPercent * 100).round()}%", fontSize: 25)
-                  .title,
+              child: Label("${(data.offPercent).round()}%", fontSize: 25).title,
             ),
           ),
           Expanded(

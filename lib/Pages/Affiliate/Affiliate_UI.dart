@@ -222,7 +222,7 @@ class _Affiliate_UIState extends ConsumerState<Affiliate_UI> {
             ).regular,
             Label(
               data.commissionStatus,
-              color: statusColors[data.commissionStatus],
+              color: statusColorMap[data.commissionStatus],
               fontSize: 12,
             ).regular,
           ],

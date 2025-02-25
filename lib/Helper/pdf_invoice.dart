@@ -23,7 +23,8 @@ class PdfInvoiceApi {
     final Uint8List authSignature = authSignBytes.buffer.asUint8List();
 
     PdfInvoiceApi.orderDetails = orderDetails;
-    PdfInvoiceApi.taxAmount = orderDetails.subTotal * orderDetails.taxRate;
+    PdfInvoiceApi.taxAmount =
+        orderDetails.subTotal * (orderDetails.taxRate / 100);
 
     final pdf = Document();
 
@@ -184,81 +185,11 @@ PIN Code: 600016""",
     );
   }
 
-  // static Widget itemsPart() {
-  //   double unitPrice = orderDetails!.salePrice - PdfInvoiceApi.taxAmount;
-  //   double netAmount =
-  //       orderDetails!.subTotal - (PdfInvoiceApi.taxAmount * orderDetails!.qty);
-  //   double taxPercent = orderDetails!.taxRate * 100;
-  //   double taxAmount = PdfInvoiceApi.taxAmount * orderDetails!.qty;
-  //   return Container(
-  //     width: double.infinity,
-  //     decoration: const BoxDecoration(
-  //       border: Border(
-  //         left: BorderSide(),
-  //         right: BorderSide(),
-  //         bottom: BorderSide(),
-  //       ),
-  //     ),
-  //     child: TableHelper.fromTextArray(
-  //       headers: [
-  //         'Sl. No.',
-  //         'Description',
-  //         'Unit Price',
-  //         'Qty',
-  //         'Net Amount',
-  //         'Tax Rate',
-  //         'Tax Amount',
-  //         'Discount',
-  //         'Total Amount'
-  //       ],
-  //       data: [
-  //         [
-  //           "1",
-  //           '${orderDetails?.name} - ${orderDetails?.attributeValue}',
-  //           kCurrencyFormat(unitPrice, decimalDigits: 2, symbol: ""),
-  //           '${orderDetails?.qty}',
-  //           kCurrencyFormat(netAmount, decimalDigits: 2, symbol: ""),
-  //           '${taxPercent.toStringAsFixed(1)}%',
-  //           kCurrencyFormat(taxAmount, decimalDigits: 2, symbol: ""),
-  //           kCurrencyFormat(orderDetails!.couponDiscount,
-  //               decimalDigits: 2, symbol: ""),
-  //           kCurrencyFormat(orderDetails!.netPayable,
-  //               decimalDigits: 2, symbol: ""),
-  //         ],
-  //         [
-  //           '',
-  //           Text('Total', style: TextStyle(fontWeight: FontWeight.bold)),
-  //           '',
-  //           '',
-  //           Text(kCurrencyFormat(netAmount, decimalDigits: 2, symbol: ""),
-  //               style: TextStyle(fontWeight: FontWeight.bold)),
-  //           '',
-  //           Text(kCurrencyFormat(taxAmount, decimalDigits: 2, symbol: ""),
-  //               style: TextStyle(fontWeight: FontWeight.bold)),
-  //           Text(
-  //               kCurrencyFormat(orderDetails!.couponDiscount,
-  //                   decimalDigits: 2, symbol: ""),
-  //               style: TextStyle(fontWeight: FontWeight.bold)),
-  //           Text(
-  //               kCurrencyFormat(orderDetails!.netPayable,
-  //                   decimalDigits: 2, symbol: ""),
-  //               style: TextStyle(fontWeight: FontWeight.bold))
-  //         ]
-  //       ],
-  //       headerStyle: TextStyle(fontWeight: FontWeight.bold),
-  //       headerDecoration: const BoxDecoration(color: PdfColors.grey300),
-  //       cellHeight: 30,
-  //       defaultColumnWidth: IntrinsicColumnWidth(),
-  //       cellAlignment: Alignment.centerLeft,
-  //     ),
-  //   );
-  // }
-
   static Widget itemsPart() {
     double unitPrice = orderDetails!.salePrice - PdfInvoiceApi.taxAmount;
     double netAmount =
         orderDetails!.subTotal - (PdfInvoiceApi.taxAmount * orderDetails!.qty);
-    double taxPercent = orderDetails!.taxRate * 100;
+    double taxPercent = orderDetails!.taxRate;
     double taxAmount = PdfInvoiceApi.taxAmount * orderDetails!.qty;
 
     return Container(

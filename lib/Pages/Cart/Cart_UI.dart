@@ -2,7 +2,11 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+
 import 'package:ngf_organic/Components/KScaffold.dart';
 import 'package:ngf_organic/Components/Label.dart';
 import 'package:ngf_organic/Components/kButton.dart';
@@ -17,9 +21,21 @@ import 'package:ngf_organic/Repository/coupon_repo.dart';
 import 'package:ngf_organic/Resources/colors.dart';
 import 'package:ngf_organic/Resources/commons.dart';
 import 'package:ngf_organic/Resources/constants.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:skeletonizer/skeletonizer.dart';
+
+class Breakdown {
+  double price;
+  double couponDiscount;
+  double discount;
+  double subTotal;
+  int totalQty;
+  Breakdown({
+    this.price = 0,
+    this.couponDiscount = 0,
+    this.discount = 0,
+    this.subTotal = 0,
+    this.totalQty = 0,
+  });
+}
 
 class Cart_UI extends ConsumerStatefulWidget {
   const Cart_UI({super.key});
@@ -32,14 +48,8 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
   final isLoading = ValueNotifier(false);
   double totalMrp = 0;
   double totalSalePrice = 0;
-  int totalItems = 0;
-  Map<String, dynamic> breakdown = {
-    "price": 0,
-    "couponDiscount": 0,
-    "discount": 0,
-    "subTotal": 0,
-    "totalQty": 0,
-  };
+
+  Breakdown breakdown = Breakdown();
 
   @override
   void initState() {
@@ -103,16 +113,15 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
     try {
       totalMrp = 0;
       totalSalePrice = 0;
-      totalItems = 0;
+
       final cartData = await ref.read(cartFuture.future);
+
       for (var element in cartData) {
         if (int.parse("${element.stock}") > 0) {
           totalMrp +=
               (parseToDouble(element.mrp) * int.parse("${element.qty}"));
           totalSalePrice +=
               (parseToDouble(element.salePrice) * int.parse("${element.qty}"));
-
-          totalItems += int.parse("${element.qty}");
         }
       }
       final discount = totalMrp - totalSalePrice;
@@ -122,7 +131,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
 
       if (coupon != null) {
         if (totalSalePrice >= coupon.minPurchase) {
-          couponDiscount = totalSalePrice * coupon.offPercent;
+          couponDiscount = totalSalePrice * (coupon.offPercent / 100);
           if (couponDiscount > coupon.maxDiscount) {
             couponDiscount = coupon.maxDiscount;
           }
@@ -131,11 +140,11 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
         }
       }
 
-      breakdown["price"] = totalMrp;
-      breakdown["totalQty"] = totalItems;
-      breakdown["discount"] = discount;
-      breakdown["couponDiscount"] = couponDiscount;
-      breakdown["subTotal"] = totalSalePrice - couponDiscount;
+      breakdown.price = totalMrp;
+      breakdown.totalQty = cartData.length;
+      breakdown.discount = discount;
+      breakdown.couponDiscount = couponDiscount;
+      breakdown.subTotal = totalSalePrice - couponDiscount;
 
       setState(() {});
     } catch (e) {
@@ -308,7 +317,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                             if (data != null) {
                               final coupon = CouponModel.fromMap(data);
 
-                              if (breakdown["subTotal"] >= coupon.minPurchase) {
+                              if (breakdown.subTotal >= coupon.minPurchase) {
                                 ref
                                     .read(selectedCouponProvider.notifier)
                                     .state = coupon;
@@ -355,18 +364,18 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                         child: Column(
                           spacing: 5,
                           children: [
-                            _row("Price (${breakdown["totalQty"]} Items)",
-                                kCurrencyFormat(breakdown["price"])),
-                            _row("Discount",
-                                kCurrencyFormat(breakdown["discount"]),
+                            _row("Price (${breakdown.totalQty} Items)",
+                                kCurrencyFormat(breakdown.price)),
+                            _row(
+                                "Discount", kCurrencyFormat(breakdown.discount),
                                 isDiscount: true),
-                            if (breakdown["couponDiscount"] != 0)
+                            if (breakdown.couponDiscount != 0)
                               _row("Coupon Discount",
-                                  kCurrencyFormat(breakdown["couponDiscount"]),
+                                  kCurrencyFormat(breakdown.couponDiscount),
                                   isDiscount: true),
                             div,
                             _row("Sub-Total",
-                                kCurrencyFormat(breakdown["subTotal"])),
+                                kCurrencyFormat(breakdown.subTotal)),
                           ],
                         ),
                       )
@@ -401,11 +410,11 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                           children: [
                             Label("Sub-Total", weight: 600).regular,
                             height5,
-                            kAmount(breakdown["subTotal"]),
+                            kAmount(breakdown.subTotal),
                           ],
                         ),
                       ),
-                      if (breakdown["subTotal"] > 0)
+                      if (breakdown.subTotal > 0)
                         KButton(
                           padding:
                               EdgeInsets.symmetric(horizontal: 20, vertical: 2),
@@ -557,7 +566,7 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
         children: [
           KCard(
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            color: StatusText.success.lighten(.7),
+            color: StatusText.success.lighten(),
             child: Row(
               spacing: 15,
               children: [
@@ -655,9 +664,10 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                 children: [
                   Expanded(
                     child: Column(
+                      spacing: 3,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        kAmount(data.salePrice),
+                        kAmount(data.salePrice, fontSize: 20, symbolSize: 12),
                         Label("MRP ${kCurrencyFormat(data.mrp)}",
                                 height: 1,
                                 weight: 600,
@@ -724,7 +734,9 @@ class _Cart_UIState extends ConsumerState<Cart_UI> {
                     onTap: () => deleteItem(data.productVariantId),
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                     radius: 5,
-                    color: kColor(context).errorContainer,
+                    borderWidth: 1,
+                    borderColor: kColor(context).error,
+                    color: Kolor.scaffold,
                     child: Label(
                       "Remove",
                       fontSize: 10,
